@@ -1,20 +1,15 @@
-<p align="center"><a href="https://instagram.bot.ptkdev.io" alt="Screenshot"><img src="https://ptkdev.it/img/bot/instagram-bot-lib.png"></a></p>
+[![](https://ptkdev.it/img/bot/instagram-bot-lib.png)](https://instagram.bot.ptkdev.io)
 
-<p align="center"><h1 align="center">Instagram Bot (Library)</h1></p>
+# Instagram Bot (Library)
 
-<p align="center"><a href="#" alt="License"><img src="https://img.shields.io/badge/license-GLPv3-brightgreen.svg"></a>
-<a href="https://github.com/GoogleChrome/puppeteer" alt="powered by puppeteer"><img src="https://img.shields.io/badge/powered%20by-puppeteer-46aef7.svg"></a>
-<a href="https://github.com/social-manager-tools/instagram-bot.js/releases" alt="Version"><img src="https://img.shields.io/badge/version-v0.8.2-lightgrey.svg"></a>
-<a href="https://slack.ptkdev.io" alt="Slack Chat"><img src="https://img.shields.io/badge/chat%20on-Slack-orange.svg"></a>
-<a href="http://blog.ptkdev.io" alt="Blog"><img src="https://img.shields.io/badge/blog-medium-2AE176.svg"></a>
-<a href="https://twitter.com/ptkdevio" alt="Twitter"><img src="https://img.shields.io/badge/twitter-ptkdevio-2AA3EF.svg"></a>   
-<a href="mailto:support@ptkdev.io" alt="Support: support@ptkdev.io"><img src="https://img.shields.io/badge/help-support@ptkdev.io-fbbc05.svg"></a></p>
-<p align="center"><a href="http://patreon.ptkdev.io" alt="Patreon Backer"><img src="https://img.shields.io/badge/donate-patreon-F87668.svg"></a> <a href="http://paypal.ptkdev.io" alt="Paypale Donate"><img src="https://img.shields.io/badge/donate-paypal-46AFE0.svg"></a> <a href="http://coffee.ptkdev.io" alt="Ko-fi Donate"><img src="https://img.shields.io/badge/buy%20me-coffee-4B788C.svg"></a></p>
+[![](https://img.shields.io/badge/license-GLPv3-brightgreen.svg)](#) [![](https://img.shields.io/badge/powered%20by-puppeteer-46aef7.svg)](https://github.com/GoogleChrome/puppeteer) [![](https://img.shields.io/badge/version-v0.8.3-lightgrey.svg)](https://github.com/social-manager-tools/instagram-bot.js/releases) [![](https://img.shields.io/badge/chat%20on-Slack-orange.svg)](https://slack.ptkdev.io) [![](https://img.shields.io/badge/blog-medium-2AE176.svg)](http://blog.ptkdev.io) [![](https://img.shields.io/badge/twitter-ptkdevio-2AA3EF.svg)](https://twitter.com/ptkdevio) [![](https://img.shields.io/badge/help-support@ptkdev.io-fbbc05.svg)](mailto:support@ptkdev.io)
 
-<p align="center"><a href="https://instagram.bot.ptkdev.io" alt="Screenshot"><img src="https://ptkdev.it/img/bot/ptkdev-instagram-bot.gif"></a></p>
+[![](https://img.shields.io/badge/donate-patreon-F87668.svg)](http://patreon.ptkdev.io) [![](https://img.shields.io/badge/donate-paypal-46AFE0.svg)](http://paypal.ptkdev.io) [![](https://img.shields.io/badge/buy%20me-coffee-4B788C.svg)](http://coffee.ptkdev.io)
+
+[![](https://ptkdev.it/img/bot/ptkdev-instagram-bot.gif)](https://instagram.bot.ptkdev.io)
 
 ## What does it do
-This library (node module) provides api for include <a href="https://github.com/social-manager-tools/instagram-bot.js">instagram-bot.js</a> function in your application. This bot helps you increase the engagement of your Instagram profile through different social algorithms. Increase the likes on your photos and followers.
+This library (node module) provides api for include [instagram-bot.js](https://github.com/social-manager-tools/instagram-bot.js) function in your application. This bot helps you increase the engagement of your Instagram profile through different social algorithms. Increase the likes on your photos and followers.
 
 ## Features
 * [✓] Easy to use
@@ -44,7 +39,7 @@ This library (node module) provides api for include <a href="https://github.com/
     bot.start();
 ```
 4. If work add star :star: at this project :heart:
-5. If you want help me: <b><a href="http://paypal.ptkdev.io">donate on paypal</a></b> or become a <b><a href="http://patreon.ptkdev.io">backer on patreon</a></b>.
+5. If you want help me: **[donate on paypal](http://paypal.ptkdev.io)** or become a **[backer on patreon](http://patreon.ptkdev.io)**.
 
 For advanced configuration see [INSTALL.md](https://github.com/social-manager-tools/instagram-bot-lib/blob/master/INSTALL.md).
 
@@ -76,7 +71,7 @@ Method | Description
 start() | run instagram.bot.js
 
 ## Desktop setup (GUI Version)
-1. Download <a href="https://socialmanagertools.ptkdev.io/">Social Manager Tools GUI</a>.
+1. [Social Manager Tools GUI](https://socialmanagertools.ptkdev.io/).
 2. Run application.
 
 ## Docker setup
@@ -96,23 +91,25 @@ $ docker run \
 
 ## Roadmap
 See full roadmap (open task, todo and bugs) in [project page](https://github.com/social-manager-tools/instagram-bot.js/projects?query=is%3Aopen+sort%3Aname-asc).
-* ### [v0.7.X](https://github.com/social-manager-tools/instagram-bot.js/projects/1)
-* ### [v0.8.X](https://github.com/social-manager-tools/instagram-bot.js/projects/2)
-* ### [v0.9.X](https://github.com/social-manager-tools/instagram-bot.js/projects/3)
+* [v0.7.X](https://github.com/social-manager-tools/instagram-bot.js/projects/1)
+* [v0.8.X](https://github.com/social-manager-tools/instagram-bot.js/projects/2)
+* [v0.9.X](https://github.com/social-manager-tools/instagram-bot.js/projects/3)
 
 ## Sorry for snake_case
 I love :snake: snake_case syntax sorry for this :sob: don't hate me.
 
-<a href="https://github.com/social-manager-tools" alt="Screenshot"><img src="https://socialmanagertools.ptkdev.io/img/socialmanagertools_logo.png"></a>
-<h1>Social Manager Tools</h1>
-<a href="https://github.com/social-manager-tools/social-manager-tools">Social Manager Tools GUI</a><br />
-<a href="https://github.com/social-manager-tools/instagram-bot.js">InstagramBot.js</a> (<a href="https://github.com/social-manager-tools/instagram-bot-lib">LIB</a>)<br />
-<a href="https://github.com/social-manager-tools/twitter-bot.js">TwitterBot.js</a> (<a href="https://github.com/social-manager-tools/twitter-bot-lib">LIB</a>)<br />
-<a href="https://github.com/social-manager-tools/facebookpage-bot.js">FacebookPageBot.js</a> (<a href="https://github.com/social-manager-tools/facebookpage-bot-lib">LIB</a>)<br />
-<a href="https://github.com/social-manager-tools/wordpress-telegram-bot.js">WordpressTelegramBot.js</a><br />
-<a href="https://github.com/social-manager-tools/medium-telegram-bot.js">MediumTelegramBot.js</a>
+[![](https://socialmanagertools.ptkdev.io/img/socialmanagertools_logo.png)](https://github.com/social-manager-tools)
 
-<h1>License</h1>
+# Social Manager Tools
+
+[Social Manager Tools GUI](https://github.com/social-manager-tools/social-manager-tools)  
+[InstagramBot.js](https://github.com/social-manager-tools/instagram-bot.js) ([LIB](https://github.com/social-manager-tools/instagram-bot-lib))  
+[TwitterBot.js](https://github.com/social-manager-tools/twitter-bot.js) ([LIB](https://github.com/social-manager-tools/twitter-bot-lib))  
+[FacebookBot.js](https://github.com/social-manager-tools/facebook-bot.js) ([LIB](https://github.com/social-manager-tools/facebook-bot-lib))  
+[WordpressTelegramBot.js](https://github.com/social-manager-tools/wordpress-telegram-bot.js) ([LIB](https://github.com/social-manager-tools/wordpress-telegram-bot-lib))  
+[MediumTelegramBot.js](https://github.com/social-manager-tools/medium-telegram-bot.js) ([LIB](https://github.com/social-manager-tools/medium-telegram-bot-lib))  
+
+# License
 
 GNU GENERAL PUBLIC LICENSE
 
