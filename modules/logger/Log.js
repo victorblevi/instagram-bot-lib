@@ -40,7 +40,7 @@ module.exports = class Log {
 
     append_file(type, message) {
         const tz_offset = (new Date()).getTimezoneOffset() * 60000; //offset in milliseconds
-        const local_iso_time = (new Date(Date.now() - tz_offset)).toISOString().slice(0, -5);
+        const local_iso_time = (new Date(Date.now() - tz_offset)).toISOString().slice(0, -5).replace("T", " ");
         const log = `${local_iso_time} [${type}] ${message}\n`;
 
         fs.appendFile(this.config.log_path, log, function(err) {
