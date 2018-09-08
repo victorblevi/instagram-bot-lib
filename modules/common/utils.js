@@ -125,14 +125,6 @@ class Utils {
      *
      */
     async init_empty() {
-        if (!this.fs.existsSync("./databases")){
-            this.fs.mkdirSync("./databases");
-        }
-
-        if (!this.fs.existsSync("./logs")){
-            this.fs.mkdirSync("./logs");
-        }
-
         await this.create_empty("loginpin.txt", this.config.pin_path, "123456");
 
         await this.create_empty("logs/debug.log", this.config.log_path, "");

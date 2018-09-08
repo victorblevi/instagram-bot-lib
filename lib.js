@@ -44,6 +44,14 @@ module.exports = function(config) {
      */
     this.start = async function() {
         var bot = null;
+        let fs = require("fs");
+        if (!fs.existsSync("./databases")){
+            fs.mkdirSync("./databases");
+        }
+
+        if (!fs.existsSync("./logs")){
+            fs.mkdirSync("./logs");
+        }
         let config = this.config;
         let sqlite3 = require("sqlite3").verbose();
         let db = [];

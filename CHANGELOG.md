@@ -1,3 +1,7 @@
+# v0.9.0b (09 September, 2018)
+* Fix: bad creation of folders `databases` and `logs` (#79)
+
+
 # v0.9.0 (08 September, 2018)
 * Feature: Follow/Defollow Mode (#77)
 * Feature: Support sqllite connector (#70)
