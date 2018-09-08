@@ -64,12 +64,12 @@ class Likemode_competitor_users extends Manager_state {
     async scroll_followers() {
         this.log.info("scroll action");
 
-        await this.bot.waitForSelector("div[role=\"dialog\"] div div div ~ div");
+        await this.bot.waitForSelector("div[role=\"dialog\"] div:nth-child(1)");
         return this.bot.evaluate(() => {
             return new Promise((resolve) => {
                 let counter = 5;
                 let timer = setInterval(() => {
-                    document.querySelector("div[role=\"dialog\"] div div div ~ div").scrollBy(0, 5000);
+                    document.querySelector("div[role=\"dialog\"] > div:nth-child(3)").scrollBy(0, 5000);
                     if (counter <= 0) {
                         clearInterval(timer);
                         resolve();
@@ -98,8 +98,9 @@ class Likemode_competitor_users extends Manager_state {
             follower_url = this.get_follower_url();
 
             this.log.info(`current follower url ${follower_url}`);
-            if (typeof follower_url === "undefined")
+            if (typeof follower_url === "undefined") {
                 this.log.warning("error follower url.");
+            }
 
             await this.utils.sleep(this.utils.random_interval(4, 8));
             await this.bot.goto(follower_url);
@@ -134,7 +135,7 @@ class Likemode_competitor_users extends Manager_state {
             await this.scroll_followers(this.bot);
 
             try {
-                this.cache_hash_tags = await this.bot.$$eval("div[role=\"dialog\"] div div div ul li div div a", hrefs => hrefs.map((a) => {
+                this.cache_hash_tags = await this.bot.$$eval("div[role=\"dialog\"] ul li a", hrefs => hrefs.map((a) => {
                     return a.href;
                 }));
 
@@ -142,8 +143,9 @@ class Likemode_competitor_users extends Manager_state {
 
                 await this.utils.sleep(this.utils.random_interval(10, 15));
 
-                if (this.utils.is_debug())
+                if (this.utils.is_debug()) {
                     this.log.debug(`array followers ${this.cache_hash_tags}`);
+                }
 
             } catch (err) {
                 this.cache_hash_tags = [];
@@ -181,8 +183,9 @@ class Likemode_competitor_users extends Manager_state {
             this.log.info("<3");
             this.emit(this.STATE_EVENTS.CHANGE_STATUS, this.STATE.OK);
         } catch (err) {
-            if (this.utils.is_debug())
+            if (this.utils.is_debug()) {
                 this.log.debug(err);
+            }
 
             this.log.warning("</3");
             this.emit(this.STATE_EVENTS.CHANGE_STATUS, this.STATE.ERROR);
@@ -215,8 +218,9 @@ class Likemode_competitor_users extends Manager_state {
                 this.log.info("loading... " + new Date(today.getFullYear(), today.getMonth(), today.getDate(), today.getHours(), today.getMinutes(), today.getSeconds()));
                 this.log.info("cache array size " + this.cache_hash_tags.length);
 
-                if (this.cache_hash_tags.length <= 0)
+                if (this.cache_hash_tags.length <= 0) {
                     await this.open_account_page();
+                }
 
                 await this.utils.sleep(this.utils.random_interval(4, 8));
 
@@ -227,8 +231,9 @@ class Likemode_competitor_users extends Manager_state {
 
                 await this.like_click_heart();
 
-                if (this.cache_hash_tags.length < 9 || this.is_ready()) //remove popular photos
+                if (this.cache_hash_tags.length < 9 || this.is_ready()) { //remove popular photos
                     this.cache_hash_tags = [];
+                }
 
                 if (this.cache_hash_tags.length <= 0 && this.is_not_ready()) {
                     this.log.info("finish fast like, bot sleep " + this.config.bot_fastlike_min + "-" + this.config.bot_fastlike_max + " minutes");
@@ -244,4 +249,6 @@ class Likemode_competitor_users extends Manager_state {
 
 }
 
-module.exports = (bot, config, utils) => { return new Likemode_competitor_users(bot, config, utils); };
+module.exports = (bot, config, utils) => {
+    return new Likemode_competitor_users(bot, config, utils); 
+};

@@ -28,7 +28,9 @@ class commentmode_classic extends Manager_state {
 
     get_random_comment() {
         // if array is empty
-        if (this.source.length === 0) return "";
+        if (this.source.length === 0) {
+            return "";
+        }
         return this.source[Math.floor(Math.random() * this.source.length)];
     }
     /**
@@ -98,13 +100,15 @@ class commentmode_classic extends Manager_state {
 
                 await this.utils.sleep(this.utils.random_interval(10, 15));
 
-                if (this.utils.is_debug())
+                if (this.utils.is_debug()) {
                     this.log.debug(`array photos ${this.cache_hash_tags}`);
+                }
                 photo_url = this.get_photo_url();
 
                 this.log.info(`current photo url ${photo_url}`);
-                if (typeof photo_url === "undefined")
+                if (typeof photo_url === "undefined") {
                     this.log.warning("check if current hashtag have photos, you write it good in config.js? Bot go to next hashtag.");
+                }
 
                 await this.utils.sleep(this.utils.random_interval(4, 8));
 
@@ -144,7 +148,7 @@ class commentmode_classic extends Manager_state {
      * @return {Promise<void>}
      */
     async check_leave_comment() {
-        let nick_under_photo = `main article:nth-child(1) div:nth-child(3) div:nth-child(3) ul li a[title="${this.config.instagram_username}"]`;
+        let nick_under_photo = `article div div a[title="${this.config.instagram_username}"]`;
         if (this.is_ok()) {
             try {
                 let nick = await this.bot.$(nick_under_photo);
@@ -158,14 +162,15 @@ class commentmode_classic extends Manager_state {
                 if (this.is_error()) {
                     this.log.warning("Failed...");
                     this.log.warning("error bot :( not comment under photo, now bot sleep 5-10min");
-                    this.log.warning("You are in possible soft ban... If this message appear all time stop bot for 24h...");
-                    await this.utils.sleep(this.utils.random_interval(60 * 5, 60 * 10));
+                    this.log.warning("You are in possible soft ban... If this message appear all time stop bot for 1h...");
+                    await this.utils.sleep(this.utils.random_interval(60 * 50, 60 * 60));
                 } else if (this.is_ok()) {
                     this.log.info("OK");
                 }
             } catch (err) {
-                if (this.utils.is_debug())
+                if (this.utils.is_debug()) {
                     this.log.debug(err);
+                }
                 this.emit(this.STATE_EVENTS.CHANGE_STATUS, this.STATE.ERROR);
             }
         } else {
@@ -208,8 +213,9 @@ class commentmode_classic extends Manager_state {
                 this.emit(this.STATE_EVENTS.CHANGE_STATUS, this.STATE.ERROR);
             }
         } catch (err) {
-            if (this.utils.is_debug())
+            if (this.utils.is_debug()) {
                 this.log.debug(err);
+            }
             this.log.info("bot is unable to comment on this photo");
             this.emit(this.STATE_EVENTS.CHANGE_STATUS, this.STATE.ERROR);
         }
@@ -248,8 +254,9 @@ class commentmode_classic extends Manager_state {
                 this.log.info("loading... " + new Date(today.getFullYear(), today.getMonth(), today.getDate(), today.getHours(), today.getMinutes(), today.getSeconds()));
                 this.log.info(`cache array size ${this.cache_hash_tags.length}`);
 
-                if (this.cache_hash_tags.length <= 0)
+                if (this.cache_hash_tags.length <= 0) {
                     await this.open_page();
+                }
 
                 await this.utils.sleep(this.utils.random_interval(4, 8));
 
@@ -259,8 +266,9 @@ class commentmode_classic extends Manager_state {
 
                 await this.comment();
 
-                if (this.cache_hash_tags.length < 9 || this.is_ready()) //remove popular photos
+                if (this.cache_hash_tags.length < 9 || this.is_ready()) { //remove popular photos
                     this.cache_hash_tags = [];
+                }
 
                 if (this.cache_hash_tags.length <= 0 && this.is_not_ready()) {
                     this.log.info(`finish fast comment, bot sleep ${this.config.bot_fastlike_min} - ${this.config.bot_fastlike_max} minutes`);
@@ -275,4 +283,6 @@ class commentmode_classic extends Manager_state {
     }
 }
 
-module.exports = (bot, config, utils) => { return new commentmode_classic(bot, config, utils); };
+module.exports = (bot, config, utils, db) => {
+    return new commentmode_classic(bot, config, utils, db); 
+};

@@ -5,7 +5,7 @@
  *
  * @author:     Patryk Rzucidlo [@ptkdev] <support@ptkdev.io> (https://ptkdev.it)
  * @file:       bot.js
- * @version:    0.8.1
+ * @version:    0.9.0
  *
  * @license:    Code and contributions have 'GNU General Public License v3'
  *              This program is free software: you can redistribute it and/or modify
@@ -24,14 +24,35 @@
  */
 module.exports = function(config) {
     this.config = config;
+    this.browser = null;
+
+    /**
+     * API: stop()
+     * =====================
+     * if you want stop bot
+     *
+     */
+    this.stop = async function() {
+        await this.browser.close();
+    };
+
+    /**
+     * API: start()
+     * =====================
+     * if you want start bot, remeber set config.js
+     *
+     */
     this.start = async function() {
         var bot = null;
         let config = this.config;
+        let sqlite3 = require("sqlite3").verbose();
+        let db = [];
+        db["logs"] = new sqlite3.Database(config.logdb_path);
+        db["fdf"] = new sqlite3.Database(config.fdfdatabase_path);
         const puppeteer = require("puppeteer");
         const version = require("./version");
         const LOG = require("./modules/logger/types");
-        let browser = null;
-
+        
         /**
          * Init
          * =====================
@@ -39,25 +60,27 @@ module.exports = function(config) {
          *
          */
         let check = require("./modules/common/utils")(bot, config);
-        if(config.ui === true){
+        if (config.ui !== true) {
+            await check.init_empty();
+        } else if (config.ui === true) {
             config = check.fixui(config);
         }
         config = check.default_config(config);
         check.donate();
         check.check_updates(version.version);
         if (config.executable_path === "" || config.executable_path === false) {
-            browser = await puppeteer.launch({
+            this.browser = await puppeteer.launch({
                 headless: config.chrome_headless,
                 args: config.chrome_options
             });
         } else {
-            browser = await puppeteer.launch({
+            this.browser = await puppeteer.launch({
                 headless: config.chrome_headless,
                 args: config.chrome_options,
                 executablePath: config.executable_path
             });
         }
-        bot = await browser.newPage();
+        bot = await this.browser.newPage();
 
         /**
          * Import libs
@@ -81,7 +104,7 @@ module.exports = function(config) {
         async function switch_mode() {
             let strategy = routes[config.bot_mode];
             if (strategy !== undefined) {
-                await strategy(bot, config, utils).start();
+                await strategy(bot, config, utils, db).start();
             } else {
                 log(LOG.ERROR, "switch_mode", `mode ${strategy} not exist!`);
             }
@@ -113,7 +136,6 @@ module.exports = function(config) {
                 await switch_mode();
             }
 
-            //await bot.close();
         }
 
     };

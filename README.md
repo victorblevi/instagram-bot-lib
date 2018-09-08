@@ -2,15 +2,14 @@
 
 # Instagram Bot (Library)
 
-[![](https://img.shields.io/badge/license-GLPv3-brightgreen.svg)](#) [![](https://img.shields.io/badge/powered%20by-puppeteer-46aef7.svg)](https://github.com/GoogleChrome/puppeteer) [![](https://img.shields.io/badge/version-v0.8.3-lightgrey.svg)](https://github.com/social-manager-tools/instagram-bot.js/releases) [![](https://img.shields.io/badge/chat%20on-slack-orange.svg)](https://slack.ptkdev.io) [![](https://img.shields.io/badge/blog-medium-2AE176.svg)](http://blog.ptkdev.io) [![](https://img.shields.io/badge/twitter-ptkdevio-2AA3EF.svg)](https://twitter.com/ptkdevio) [![](https://img.shields.io/badge/help-support@ptkdev.io-fbbc05.svg)](mailto:support@ptkdev.io)
+[![](https://img.shields.io/badge/license-GLPv3-brightgreen.svg)](#) [![](https://img.shields.io/badge/powered%20by-puppeteer-46aef7.svg)](https://github.com/GoogleChrome/puppeteer) [![](https://img.shields.io/badge/version-v0.9.0-lightgrey.svg)](https://github.com/social-manager-tools/instagram-bot-lib/releases) [![](https://img.shields.io/badge/chat%20on-slack-orange.svg)](http://slack.ptkdev.io) [![](https://img.shields.io/badge/chat%20on-discord-7289da.svg)](http://discord.ptkdev.io) [![](https://img.shields.io/badge/blog-medium-2AE176.svg)](http://blog.ptkdev.io) [![](https://img.shields.io/badge/twitter-ptkdevio-2AA3EF.svg)](https://twitter.com/ptkdevio)
 
-[![](https://img.shields.io/badge/donate-patreon-F87668.svg)](http://patreon.ptkdev.io) [![](https://img.shields.io/badge/donate-paypal-46AFE0.svg)](http://paypal.ptkdev.io) [![](https://img.shields.io/badge/buy%20me-coffee-4B788C.svg)](http://coffee.ptkdev.io)
+[![](https://img.shields.io/badge/donate-patreon-F87668.svg)](http://patreon.ptkdev.io) [![](https://img.shields.io/badge/donate-paypal-46AFE0.svg)](http://paypal.ptkdev.io) [![](https://img.shields.io/badge/buy%20me-coffee-4B788C.svg)](http://coffee.ptkdev.io) [![](https://img.shields.io/badge/help-support@ptkdev.io-fbbc05.svg)](mailto:support@ptkdev.io)
 
 [![](https://ptkdev.it/img/bot/ptkdev-instagram-bot.gif)](https://instagram.bot.ptkdev.io)
 
 ## What it does
 This library (npm module) provides api for include [instagram-bot.js](https://github.com/social-manager-tools/instagram-bot.js) functions in your application. This bot helps you increase the engagement level of your Instagram profile through different social algorithms. Increase the likes on your photos and followers!
-
 
 ## Features
 * [✓] Easy to use
@@ -26,12 +25,11 @@ This library (npm module) provides api for include [instagram-bot.js](https://gi
 * [✓] Like Mode Competitor Users: it selects an account, selects random followers, likes 10-12 photo and sleeps 15-20min. Sleeps at night.
 * [✓] Like Mode Superlike: it selects random hashtag from a config list and likes 3 random photos of the same user.
 * [✓] Comment Mode Classic: it selects random comments and random hashtags and writes comments under photos.
-* [✘] Follow/Defollow Classic: it follows user from random hashtags and defollows after 1h.
-* [✘] Defollow All: it defollows all your following (ignoring users in whitelist).
+* [✓] Follow/Defollow Classic: follow 30 users, defollow first and rotate (in loop). This method is not detect from socialblade. ~1h | 300 follow-defollow/day.
 
 ## Fast usage
 1. Run `npm install instagrambotlib`
-2. Get [config.js](https://raw.githubusercontent.com/social-manager-tools/instagram-bot-lib/0.8.2/config.js.tpl) file for step 3, fill it properly and remove `.tpl` suffix.
+2. Get [config.js](https://raw.githubusercontent.com/social-manager-tools/instagram-bot-lib/0.9.0/config.js.tpl) file for step 3, fill it properly and remove `.tpl` suffix.
 3. On your code require library and run bot, example:
 ```
     const config = require ("./config");
@@ -53,6 +51,12 @@ Edit `config.js` and switch `chrome_headless` option to `true`.
 #### Check if work:
 See images in ./logs/screenshot or disable `chrome_headless` flag.
 
+## API 
+Method | Description
+------------ | -------------
+start() | run instagram-bot.js
+stop()  | stop instagram-bot.js
+
 ## Bugs
 1. `[ERROR] login: The username you entered doesn't belong to an account. Please check your username and try again. (restart bot and retry...)`
 * Why happen? Instagram desktop is in overcapacity. Happen at 12-14 and 19-21 all days. 
@@ -65,11 +69,6 @@ See images in ./logs/screenshot or disable `chrome_headless` flag.
 3. `This code is no longer valid. Please request a new one. (400) (/accounts/login/ajax/two_factor/)` 
 * Why happen? Instagram bug at login
 * Solution: disable at moment 2FA or try old version of chrome (edit `config.js` set `executable_path`)
-
-## API 
-Method | Description
------------- | -------------
-start() | run instagram.bot.js
 
 ## Desktop setup (GUI Version)
 1. [Social Manager Tools GUI](https://socialmanagertools.ptkdev.io/).
@@ -92,9 +91,8 @@ $ docker run \
 
 ## Roadmap
 See full roadmap (open task, todo and bugs) in [project page](https://github.com/social-manager-tools/instagram-bot.js/projects?query=is%3Aopen+sort%3Aname-asc).
-* [v0.7.X](https://github.com/social-manager-tools/instagram-bot.js/projects/1)
-* [v0.8.X](https://github.com/social-manager-tools/instagram-bot.js/projects/2)
 * [v0.9.X](https://github.com/social-manager-tools/instagram-bot.js/projects/3)
+* [v1.0.X](https://github.com/social-manager-tools/instagram-bot.js/projects/3)
 
 ## Sorry for snake_case
 I love :snake: snake_case syntax sorry for this :sob: don't hate me.

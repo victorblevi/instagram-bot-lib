@@ -32,8 +32,11 @@ proguard/
 
 # Logs and databases #
 ######################
+logs/*.log
 logs/screenshot/*.png
 logs/screenshot/*.jpg
+databases/*.db
+*.log
 *.sql
 *.sqlite
 *.lock
@@ -50,6 +53,7 @@ yarn-error.log
 .Trashes
 ehthumbs.db
 Thumbs.db
+loginpin.txt
 
 # Python #
 ##########
