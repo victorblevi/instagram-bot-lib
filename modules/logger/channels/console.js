@@ -26,4 +26,6 @@ class Console{
     }
 }
 
-module.exports = () => { return new Console(); };
+module.exports = () => {
+    return new Console(); 
+};

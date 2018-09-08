@@ -44,11 +44,15 @@ module.exports = class Log {
         const log = `${local_iso_time} [${type}] ${message}\n`;
 
         fs.appendFile(this.config.log_path, log, function(err) {
-            if (err) console.log(err);
+            if (err) {
+                console.log(err);
+            }
         });
         if(type === "ERROR") {
             fs.appendFile(this.config.logerr_path, log, function(err) {
-                if (err) console.log(err);
+                if (err) {
+                    console.log(err);
+                }
             });
         }
     }

@@ -11,11 +11,12 @@
  */
 const Manager_state = require("../common/state").Manager_state;
 class Likemode_realistic extends Manager_state {
-    constructor(bot, config, utils) {
+    constructor(bot, config, utils, db) {
         super();
         this.bot = bot;
         this.config = config;
         this.utils = utils;
+        this.db = db["logs"];
         this.cache_hash_tags = [];
         this.photo_liked = [];
         this.photo_current = "";
@@ -27,14 +28,29 @@ class Likemode_realistic extends Manager_state {
     }
 
     /**
+     * Database init
+     * =====================
+     * Save users nickname and other information
+     * 
+     */
+    init_db() {
+        let self = this;
+        this.db.serialize(function() {
+            self.db.run("CREATE TABLE IF NOT EXISTS users (id INTEGER PRIMARY KEY AUTOINCREMENT, account TEXT, mode TEXT, username TEXT, photo_url TEXT, type_action TEXT)");
+        });
+    }
+
+    /**
      * Get photo url from cache
+     * =====================
      * @return {string} url
+     * 
      */
     get_photo_url() {
         let photo_url = "";
         do {
             photo_url = this.cache_hash_tags.pop();
-        } while ((typeof photo_url === "undefined" || photo_url.indexOf("tagged") === -1) && this.cache_hash_tags.length > 0);
+        } while (typeof photo_url === "undefined" && this.cache_hash_tags.length > 0);
         return photo_url;
     }
 
@@ -75,20 +91,32 @@ class Likemode_realistic extends Manager_state {
                     return a.href;
                 }));
 
+                if (this.cache_hash_tags.length <= 0) {
+                    this.log.warning("check if current hashtag have photos, you write it good in config.js? Bot go to next hashtag.");
+                }
+
                 await this.utils.sleep(this.utils.random_interval(10, 15));
 
-                if (this.utils.is_debug())
+                if (this.utils.is_debug()) {
                     this.log.debug(`array photos ${this.cache_hash_tags}`);
+                }
 
                 photo_url = this.get_photo_url();
 
                 this.log.info(`current photo url ${photo_url}`);
-                if (typeof photo_url === "undefined")
+                if (typeof photo_url === "undefined") {
                     this.log.warning("check if current hashtag have photos, you write it good in config.js? Bot go to next hashtag.");
+                    photo_url = this.get_photo_url();
+                    if(photo_url == "" || typeof photo_url === "undefined"){
+                        this.cache_hash_tags = [];
+                    }
+                }
 
                 await this.utils.sleep(this.utils.random_interval(4, 8));
 
-                await this.bot.goto(photo_url);
+                if (this.cache_hash_tags.length > 0) {
+                    await this.bot.goto(photo_url);
+                }
             } catch (err) {
                 this.cache_hash_tags = [];
                 this.log.error(`like_get_urlpic error ${err}`);
@@ -107,16 +135,18 @@ class Likemode_realistic extends Manager_state {
             }
         }
 
-        this.photo_current = photo_url.split("?tagged")[0];
-        if (typeof photo_url !== "undefined"){
-            if(typeof this.photo_liked[this.photo_current] === "undefined"){
-                this.photo_liked[this.photo_current] = 1;
-            }else{
-                this.photo_liked[this.photo_current]++;
+        if (this.cache_hash_tags.length > 0) {
+            this.photo_current = photo_url.split("?tagged")[0];
+            if (typeof photo_url !== "undefined") {
+                if (typeof this.photo_liked[this.photo_current] === "undefined") {
+                    this.photo_liked[this.photo_current] = 1;
+                } else {
+                    this.photo_liked[this.photo_current]++;
+                }
+
             }
-            
+            await this.utils.sleep(this.utils.random_interval(4, 8));
         }
-        await this.utils.sleep(this.utils.random_interval(4, 8));
     }
 
     /**
@@ -127,22 +157,29 @@ class Likemode_realistic extends Manager_state {
      */
     async like_click_heart() {
         this.log.info("try heart like");
+        await this.bot.waitForSelector("article div a:nth-child(1)");
+        let username = await this.bot.evaluate(el => el.innerHTML, await this.bot.$("article div a:nth-child(1)"));
 
         try {
             await this.bot.waitForSelector("main article:nth-child(1) section:nth-child(1) button:nth-child(1)");
             let button = await this.bot.$("main article:nth-child(1) section:nth-child(1) button:nth-child(1)");
-            if(this.photo_liked[this.photo_current] > 1){
+
+            if (this.photo_liked[this.photo_current] > 1) {
                 this.log.warning("</3 liked previously");
-            }else{
+                this.db.run("INSERT INTO users (account, mode, username, photo_url, type_action) VALUES (?, ?, ?, ?, ?)", this.config.instagram_username, this.LOG_NAME, username, this.photo_current, "</3 liked previously");
+            } else {
                 await button.click();
                 this.log.info("<3");
+                this.db.run("INSERT INTO users (account, mode, username, photo_url, type_action) VALUES (?, ?, ?, ?, ?)", this.config.instagram_username, this.LOG_NAME, username, this.photo_current, "</3");
             }
             this.emit(this.STATE_EVENTS.CHANGE_STATUS, this.STATE.OK);
         } catch (err) {
-            if (this.utils.is_debug())
+            if (this.utils.is_debug()) {
                 this.log.debug(err);
+            }
 
             this.log.warning("</3");
+            this.db.run("INSERT INTO users (account, mode, username, photo_url, type_action) VALUES (?, ?, ?, ?, ?)", this.config.instagram_username, this.LOG_NAME, username, this.photo_current, "</3 error_catch");
             this.emit(this.STATE_EVENTS.CHANGE_STATUS, this.STATE.ERROR);
         }
 
@@ -159,13 +196,15 @@ class Likemode_realistic extends Manager_state {
     async start() {
         this.log.info("realistic");
 
+        this.init_db();
+
         let today = "";
 
         do {
             today = new Date();
             this.log.info("time night: " + (parseInt(today.getHours() + "" + (today.getMinutes() < 10 ? "0" : "") + today.getMinutes())));
-            
-            if(this.config.bot_sleep_night === false){
+
+            if (this.config.bot_sleep_night === false) {
                 this.config.bot_start_sleep = "00:00";
             }
             if ((parseInt(today.getHours() + "" + (today.getMinutes() < 10 ? "0" : "") + today.getMinutes()) >= (this.config.bot_start_sleep).replace(":", ""))) {
@@ -173,8 +212,9 @@ class Likemode_realistic extends Manager_state {
                 this.log.info("loading... " + new Date(today.getFullYear(), today.getMonth(), today.getDate(), today.getHours(), today.getMinutes(), today.getSeconds()));
                 this.log.info("cache array size " + this.cache_hash_tags.length);
 
-                if (this.cache_hash_tags.length <= 0)
+                if (this.cache_hash_tags.length <= 0) {
                     await this.like_open_hashtagpage();
+                }
 
                 await this.utils.sleep(this.utils.random_interval(4, 8));
 
@@ -182,12 +222,15 @@ class Likemode_realistic extends Manager_state {
 
                 await this.utils.sleep(this.utils.random_interval(4, 8));
 
-                await this.like_click_heart();
+                if (this.cache_hash_tags.length > 0) {
+                    await this.like_click_heart();
+                }
 
-                if (this.cache_hash_tags.length < 9 || this.is_ready()) //remove popular photos
+                if (this.cache_hash_tags.length < 9) { //remove popular photos
                     this.cache_hash_tags = [];
+                }
 
-                if (this.cache_hash_tags.length <= 0 && this.is_not_ready()) {
+                if (this.cache_hash_tags.length <= 0) {
                     this.log.info("finish fast like, bot sleep " + this.config.bot_fastlike_min + "-" + this.config.bot_fastlike_max + " minutes");
                     this.cache_hash_tags = [];
                     await this.utils.sleep(this.utils.random_interval(60 * this.config.bot_fastlike_min, 60 * this.config.bot_fastlike_max));
@@ -201,4 +244,6 @@ class Likemode_realistic extends Manager_state {
 
 }
 
-module.exports = (bot, config, utils) => { return new Likemode_realistic(bot, config, utils); };
+module.exports = (bot, config, utils, db) => {
+    return new Likemode_realistic(bot, config, utils, db); 
+};

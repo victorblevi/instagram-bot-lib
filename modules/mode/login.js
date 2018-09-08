@@ -89,10 +89,11 @@ class Login extends Manager_state {
 
         try {
             text = await this.bot.$("#slfErrorAlert");
-            if (text !== null)
+            if (text !== null) {
                 this.emit(this.STATE_EVENTS.CHANGE_STATUS, this.STATE.ERROR);
-            else
+            } else {
                 this.emit(this.STATE_EVENTS.CHANGE_STATUS, this.STATE.OK);
+            }
         } catch (err) {
             this.emit(this.STATE_EVENTS.CHANGE_STATUS, this.STATE.OK);
         }
@@ -142,4 +143,6 @@ class Login extends Manager_state {
     }
 }
 
-module.exports = (bot, config, utils) => { return new Login(bot, config, utils); };
+module.exports = (bot, config, utils) => {
+    return new Login(bot, config, utils); 
+};

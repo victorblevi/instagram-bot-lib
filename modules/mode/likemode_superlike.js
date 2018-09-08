@@ -83,8 +83,9 @@ class Likemode_superlike extends Manager_state {
 
                 await this.utils.sleep(this.utils.random_interval(10, 15));
 
-                if (this.utils.is_debug())
+                if (this.utils.is_debug()) {
                     this.log.debug(`array photos ${this.cache_hash_tags}`);
+                }
 
                 photo_url = this.get_photo_url("hashtag");
 
@@ -137,8 +138,9 @@ class Likemode_superlike extends Manager_state {
             await button.click();
             this.emit(this.STATE_EVENTS.CHANGE_STATUS, this.STATE.OK);
         } catch (err) {
-            if (this.utils.is_debug())
+            if (this.utils.is_debug()) {
                 this.log.debug(err);
+            }
 
             this.emit(this.STATE_EVENTS.CHANGE_STATUS, this.STATE.ERROR);
         }
@@ -167,14 +169,16 @@ class Likemode_superlike extends Manager_state {
 
                 await this.utils.sleep(this.utils.random_interval(10, 15));
 
-                if (this.utils.is_debug())
+                if (this.utils.is_debug()) {
                     this.log.debug(`array photos from user ${this.cache_hash_tags_user}`);
+                }
 
                 photo_url = this.get_photo_url("user");
 
                 this.log.info(`current photo url user ${photo_url}`);
-                if (typeof photo_url === "undefined")
+                if (typeof photo_url === "undefined") {
                     this.log.warning("check if current hashtag have photos, you write it good in config.js? Bot go to next hashtag.");
+                }
 
                 await this.utils.sleep(this.utils.random_interval(4, 8));
 
@@ -201,13 +205,13 @@ class Likemode_superlike extends Manager_state {
         }
 
         this.photo_current = photo_url.split("?tagged")[0];
-        if (typeof photo_url !== "undefined"){
-            if(typeof this.photo_liked[this.photo_current] === "undefined"){
+        if (typeof photo_url !== "undefined") {
+            if (typeof this.photo_liked[this.photo_current] === "undefined") {
                 this.photo_liked[this.photo_current] = 1;
-            }else{
+            } else {
                 this.photo_liked[this.photo_current]++;
             }
-            
+
         }
         await this.utils.sleep(this.utils.random_interval(4, 8));
     }
@@ -224,16 +228,17 @@ class Likemode_superlike extends Manager_state {
         try {
             await this.bot.waitForSelector("main article:nth-child(1) section:nth-child(1) button:nth-child(1)");
             let button = await this.bot.$("main article:nth-child(1) section:nth-child(1) button:nth-child(1)");
-            if(this.photo_liked[this.photo_current] > 1){
+            if (this.photo_liked[this.photo_current] > 1) {
                 this.log.warning("</3 liked previously");
-            }else{
+            } else {
                 await button.click();
                 this.log.info("<3");
             }
             this.emit(this.STATE_EVENTS.CHANGE_STATUS, this.STATE.OK);
         } catch (err) {
-            if (this.utils.is_debug())
+            if (this.utils.is_debug()) {
                 this.log.debug(err);
+            }
 
             this.log.warning("</3");
             this.emit(this.STATE_EVENTS.CHANGE_STATUS, this.STATE.ERROR);
@@ -266,8 +271,9 @@ class Likemode_superlike extends Manager_state {
                 this.log.info("loading... " + new Date(today.getFullYear(), today.getMonth(), today.getDate(), today.getHours(), today.getMinutes(), today.getSeconds()));
                 this.log.info("cache array size " + this.cache_hash_tags.length);
 
-                if (this.cache_hash_tags.length <= 0)
+                if (this.cache_hash_tags.length <= 0) {
                     await this.like_open_hashtagpage();
+                }
 
                 await this.utils.sleep(this.utils.random_interval(4, 8));
 
@@ -296,8 +302,9 @@ class Likemode_superlike extends Manager_state {
                 }
                 this.cache_hash_tags_user = [];
 
-                if (this.cache_hash_tags.length < 9 || this.is_ready()) //remove popular photos
+                if (this.cache_hash_tags.length < 9 || this.is_ready()) { //remove popular photos
                     this.cache_hash_tags = [];
+                }
 
                 if (this.cache_hash_tags.length <= 0 && this.is_not_ready()) {
                     this.log.info("finish fast like, bot sleep " + this.config.bot_fastlike_min + "-" + this.config.bot_fastlike_max + " minutes");
@@ -313,4 +320,6 @@ class Likemode_superlike extends Manager_state {
 
 }
 
-module.exports = (bot, config, utils) => { return new Likemode_superlike(bot, config, utils); };
+module.exports = (bot, config, utils) => {
+    return new Likemode_superlike(bot, config, utils); 
+};
