@@ -7,7 +7,7 @@
  * @license:    This code and contributions have 'GNU General Public License v3'
  * @version:    0.1
  * @changelog:  0.1 initial release
- * 
+ *
  */
 const Manager_state = require("../common/state").Manager_state;
 class Likemode_realistic extends Manager_state {
@@ -31,12 +31,12 @@ class Likemode_realistic extends Manager_state {
      * Database init
      * =====================
      * Save users nickname and other information
-     * 
+     *
      */
     init_db() {
         let self = this;
         this.db.serialize(function() {
-            self.db.run("CREATE TABLE IF NOT EXISTS users (id INTEGER PRIMARY KEY AUTOINCREMENT, account TEXT, mode TEXT, username TEXT, photo_url TEXT, type_action TEXT)");
+            self.db.run("CREATE TABLE IF NOT EXISTS users (id INTEGER PRIMARY KEY AUTOINCREMENT, account TEXT, mode TEXT, username TEXT, photo_url TEXT, hashtag TEXT, type_action TEXT, inserted_on datetime default current_timestamp)");
         });
     }
 
@@ -44,7 +44,7 @@ class Likemode_realistic extends Manager_state {
      * Get photo url from cache
      * =====================
      * @return {string} url
-     * 
+     *
      */
     get_photo_url() {
         let photo_url = "";
@@ -61,10 +61,10 @@ class Likemode_realistic extends Manager_state {
      *
      */
     async like_open_hashtagpage() {
-        let hashtag_tag = this.utils.get_random_hash_tag();
-        this.log.info(`current hashtag ${hashtag_tag}`);
+        this.hashtag_tag = this.utils.get_random_hash_tag();
+        this.log.info(`current hashtag ${this.hashtag_tag}`);
         try {
-            await this.bot.goto("https://www.instagram.com/explore/tags/" + hashtag_tag + "/");
+            await this.bot.goto("https://www.instagram.com/explore/tags/" + this.hashtag_tag + "/");
         } catch (err) {
             this.log.error(`goto ${err}`);
         }
@@ -165,12 +165,12 @@ class Likemode_realistic extends Manager_state {
             let button = await this.bot.$("main article:nth-child(1) section:nth-child(1) button:nth-child(1)");
 
             if (this.photo_liked[this.photo_current] > 1) {
-                this.log.warning("</3 liked previously");
-                this.db.run("INSERT INTO users (account, mode, username, photo_url, type_action) VALUES (?, ?, ?, ?, ?)", this.config.instagram_username, this.LOG_NAME, username, this.photo_current, "</3 liked previously");
+                this.log.warning("</3 Skipped, liked previously");
+                this.db.run("INSERT INTO users (account, mode, username, photo_url, hashtag, type_action) VALUES (?, ?, ?, ?, ?, ?)", this.config.instagram_username, this.LOG_NAME, username, this.photo_current, this.hashtag_tag, "skipped");
             } else {
                 await button.click();
-                this.log.info("<3");
-                this.db.run("INSERT INTO users (account, mode, username, photo_url, type_action) VALUES (?, ?, ?, ?, ?)", this.config.instagram_username, this.LOG_NAME, username, this.photo_current, "</3");
+                this.log.info("<3 Liked");
+                this.db.run("INSERT INTO users (account, mode, username, photo_url, hashtag, type_action) VALUES (?, ?, ?, ?, ?, ?)", this.config.instagram_username, this.LOG_NAME, username, this.photo_current, this.hashtag_tag, "liked");
             }
             this.emit(this.STATE_EVENTS.CHANGE_STATUS, this.STATE.OK);
         } catch (err) {
@@ -179,7 +179,7 @@ class Likemode_realistic extends Manager_state {
             }
 
             this.log.warning("</3");
-            this.db.run("INSERT INTO users (account, mode, username, photo_url, type_action) VALUES (?, ?, ?, ?, ?)", this.config.instagram_username, this.LOG_NAME, username, this.photo_current, "</3 error_catch");
+            this.db.run("INSERT INTO users (account, mode, username, photo_url, hashtag, type_action) VALUES (?, ?, ?, ?, ?, ?)", this.config.instagram_username, this.LOG_NAME, username, this.photo_current, this.hashtag_tag, "error");
             this.emit(this.STATE_EVENTS.CHANGE_STATUS, this.STATE.ERROR);
         }
 
@@ -245,5 +245,5 @@ class Likemode_realistic extends Manager_state {
 }
 
 module.exports = (bot, config, utils, db) => {
-    return new Likemode_realistic(bot, config, utils, db); 
+    return new Likemode_realistic(bot, config, utils, db);
 };
