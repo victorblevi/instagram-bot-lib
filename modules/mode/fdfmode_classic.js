@@ -32,16 +32,16 @@ class Fdfmode_classic extends Manager_state {
      * Database init
      * =====================
      * Save users nickname and other information
-     * 
+     *
      */
     init_db() {
         let self = this;
         this.db.serialize(function() {
-            self.db.run("CREATE TABLE IF NOT EXISTS users (id INTEGER PRIMARY KEY AUTOINCREMENT, account TEXT, mode TEXT, username TEXT, photo_url TEXT, type_action TEXT)");
+            self.db.run("CREATE TABLE IF NOT EXISTS users (id INTEGER PRIMARY KEY AUTOINCREMENT, account TEXT, mode TEXT, username TEXT, photo_url TEXT, hashtag TEXT, type_action TEXT, inserted_on datetime default current_timestamp)");
         });
 
         this.db_fdf.serialize(function() {
-            self.db_fdf.run("CREATE TABLE IF NOT EXISTS fdf (id INTEGER PRIMARY KEY AUTOINCREMENT, account TEXT, username TEXT, photo_url TEXT, type_fdf TEXT)");
+            self.db_fdf.run("CREATE TABLE IF NOT EXISTS fdf (id INTEGER PRIMARY KEY AUTOINCREMENT, account TEXT, username TEXT, photo_url TEXT, hashtag TEXT, type_fdf TEXT, inserted_on datetime default current_timestamp)");
         });
     }
 
@@ -49,7 +49,7 @@ class Fdfmode_classic extends Manager_state {
      * Get photo url from cache
      * =====================
      * @return {string} url
-     * 
+     *
      */
     get_photo_url() {
         let photo_url = "";
@@ -67,10 +67,10 @@ class Fdfmode_classic extends Manager_state {
      *
      */
     async fdf_open_hashtagpage() {
-        let hashtag_tag = this.utils.get_random_hash_tag();
-        this.log.info(`current hashtag ${hashtag_tag}`);
+        this.hashtag_tag = this.utils.get_random_hash_tag();
+        this.log.info(`current hashtag ${this.hashtag_tag}`);
         try {
-            await this.bot.goto("https://www.instagram.com/explore/tags/" + hashtag_tag + "/");
+            await this.bot.goto("https://www.instagram.com/explore/tags/" + this.hashtag_tag + "/");
         } catch (err) {
             this.log.error(`goto ${err}`);
         }
@@ -174,7 +174,7 @@ class Fdfmode_classic extends Manager_state {
                 this.log.info("button text before click: " + button_before_click);
                 if (this.photo_liked[this.photo_current] > 1) {
                     this.log.warning("followed previously");
-                    this.db.run("INSERT INTO users (account, mode, username, photo_url, type_action) VALUES (?, ?, ?, ?, ?)", this.config.instagram_username, this.LOG_NAME, username, this.photo_current, "followed previously");
+                    this.db.run("INSERT INTO users (account, mode, username, photo_url, hashtag, type_action) VALUES (?, ?, ?, ?, ?, ?)?)", this.config.instagram_username, this.LOG_NAME, username, this.photo_current, this.hashtag_tag, "followed previously");
                 } else {
                     await button.click();
 
@@ -186,8 +186,8 @@ class Fdfmode_classic extends Manager_state {
 
                     if (button_after_click != button_before_click) {
                         this.log.info("follow");
-                        this.db.run("INSERT INTO users (account, mode, username, photo_url, type_action) VALUES (?, ?, ?, ?, ?)", this.config.instagram_username, this.LOG_NAME, username, this.photo_current, "follow");
-                        this.db_fdf.run("INSERT INTO fdf (account, username, photo_url, type_fdf) VALUES (?, ?, ?, ?)", this.config.instagram_username, username, this.photo_current, "follow");
+                        this.db.run("INSERT INTO users (account, mode, username, photo_url, hashtag, type_action) VALUES (?, ?, ?, ?, ?, ?)(?, ?, ?, ?, ?)", this.config.instagram_username, this.LOG_NAME, username, this.photo_current, this.hashtag_tag, "follow");
+                        this.db_fdf.run("INSERT INTO fdf (account, username, photo_url, hashtag, type_fdf) VALUES (?, ?, ?, ?)", this.config.instagram_username, username, this.photo_current, this.hashtag_tag, "follow");
                     } else {
                         this.log.warning("not follow");
                     }
@@ -200,7 +200,7 @@ class Fdfmode_classic extends Manager_state {
                 }
 
                 this.log.warning("follow error");
-                this.db.run("INSERT INTO users (account, mode, username, photo_url, type_action) VALUES (?, ?, ?, ?, ?)", this.config.instagram_username, this.LOG_NAME, username, this.photo_current, "follow error");
+                this.db.run("INSERT INTO users (account, mode, username, photo_url, hashtag, type_action) VALUES (?, ?, ?, ?, ?, ?) ?, ?, ?)", this.config.instagram_username, this.LOG_NAME, username, this.photo_current, this.hashtag_tag, "follow error");
                 this.emit(this.STATE_EVENTS.CHANGE_STATUS, this.STATE.ERROR);
             }
 
@@ -261,7 +261,7 @@ class Fdfmode_classic extends Manager_state {
 
             if (this.photo_liked[this.photo_current] > 1) {
                 this.log.warning("followed previously");
-                this.db.run("INSERT INTO users (account, mode, username, photo_url, type_action) VALUES (?, ?, ?, ?, ?)", this.config.instagram_username, this.LOG_NAME, username, this.photo_current, "defollowed previously");
+                this.db.run("INSERT INTO users (account, mode, username, photo_url, hashtag, type_action) VALUES (?, ?, ?, ?, ?, ?)", this.config.instagram_username, this.LOG_NAME, username, this.photo_current, this.hashtag_tag, "defollowed previously");
             } else {
                 await button.click();
 
@@ -280,7 +280,7 @@ class Fdfmode_classic extends Manager_state {
 
                 if (button_after_click != button_before_click) {
                     this.log.info("defollow");
-                    this.db.run("INSERT INTO users (account, mode, username, photo_url, type_action) VALUES (?, ?, ?, ?, ?)", this.config.instagram_username, this.LOG_NAME, username, this.photo_current, "defollow");
+                    this.db.run("INSERT INTO users (account, mode, username, photo_url, hashtag, type_action) VALUES (?, ?, ?, ?, ?, ?)", this.config.instagram_username, this.LOG_NAME, username, this.photo_current, this.hashtag_tag, "defollow");
                     this.db_fdf.run("UPDATE fdf SET type_fdf = ? WHERE account = ? AND username = ?", "defollow", this.config.instagram_username, username);
                 } else {
                     this.log.warning("not defollow, try at next rotation");
@@ -293,7 +293,7 @@ class Fdfmode_classic extends Manager_state {
             }
 
             this.log.warning("defollow error");
-            this.db.run("INSERT INTO users (account, mode, username, photo_url, type_action) VALUES (?, ?, ?, ?, ?)", this.config.instagram_username, this.LOG_NAME, username, this.photo_current, "defollow error");
+            this.db.run("INSERT INTO users (account, mode, username, photo_url, hashtag, type_action) VALUES (?, ?, ?, ?, ?, ?)", this.config.instagram_username, this.LOG_NAME, username, this.photo_current, this.hashtag_tag, "defollow error");
             this.emit(this.STATE_EVENTS.CHANGE_STATUS, this.STATE.ERROR);
         }
 
@@ -337,7 +337,7 @@ class Fdfmode_classic extends Manager_state {
                         this.log.info("defollow user from photo: " + users[ir].photo_url);
                         await this.goto_user_for_defollow(users[ir].photo_url);
                         await this.utils.sleep(this.utils.random_interval(4, 8));
-                        await this.fdf_click_defollow();   
+                        await this.fdf_click_defollow();
                     }
                 }
 
