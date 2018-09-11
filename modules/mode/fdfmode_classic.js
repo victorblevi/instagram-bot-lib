@@ -174,7 +174,7 @@ class Fdfmode_classic extends Manager_state {
                 this.log.info("button text before click: " + button_before_click);
                 if (this.photo_liked[this.photo_current] > 1) {
                     this.log.warning("followed previously");
-                    this.db.run("INSERT INTO users (account, mode, username, photo_url, hashtag, type_action) VALUES (?, ?, ?, ?, ?, ?)?)", this.config.instagram_username, this.LOG_NAME, username, this.photo_current, this.hashtag_tag, "followed previously");
+                    this.db.run("INSERT INTO users (account, mode, username, photo_url, hashtag, type_action) VALUES (?, ?, ?, ?, ?, ?)", this.config.instagram_username, this.LOG_NAME, username, this.photo_current, this.hashtag_tag, "followed previously");
                 } else {
                     await button.click();
 
@@ -186,8 +186,8 @@ class Fdfmode_classic extends Manager_state {
 
                     if (button_after_click != button_before_click) {
                         this.log.info("follow");
-                        this.db.run("INSERT INTO users (account, mode, username, photo_url, hashtag, type_action) VALUES (?, ?, ?, ?, ?, ?)(?, ?, ?, ?, ?)", this.config.instagram_username, this.LOG_NAME, username, this.photo_current, this.hashtag_tag, "follow");
-                        this.db_fdf.run("INSERT INTO fdf (account, username, photo_url, hashtag, type_fdf) VALUES (?, ?, ?, ?)", this.config.instagram_username, username, this.photo_current, this.hashtag_tag, "follow");
+                        this.db.run("INSERT INTO users (account, mode, username, photo_url, hashtag, type_action) VALUES (?, ?, ?, ?, ?, ?)", this.config.instagram_username, this.LOG_NAME, username, this.photo_current, this.hashtag_tag, "follow");
+                        this.db_fdf.run("INSERT INTO fdf (account, username, photo_url, hashtag, type_fdf) VALUES (?, ?, ?, ?, ?)", this.config.instagram_username, username, this.photo_current, this.hashtag_tag, "follow");
                     } else {
                         this.log.warning("not follow");
                     }
@@ -200,7 +200,7 @@ class Fdfmode_classic extends Manager_state {
                 }
 
                 this.log.warning("follow error");
-                this.db.run("INSERT INTO users (account, mode, username, photo_url, hashtag, type_action) VALUES (?, ?, ?, ?, ?, ?) ?, ?, ?)", this.config.instagram_username, this.LOG_NAME, username, this.photo_current, this.hashtag_tag, "follow error");
+                this.db.run("INSERT INTO users (account, mode, username, photo_url, hashtag, type_action) VALUES (?, ?, ?, ?, ?, ?)", this.config.instagram_username, this.LOG_NAME, username, this.photo_current, this.hashtag_tag, "follow error");
                 this.emit(this.STATE_EVENTS.CHANGE_STATUS, this.STATE.ERROR);
             }
 
