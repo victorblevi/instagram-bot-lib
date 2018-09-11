@@ -11,7 +11,7 @@ module.exports = class Log {
         this.config.log.drivers.forEach((driver) => {
             let Channel = routes_log[driver];
             if (Channel !== undefined) {
-                this.set_channel(Channel(this.config));
+                this.set_channel(Channel());
             } else {
                 console.error("channel log not found");
             }
@@ -38,35 +38,42 @@ module.exports = class Log {
         });
     }
 
+    append_file(type, message) {
+        const tz_offset = (new Date()).getTimezoneOffset() * 60000; //offset in milliseconds
+        const local_iso_time = (new Date(Date.now() - tz_offset)).toISOString().slice(0, -5).replace("T", " ");
+        const log = `${local_iso_time} [${type}] ${message}\n`;
+
+        fs.appendFile(this.config.log_path, log, function(err) {
+            if (err) {
+                console.log(err);
+            }
+        });
+        if(type === "ERROR") {
+            fs.appendFile(this.config.logerr_path, log, function(err) {
+                if (err) {
+                    console.log(err);
+                }
+            });
+        }
+    }
+
     info(message) {
         this.channels_log(TYPES_LOG.INFO, message);
-        fs.appendFile(this.config.log_path, "[INFO] " + message + "\n", function(err) {
-            if (err) console.log(err);
-        });
+        this.append_file("INFO", message);
     }
 
     warning(message) {
         this.channels_log(TYPES_LOG.WARNING, message);
-        fs.appendFile(this.config.log_path, "[WARNING] " + message + "\n", function(err) {
-            if (err) console.log(err);
-        });
+        this.append_file("WARNING", message);
     }
 
     error(message) {
         this.channels_log(TYPES_LOG.ERROR, message);
-        fs.appendFile(this.config.log_path, "[ERROR] " + message + "\n", function(err) {
-            if (err) console.log(err);
-        });
-
-        fs.appendFile(this.config.logerr_path, "[ERROR] " + message + "\n", function(err) {
-            if (err) console.log(err);
-        });
+        this.append_file("ERROR", message);
     }
 
     debug(message) {
         this.channels_log(TYPES_LOG.DEBUG, message);
-        fs.appendFile(this.config.log_path, "[DEBUG] " + message + "\n", function(err) {
-            if (err) console.log(err);
-        });
+        this.append_file("DEBUG", message);
     }
 };

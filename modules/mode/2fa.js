@@ -73,8 +73,9 @@ class Twofa extends Manager_state{
      *
      */
     async sendpin() {
-        if (this.config.instagram_pin === "sms")
+        if (this.config.instagram_pin === "sms") {
             await this.choice_sms();
+        }
 
         await this.utils.sleep(this.utils.random_interval(0, 2));
 
@@ -114,8 +115,9 @@ class Twofa extends Manager_state{
             let button = await this.bot.$("form button");
             await button.click();
         } catch (err) {
-            if (this.utils.is_debug())
+            if (this.utils.is_debug()) {
                 this.log.error(err);
+            }
         }
     }
 
@@ -130,16 +132,17 @@ class Twofa extends Manager_state{
 
         try {
             attr = await this.bot.$("input[name=\"" + selector + "\"]");
-            if (attr != null)
+            if (attr != null) {
                 this.emit(this.STATE_EVENTS.CHANGE_STATUS, this.STATE.STOP_BOT);
-            else
+            } else {
                 this.emit(this.STATE_EVENTS.CHANGE_STATUS, this.STATE.OK);
+            }
         } catch (err) {
             this.emit(this.STATE_EVENTS.CHANGE_STATUS, this.STATE.OK);
         }
 
         if (this.is_stop_bot()) {
-            this.log.error("twofa: OMG! You are slow... Restart bot and retry... Idiot...");
+            this.log.error("twofa: OMG! You are slow... Restart bot and retry...");
             await this.utils.screenshot(this.LOG_NAME, "submitverify_error");
         } else if (this.is_ok()) {
             this.log.info("pin is ok");
@@ -151,10 +154,11 @@ class Twofa extends Manager_state{
         if (this.is_ok()) {
             try {
                 attr = await this.bot.$("input[name=\"username\"]");
-                if (attr !== null)
+                if (attr !== null) {
                     this.emit(this.STATE_EVENTS.CHANGE_STATUS, this.STATE.STOP_BOT);
-                else
+                } else {
                     this.emit(this.STATE_EVENTS.CHANGE_STATUS, this.STATE.OK);
+                }
             } catch (err) {
                 this.emit(this.STATE_EVENTS.CHANGE_STATUS, this.STATE.STOP_BOT);
             }
@@ -182,10 +186,11 @@ class Twofa extends Manager_state{
         try {
             let attr = await this.bot.$("#choice_1");
 
-            if (attr !== null)
+            if (attr !== null) {
                 this.emit(this.STATE_EVENTS.CHANGE_STATUS, this.STATE.OK);
-            else
+            } else {
                 this.emit(this.STATE_EVENTS.CHANGE_STATUS, this.STATE.ERROR);
+            }
         } catch (err) {
             this.emit(this.STATE_EVENTS.CHANGE_STATUS, this.STATE.ERROR);
         }
@@ -213,10 +218,11 @@ class Twofa extends Manager_state{
         try {
             let attr = await this.bot.$("input[name=\"verificationCode\"]");
 
-            if (attr !== null)
+            if (attr !== null) {
                 this.emit(this.STATE_EVENTS.CHANGE_STATUS, this.STATE.OK_NEXT_VERIFY);
-            else
+            } else {
                 this.emit(this.STATE_EVENTS.CHANGE_STATUS, this.STATE.ERROR);
+            }
         } catch (err) {
             this.emit(this.STATE_EVENTS.CHANGE_STATUS, this.STATE.ERROR);
         }
@@ -268,6 +274,7 @@ class Twofa extends Manager_state{
     async start() {
         this.log.info("twofa (enabled)", "loading...");
 
+        this.log.error("After 9 June 2018 instagram website have a bug with sms-pin (2FA work randomly): if don't work see https://github.com/social-manager-tools/instagram-bot.js/issues/48 for temporary solution");
         this.log.warning("please insert pin in loginpin.txt, you have 50-60 seconds for that.. (tic... tac... tic... tac... tic...)");
 
         await this.utils.sleep(this.utils.random_interval(40, 60));
@@ -286,4 +293,6 @@ class Twofa extends Manager_state{
 }
 
 
-module.exports = (bot, config, utils) => { return new Twofa(bot, config, utils); };
+module.exports = (bot, config, utils) => {
+    return new Twofa(bot, config, utils); 
+};

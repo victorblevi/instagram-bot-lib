@@ -16,6 +16,7 @@ class Utils {
     constructor(bot, config) {
         this.bot = bot;
         this.config = config;
+        this.fs = require("fs");
         this.LOG_NAME = "utils";
         this.LOG = require("../logger/types");
         this.MAP_COLORS = require("../logger/types").MAP_COLORS;
@@ -77,6 +78,63 @@ class Utils {
     }
 
     /**
+     * Create empty files: loginpin.txt, logs amd db
+     * =====================
+     * This fix errors at boot
+     *
+     */
+    async create_write_file(name, path, content) {
+        let self = this;
+        return new Promise(function(resolve_write, reject_write) {
+            self.fs.writeFile(path, content, function(err) {
+                if (err) {
+                    self.log.error(name + " don't created: " + err);
+                    reject_write(err);
+                } else {
+                    self.log.info(name + " created");
+                }
+                resolve_write(true);
+            });
+        });
+    }
+
+    async create_is_exist(name, path) {
+        let self = this;
+        return new Promise(function(resolve_exists) {
+            self.fs.open(path, "wx", function(exists) {
+                if (exists && exists.code === "EEXIST") {
+                    self.log.info(name + " exist");
+                    resolve_exists("exist");
+                } else {
+                    resolve_exists("create");
+                }
+            });
+        });
+    }
+
+    async create_empty(name, path, content) {
+        if (await this.create_is_exist(name, path) == "create") {
+            await this.create_write_file(name, path, content);
+        }
+    }
+
+    /**
+     * Init all emptys filesthis.
+     * =====================
+     * This fix errors at boot
+     *
+     */
+    async init_empty() {
+        await this.create_empty("loginpin.txt", this.config.pin_path, "123456");
+
+        await this.create_empty("logs/debug.log", this.config.log_path, "");
+        await this.create_empty("logs/errors.log", this.config.logerr_path, "");
+
+        await this.create_empty("databases/fdf.db", this.config.fdfdatabase_path, "");
+        await this.create_empty("databases/logs.db", this.config.logdb_path, "");
+    }
+
+    /**
      * Default config.js
      * =====================
      * Get default value if config.js is not updated from config.js.tpl
@@ -127,14 +185,6 @@ class Utils {
             config.bot_start_sleep = "7:00";
             this.log.error("config.bot_start_sleep use the default value, update your config.js from config.js.tpl");
         }
-        if (typeof config.bot_fastlike_min === "undefined") {
-            config.bot_fastlike_min = 15;
-            this.log.error("config.bot_fastlike_min use the default value, update your config.js from config.js.tpl");
-        }
-        if (typeof config.bot_fastlike_max === "undefined") {
-            config.bot_fastlike_max = 20;
-            this.log.error("config.bot_fastlike_max use the default value, update your config.js from config.js.tpl");
-        }
         if (typeof config.bot_superlike_n === "undefined") {
             config.bot_superlike_n = 3;
             this.log.error("config.bot_superlike_n use the default value, update your config.js from config.js.tpl");
@@ -175,6 +225,30 @@ class Utils {
             config.pin_path = "./loginpin.txt";
             this.log.error("config.pin_path use the default value, update your config.js from config.js.tpl");
         }
+
+        let min = 0;
+        do {
+            min++;
+        } while ((60 / min * 24 * 11) > config.bot_likeday_min);
+        config.bot_fastlike_max = min--;
+
+        min = 0;
+        do {
+            min++;
+        } while ((60 / min * 24 * 11) > config.bot_likeday_max);
+        config.bot_fastlike_min = min--;
+
+        min = 0;
+        do {
+            min++;
+        } while ((60 / min * 24 * 11) > (config.bot_followday - 30));
+        config.bot_fastlikefdf_max = min--;
+
+        min = 0;
+        do {
+            min++;
+        } while ((60 / min * 24 * 11) > config.bot_followday);
+        config.bot_fastlikefdf_min = min--;
 
         return config;
     }
@@ -222,7 +296,9 @@ class Utils {
      * @return array
      */
     mix_array(arr) {
-        return arr.sort(function() { return 0.5 - Math.random(); });
+        return arr.sort(function() {
+            return 0.5 - Math.random();
+        });
     }
 
     /**
@@ -252,4 +328,6 @@ class Utils {
     }
 }
 
-module.exports = (bot, config, utils) => { return new Utils(bot, config, utils); };
+module.exports = (bot, config, utils) => {
+    return new Utils(bot, config, utils);
+};

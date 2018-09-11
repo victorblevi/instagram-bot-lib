@@ -41,6 +41,11 @@
         "no-constant-condition": [
             "warn"
         ],
+        "curly": ["error", "all"],
+        "brace-style": ["error", "1tbs",
+        {
+            "allowSingleLine": false
+        }],
         "snakecasejs/snakecasejs": "warn"
     }
 }

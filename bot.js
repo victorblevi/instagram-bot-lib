@@ -5,7 +5,7 @@
  *
  * @author:     Patryk Rzucidlo [@ptkdev] <support@ptkdev.io> (https://ptkdev.it)
  * @file:       bot.js
- * @version:    0.8.0
+ * @version:    0.9.0
  *
  * @link: https://github.com/GoogleChrome/puppeteer
  * @link: https://www.npmjs.com/package/instagrambotlib
@@ -25,7 +25,17 @@
  * @link        Homepage:     https://instagram.bot.ptkdev.io
  *              GitHub Repo:  https://github.com/social-manager-tools/instagram-bot.js
  */
-const config = require ("./config");
+const config = require("./config");
 const Bot = require("./lib");
 let bot = new Bot(config);
 bot.start();
+
+/**
+ * stop()
+ * =====================
+ * if you want stop bot after 3 seconds (uncomment code)
+ *
+ */
+//setTimeout(function() { 
+//	bot.stop(); 
+//}, 3000);

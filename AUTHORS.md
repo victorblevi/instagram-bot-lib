@@ -28,3 +28,6 @@
 `Designer, make official logo - January 28, 2018`
 * Twitter: [https://twitter.com/TaniK72](https://twitter.com/TaniK72)
 * Instagram: [https://instagram.com/TaniK72](https://instagram.com/TaniK72)
+
+# Other
+* @lecoueyl

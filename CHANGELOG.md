@@ -1,3 +1,19 @@
+# v0.9.0b (09 September, 2018)
+* Fix: bad creation of folders `databases` and `logs` (#79)
+
+
+# v0.9.0 (08 September, 2018)
+* Feature: Follow/Defollow Mode (#77)
+* Feature: Support sqllite connector (#70)
+* Fix: Like Realistic random freeze
+* Fix: Comment Mode don't work
+* Fix: Like Competitor Mode (#76)
+* API: stop() | stop the bot from your application
+* Update: bot_fastlike_min and max from config.js now all mode use bot_likeday_min and max
+* Update: bot_sleep_night disabled at default
+* Upgrade: puppeteer v1.7.0
+
+
 # v0.8.2 (26 July, 2018)
 * Fix: default path of logs in `config.js.tpl`
 
