@@ -36,13 +36,25 @@ class Fdfmode_classic extends Manager_state {
      */
     init_db() {
         let self = this;
-        this.db.serialize(function() {
-            self.db.run("CREATE TABLE IF NOT EXISTS users (id INTEGER PRIMARY KEY AUTOINCREMENT, account TEXT, mode TEXT, username TEXT, photo_url TEXT, hashtag TEXT, type_action TEXT, inserted_at DATETIME DEFAULT CURRENT_TIMESTAMP)");
-        });
+        if(this.utils.compare_version("0.9.0") === 1) {
+            this.db.serialize(function() {
+                self.db.run("ALTER TABLE users ADD COLUMN hashtag TEXT");
+                self.db.run("ALTER TABLE users ADD COLUMN inserted_at DATETIME DEFAULT CURRENT_TIMESTAMP");
+            });
 
-        this.db_fdf.serialize(function() {
-            self.db_fdf.run("CREATE TABLE IF NOT EXISTS fdf (id INTEGER PRIMARY KEY AUTOINCREMENT, account TEXT, username TEXT, photo_url TEXT, hashtag TEXT, type_fdf TEXT, inserted_at DATETIME DEFAULT CURRENT_TIMESTAMP)");
-        });
+            this.db_fdf.serialize(function() {
+                self.db_fdf.run("ALTER TABLE fdf ADD COLUMN hashtag TEXT");
+                self.db_fdf.run("ALTER TABLE fdf ADD COLUMN inserted_at DATETIME DEFAULT CURRENT_TIMESTAMP");
+            });
+        } else {
+            this.db.serialize(function() {
+                self.db.run("CREATE TABLE IF NOT EXISTS users (id INTEGER PRIMARY KEY AUTOINCREMENT, account TEXT, mode TEXT, username TEXT, photo_url TEXT, hashtag TEXT, type_action TEXT, inserted_at DATETIME DEFAULT CURRENT_TIMESTAMP)");
+            });
+
+            this.db_fdf.serialize(function() {
+                self.db_fdf.run("CREATE TABLE IF NOT EXISTS fdf (id INTEGER PRIMARY KEY AUTOINCREMENT, account TEXT, username TEXT, photo_url TEXT, hashtag TEXT, type_fdf TEXT, inserted_at DATETIME DEFAULT CURRENT_TIMESTAMP)");
+            });
+        }
     }
 
     /**
