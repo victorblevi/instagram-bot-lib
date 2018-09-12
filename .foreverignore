@@ -1,4 +1,7 @@
 node_modules/**/*.js
 log/*
 logs/*
+database/*
+databases/*
+*.db
 *.log

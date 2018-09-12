@@ -38,7 +38,7 @@ module.exports = {
 
     // Puppeteer Configs
     "chrome_headless": false,
-    "chrome_options": ["--disable-gpu", "--no-sandbox", "--window-size=1920x1080"],
+    "chrome_options": ["--disable-gpu", "--no-sandbox", "--window-size=1024x768"],
     "executable_path": "", // example for Mac OS: /Applications/Google\ Chrome.app/Contents/MacOS/Google\ Chrome
 
     // DATABASES
