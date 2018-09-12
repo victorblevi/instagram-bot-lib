@@ -35,6 +35,20 @@ class Utils {
         this.log.warning("Donate with patreon: http://patreon.ptkdev.io");
         this.log.warning("Donate with paypal: http://paypal.ptkdev.io");
     }
+    
+    /**
+     * Compare package version
+     * =====================
+     * Compare current version with passed parameter
+     * @param {string} version to compare with
+     * @return {string} 0 if same version, 1 if older, -1 if newer
+     *
+     */
+    compare_version(version) {
+        const current_version = require("../../version").version;
+        const compare_versions = require("compare-versions");
+        return compare_versions(current_version, version);
+    }
 
     /**
      * Check updates
