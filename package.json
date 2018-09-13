@@ -1,7 +1,7 @@
 {
   "name": "instagrambotlib",
   "description": "Instagram Bot API",
-  "version": "0.9.0b",
+  "version": "0.9.1",
   "main": "lib.js",
   "author": "Patryk Rzucidlo [@ptkdev] <support@ptkdev.io> (https://ptkdev.it)",
   "license": "GPL-3.0",
@@ -15,13 +15,13 @@
   },
   "scripts": {
     "start": "node bot.js",
-    "start-forever": "forever -o ./logs/debug.log -e ./logs/errors.log start bot.js",
-    "start-pm2": "pm2 -o ./logs/debug.log -e ./logs/errors.log start lib.js",
-    "start-pm2-nolog": "pm2 -o /dev/null -e ./logs/errors.log start lib.js ",
+    "start-forever": "forever -o ./logs/debug-forever.log -e ./logs/errors-forever.log start bot.js",
+    "start-pm2": "pm2 -o ./logs/debug-pm2.log -e ./logs/errors-pm2.log start bot.js",
+    "start-pm2-nolog": "pm2 -o /dev/null -e ./logs/errors-pm2.log start bot.js ",
     "stop": "killall node",
     "stop-forever": "forever stop bot.js",
     "stop-pm2": "pm2 stop bot.js",
-    "clean": "rm -r node_modules && rm package-lock.json && npm install",
+    "clean": "rm -rf node_modules && rm -f package-lock.json && npm install",
     "lint": "eslint ./ --cache --ignore-pattern .gitignore --fix",
     "precommit-lint-check": "echo 'Pre-commit lint checks...' && exit 0"
   },
@@ -45,7 +45,7 @@
     "colors": "^1.2.1",
     "eslint": "^4.19.1",
     "path": "^0.12.7",
-    "puppeteer": "1.7.0",
+    "puppeteer": "1.8.0",
     "request": "^2.85.0",
     "sqlite3": "^4.0.2"
   },

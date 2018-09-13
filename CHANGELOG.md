@@ -1,3 +1,9 @@
+# v0.9.1 (TBD, 2018)
+* Fix: Node is either not visible or not an HTMLElement (#82)
+* Fix: Random crash of Follow/Defollow Mode Classic
+* Update: New user-agent
+
+
 # v0.9.0b (09 September, 2018)
 * Fix: bad creation of folders `databases` and `logs` (#79)
 

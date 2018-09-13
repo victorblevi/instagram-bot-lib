@@ -44,23 +44,14 @@ module.exports = function(config) {
      */
     this.start = async function() {
         var bot = null;
-        let fs = require("fs");
-        if (!fs.existsSync("./databases")){
-            fs.mkdirSync("./databases");
-        }
-
-        if (!fs.existsSync("./logs")){
-            fs.mkdirSync("./logs");
-        }
+        const fs = require("fs");
         let config = this.config;
         let sqlite3 = require("sqlite3").verbose();
         let db = [];
-        db["logs"] = new sqlite3.Database(config.logdb_path);
-        db["fdf"] = new sqlite3.Database(config.fdfdatabase_path);
         const puppeteer = require("puppeteer");
         const version = require("./version");
         const LOG = require("./modules/logger/types");
-        
+
         /**
          * Init
          * =====================
@@ -68,6 +59,17 @@ module.exports = function(config) {
          *
          */
         let check = require("./modules/common/utils")(bot, config);
+        if (config.ui !== true) {
+            if (!fs.existsSync("./databases")) {
+                fs.mkdirSync("./databases");
+            }
+
+            if (!fs.existsSync("./logs")) {
+                fs.mkdirSync("./logs");
+            }
+        }
+        db["logs"] = new sqlite3.Database(config.logdb_path);
+        db["fdf"] = new sqlite3.Database(config.fdfdatabase_path);
         if (config.ui !== true) {
             await check.init_empty();
         } else if (config.ui === true) {
@@ -89,6 +91,8 @@ module.exports = function(config) {
             });
         }
         bot = await this.browser.newPage();
+        bot.setViewport({ "width": 1024, "height": 768 });
+        bot.setUserAgent("Mozilla/5.0 (X11; SocialManagerToolsBot x86_64) AppleWebKit/537.36 (KHTML, like Gecko) SocialManagerTools/"+version.version+" Safari/537.36");
 
         /**
          * Import libs
