@@ -12,7 +12,7 @@
  *
  */
 const Manager_state = require("../common/state").Manager_state;
-class Twofa extends Manager_state{
+class Twofa extends Manager_state {
     constructor(bot, config, utils) {
         super();
         this.bot = bot;
@@ -35,9 +35,12 @@ class Twofa extends Manager_state{
      */
     async requestpin() {
         this.log.warning("please insert pin in loginpin.txt, you have 50-60 seconds for that.. (tic... tac... tic... tac... tic...)");
-
-        let button = await this.bot.$("form button");
-        await button.click();
+        try {
+            let button = await this.bot.$("form button");
+            await button.click();
+        } catch (err) {
+            this.log.error("requestpin: " + err);
+        }
     }
 
     /**
@@ -49,8 +52,12 @@ class Twofa extends Manager_state{
     async choice_email() {
         this.log.info("try switch to phone email");
 
-        let radio = await this.bot.$("section form label[for=\"choice_1\"]");
-        await radio.click();
+        try {
+            let radio = await this.bot.$("section form label[for=\"choice_1\"]");
+            await radio.click();
+        } catch (err) {
+            this.log.error("choice_email: " + err);
+        }
     }
 
     /**
@@ -62,8 +69,12 @@ class Twofa extends Manager_state{
     async choice_sms() {
         this.log.info("try switch to phone sms (if possible)");
 
-        let radio = await this.bot.$("section form label[for=\"choice_0\"]");
-        await radio.click();
+        try {
+            let radio = await this.bot.$("section form label[for=\"choice_0\"]");
+            await radio.click();
+        } catch (err) {
+            this.log.error("choice_sms: " + err);
+        }
     }
 
     /**
@@ -77,11 +88,11 @@ class Twofa extends Manager_state{
             await this.choice_sms();
         }
 
-        await this.utils.sleep(this.utils.random_interval(0, 2));
+        await this.utils.sleep(this.utils.random_interval(4, 8));
 
         await this.requestpin();
 
-        await this.utils.sleep(this.utils.random_interval(0, 2));
+        await this.utils.sleep(this.utils.random_interval(4, 8));
     }
 
     /**
@@ -132,32 +143,35 @@ class Twofa extends Manager_state{
 
         try {
             attr = await this.bot.$("input[name=\"" + selector + "\"]");
-            if (attr != null) {
-                this.emit(this.STATE_EVENTS.CHANGE_STATUS, this.STATE.STOP_BOT);
-            } else {
+            if (attr === null) {
                 this.emit(this.STATE_EVENTS.CHANGE_STATUS, this.STATE.OK);
+            } else {
+                this.emit(this.STATE_EVENTS.CHANGE_STATUS, this.STATE.STOP_BOT);
             }
         } catch (err) {
             this.emit(this.STATE_EVENTS.CHANGE_STATUS, this.STATE.OK);
         }
 
+        await this.utils.sleep(this.utils.random_interval(1, 3));
+
         if (this.is_stop_bot()) {
             this.log.error("twofa: OMG! You are slow... Restart bot and retry...");
+            this.emit(this.STATE_EVENTS.CHANGE_STATUS, this.STATE.ERROR);
             await this.utils.screenshot(this.LOG_NAME, "submitverify_error");
         } else if (this.is_ok()) {
             this.log.info("pin is ok");
             await this.utils.screenshot(this.LOG_NAME, "submitverify_ok");
         }
 
-        await this.utils.sleep(this.utils.random_interval(0, 2));
+        await this.utils.sleep(this.utils.random_interval(4, 8));
 
         if (this.is_ok()) {
             try {
                 attr = await this.bot.$("input[name=\"username\"]");
-                if (attr !== null) {
-                    this.emit(this.STATE_EVENTS.CHANGE_STATUS, this.STATE.STOP_BOT);
-                } else {
+                if (attr === null) {
                     this.emit(this.STATE_EVENTS.CHANGE_STATUS, this.STATE.OK);
+                } else {
+                    this.emit(this.STATE_EVENTS.CHANGE_STATUS, this.STATE.STOP_BOT);
                 }
             } catch (err) {
                 this.emit(this.STATE_EVENTS.CHANGE_STATUS, this.STATE.STOP_BOT);
@@ -165,14 +179,16 @@ class Twofa extends Manager_state{
 
             if (this.is_stop_bot()) {
                 this.log.error("instagram error... auto logout... restart bot...");
+                this.emit(this.STATE_EVENTS.CHANGE_STATUS, this.STATE.ERROR);
                 await this.utils.screenshot(this.LOG_NAME, "submitverify_error2");
             } else if (this.is_ok()) {
                 this.log.info("instagram no have a crash");
+                this.emit(this.STATE_EVENTS.CHANGE_STATUS, this.STATE.OK);
                 await this.utils.screenshot(this.LOG_NAME, "submitverify_ok2");
             }
         }
 
-        await this.utils.sleep(this.utils.random_interval(0, 2));
+        await this.utils.sleep(this.utils.random_interval(4, 8));
     }
 
     /**
@@ -186,23 +202,24 @@ class Twofa extends Manager_state{
         try {
             let attr = await this.bot.$("#choice_1");
 
-            if (attr !== null) {
+            if (attr === null) {
                 this.emit(this.STATE_EVENTS.CHANGE_STATUS, this.STATE.OK);
             } else {
-                this.emit(this.STATE_EVENTS.CHANGE_STATUS, this.STATE.ERROR);
+                this.emit(this.STATE_EVENTS.CHANGE_STATUS, this.STATE.OK_NEXT_VERIFY);
             }
         } catch (err) {
             this.emit(this.STATE_EVENTS.CHANGE_STATUS, this.STATE.ERROR);
         }
 
-        if (this.is_ok()) {
+        if (this.is_ok_nextverify()) {
             this.log.info("yes, instagram require security pin... You can not pass!!! (cit.)");
             await this.utils.screenshot(this.LOG_NAME, "check_pin_request");
         } else {
             this.log.info("no, try second verify");
+            this.emit(this.STATE_EVENTS.CHANGE_STATUS, this.STATE.OK);
         }
 
-        await this.utils.sleep(this.utils.random_interval(0, 2));
+        await this.utils.sleep(this.utils.random_interval(4, 8));
 
         this.log.info("status location: " + this.get_status());
     }
@@ -218,10 +235,10 @@ class Twofa extends Manager_state{
         try {
             let attr = await this.bot.$("input[name=\"verificationCode\"]");
 
-            if (attr !== null) {
-                this.emit(this.STATE_EVENTS.CHANGE_STATUS, this.STATE.OK_NEXT_VERIFY);
+            if (attr === null) {
+                this.emit(this.STATE_EVENTS.CHANGE_STATUS, this.STATE.OK);
             } else {
-                this.emit(this.STATE_EVENTS.CHANGE_STATUS, this.STATE.ERROR);
+                this.emit(this.STATE_EVENTS.CHANGE_STATUS, this.STATE.OK_NEXT_VERIFY);
             }
         } catch (err) {
             this.emit(this.STATE_EVENTS.CHANGE_STATUS, this.STATE.ERROR);
@@ -237,7 +254,7 @@ class Twofa extends Manager_state{
             await this.utils.screenshot(this.LOG_NAME, "check_nopin");
         }
 
-        await this.utils.sleep(this.utils.random_interval(0, 2));
+        await this.utils.sleep(this.utils.random_interval(4, 8));
         this.log.info("status: " + this.get_status());
     }
 
@@ -255,15 +272,15 @@ class Twofa extends Manager_state{
 
         await this.readpin("security_code");
 
-        await this.utils.sleep(this.utils.random_interval(0, 2));
+        await this.utils.sleep(this.utils.random_interval(4, 8));
 
         await this.submitform();
 
-        await this.utils.sleep(this.utils.random_interval(0, 2));
+        await this.utils.sleep(this.utils.random_interval(4, 8));
 
         await this.submitverify("security_code");
 
-        await this.utils.sleep(this.utils.random_interval(0, 2));
+        await this.utils.sleep(this.utils.random_interval(4, 8));
     }
 
     /**
@@ -283,16 +300,16 @@ class Twofa extends Manager_state{
 
         await this.submitform();
 
-        await this.utils.sleep(this.utils.random_interval(0, 2));
+        await this.utils.sleep(this.utils.random_interval(4, 8));
 
         await this.submitverify("verificationCode");
-        
-        await this.utils.sleep(this.utils.random_interval(0, 2));
+
+        await this.utils.sleep(this.utils.random_interval(4, 8));
     }
 
 }
 
 
 module.exports = (bot, config, utils) => {
-    return new Twofa(bot, config, utils); 
+    return new Twofa(bot, config, utils);
 };

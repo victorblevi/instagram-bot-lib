@@ -159,12 +159,15 @@ class Fdfmode_classic extends Manager_state {
      */
     async fdf_click_follow() {
         this.log.info("try follow");
+        let username = "";
+        try {
+            await this.bot.waitForSelector("article div a:nth-child(1)");
+            username = await this.bot.evaluate(el => el.innerHTML, await this.bot.$("article div a:nth-child(1)"));
+        } catch (err) {
+            this.log.warning("get username: " + err);
+        }
 
-        await this.bot.waitForSelector("article div a:nth-child(1)");
-        let username = await this.bot.evaluate(el => el.innerHTML, await this.bot.$("article div a:nth-child(1)"));
-        this.log.info("username " +username);
-
-        if (this.config.bot_userwhitelist.includes(username)) {
+        if (username != "" && this.config.bot_userwhitelist.includes(username)) {
             this.log.warning(username + ": is in whitelits, ignored by follow.");
         } else {
             try {
@@ -251,7 +254,7 @@ class Fdfmode_classic extends Manager_state {
 
         await this.bot.waitForSelector("article div a:nth-child(1)");
         let username = await this.bot.evaluate(el => el.innerHTML, await this.bot.$("article div a:nth-child(1)"));
-        this.log.info("username " +username);
+        this.log.info("username " + username);
 
         try {
             await this.bot.waitForSelector("article header div div button");
@@ -337,7 +340,7 @@ class Fdfmode_classic extends Manager_state {
                         this.log.info("defollow user from photo: " + users[ir].photo_url);
                         await this.goto_user_for_defollow(users[ir].photo_url);
                         await this.utils.sleep(this.utils.random_interval(4, 8));
-                        await this.fdf_click_defollow();   
+                        await this.fdf_click_defollow();
                     }
                 }
 

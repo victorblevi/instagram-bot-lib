@@ -1,7 +1,9 @@
-# v0.9.1 (TBD, 2018)
+# v0.9.0b (14 September, 2018)
 * Fix: Node is either not visible or not an HTMLElement (#82)
 * Fix: Random crash of Follow/Defollow Mode Classic
+* Refactor: 2FA flow
 * Update: New user-agent
+* Upgrade: puppeteer v1.8.0
 
 
 # v0.9.0b (09 September, 2018)

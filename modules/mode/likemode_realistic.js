@@ -107,7 +107,7 @@ class Likemode_realistic extends Manager_state {
                 if (typeof photo_url === "undefined") {
                     this.log.warning("check if current hashtag have photos, you write it good in config.js? Bot go to next hashtag.");
                     photo_url = this.get_photo_url();
-                    if(photo_url == "" || typeof photo_url === "undefined"){
+                    if (photo_url == "" || typeof photo_url === "undefined") {
                         this.cache_hash_tags = [];
                     }
                 }
@@ -157,8 +157,13 @@ class Likemode_realistic extends Manager_state {
      */
     async like_click_heart() {
         this.log.info("try heart like");
-        await this.bot.waitForSelector("article div a:nth-child(1)");
-        let username = await this.bot.evaluate(el => el.innerHTML, await this.bot.$("article div a:nth-child(1)"));
+        let username = "";
+        try {
+            await this.bot.waitForSelector("article div a:nth-child(1)");
+            username = await this.bot.evaluate(el => el.innerHTML, await this.bot.$("article div a:nth-child(1)"));
+        } catch (err) {
+            this.log.warning("get username: " + err);
+        }
 
         try {
             await this.bot.waitForSelector("main article:nth-child(1) section:nth-child(1) button:nth-child(1)");
@@ -245,5 +250,5 @@ class Likemode_realistic extends Manager_state {
 }
 
 module.exports = (bot, config, utils, db) => {
-    return new Likemode_realistic(bot, config, utils, db); 
+    return new Likemode_realistic(bot, config, utils, db);
 };
