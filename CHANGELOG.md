@@ -1,5 +1,5 @@
-# v0.9.0b (14 September, 2018)
-* Fix: Node is either not visible or not an HTMLElement (#82)
+# v0.9.1 (15 September, 2018)
+* Fix: Node is either not visible or not an HTMLElement (#82 #86 #84)
 * Fix: Random crash of Follow/Defollow Mode Classic
 * Refactor: 2FA flow
 * Update: New user-agent

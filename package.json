@@ -41,6 +41,7 @@
     "webdriverio"
   ],
   "dependencies": {
+    "compare-versions": "^3.4.0",
     "colors": "^1.2.1",
     "eslint": "^4.19.1",
     "path": "^0.12.7",
