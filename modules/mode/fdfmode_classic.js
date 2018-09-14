@@ -34,27 +34,48 @@ class Fdfmode_classic extends Manager_state {
      * Save users nickname and other information
      *
      */
-    init_db() {
+    async init_db() {
         let self = this;
-        if(this.utils.compare_version("0.9.0") === 1) {
-            this.db.serialize(function() {
-                self.db.run("ALTER TABLE users ADD COLUMN hashtag TEXT");
-                self.db.run("ALTER TABLE users ADD COLUMN inserted_at DATETIME DEFAULT CURRENT_TIMESTAMP");
+
+        await this.db.serialize(async function() {
+            self.db.run("CREATE TABLE IF NOT EXISTS users (id INTEGER PRIMARY KEY AUTOINCREMENT, account TEXT, mode TEXT, username TEXT, photo_url TEXT, hashtag TEXT, type_action TEXT, inserted_at DATETIME DEFAULT CURRENT_TIMESTAMP)", function(err) {
+                if (err) {
+                    self.log.error(`init_db: ${err}`);
+                }
             });
 
-            this.db_fdf.serialize(function() {
-                self.db_fdf.run("ALTER TABLE fdf ADD COLUMN hashtag TEXT");
-                self.db_fdf.run("ALTER TABLE fdf ADD COLUMN inserted_at DATETIME DEFAULT CURRENT_TIMESTAMP");
-            });
-        } else {
-            this.db.serialize(function() {
-                self.db.run("CREATE TABLE IF NOT EXISTS users (id INTEGER PRIMARY KEY AUTOINCREMENT, account TEXT, mode TEXT, username TEXT, photo_url TEXT, hashtag TEXT, type_action TEXT, inserted_at DATETIME DEFAULT CURRENT_TIMESTAMP)");
+            self.db.run("ALTER TABLE users ADD COLUMN hashtag TEXT", function(err) {
+                if (err) {
+                    self.log.warning(`init_db users ADD COLUMN hashtag: ${err}`);
+                }
             });
 
-            this.db_fdf.serialize(function() {
-                self.db_fdf.run("CREATE TABLE IF NOT EXISTS fdf (id INTEGER PRIMARY KEY AUTOINCREMENT, account TEXT, username TEXT, photo_url TEXT, hashtag TEXT, type_fdf TEXT, inserted_at DATETIME DEFAULT CURRENT_TIMESTAMP)");
+            self.db.run("ALTER TABLE users ADD COLUMN inserted_at DATETIME DEFAULT NULL", function(err) {
+                if (err) {
+                    self.log.warning(`init_db users ADD COLUMN inserted_at: ${err}`);
+                }
             });
-        }
+        });
+
+        await this.db_fdf.serialize(async function() {
+            self.db_fdf.run("CREATE TABLE IF NOT EXISTS fdf (id INTEGER PRIMARY KEY AUTOINCREMENT, account TEXT, username TEXT, photo_url TEXT, hashtag TEXT, type_fdf TEXT, inserted_at DATETIME DEFAULT CURRENT_TIMESTAMP)", function(err) {
+                if (err) {
+                    self.log.error(`init_db_fdf: ${err}`);
+                }
+            });
+
+            self.db_fdf.run("ALTER TABLE fdf ADD COLUMN hashtag TEXT", function(err) {
+                if (err) {
+                    self.log.warning(`init_db_fdf fdf ADD COLUMN hashtag: ${err}`);
+                }
+            });
+
+            self.db_fdf.run("ALTER TABLE fdf ADD COLUMN inserted_at DATETIME DEFAULT NULL", function(err) {
+                if (err) {
+                    self.log.warning(`init_db_fdf fdf ADD COLUMN inserted_at: ${err}`);
+                }
+            });
+        });
     }
 
     /**
@@ -171,12 +192,15 @@ class Fdfmode_classic extends Manager_state {
      */
     async fdf_click_follow() {
         this.log.info("try follow");
+        let username = "";
+        try {
+            await this.bot.waitForSelector("article div a:nth-child(1)");
+            username = await this.bot.evaluate(el => el.innerHTML, await this.bot.$("article div a:nth-child(1)"));
+        } catch (err) {
+            this.log.warning("get username: " + err);
+        }
 
-        await this.bot.waitForSelector("article div a:nth-child(1)");
-        let username = await this.bot.evaluate(el => el.innerHTML, await this.bot.$("article div a:nth-child(1)"));
-        this.log.info("username " +username);
-
-        if (this.config.bot_userwhitelist.includes(username)) {
+        if (username != "" && this.config.bot_userwhitelist.includes(username)) {
             this.log.warning(username + ": is in whitelits, ignored by follow.");
         } else {
             try {
@@ -263,7 +287,7 @@ class Fdfmode_classic extends Manager_state {
 
         await this.bot.waitForSelector("article div a:nth-child(1)");
         let username = await this.bot.evaluate(el => el.innerHTML, await this.bot.$("article div a:nth-child(1)"));
-        this.log.info("username " +username);
+        this.log.info("username " + username);
 
         try {
             await this.bot.waitForSelector("article header div div button");
@@ -324,7 +348,7 @@ class Fdfmode_classic extends Manager_state {
 
         let today = "";
 
-        this.init_db();
+        await this.init_db();
 
         do {
             today = new Date();

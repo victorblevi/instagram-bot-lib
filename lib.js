@@ -5,7 +5,7 @@
  *
  * @author:     Patryk Rzucidlo [@ptkdev] <support@ptkdev.io> (https://ptkdev.it)
  * @file:       bot.js
- * @version:    0.9.0
+ * @version:    0.9.1
  *
  * @license:    Code and contributions have 'GNU General Public License v3'
  *              This program is free software: you can redistribute it and/or modify
@@ -92,7 +92,7 @@ module.exports = function(config) {
         }
         bot = await this.browser.newPage();
         bot.setViewport({ "width": 1024, "height": 768 });
-        bot.setUserAgent("Mozilla/5.0 (X11; SocialManagerToolsBot x86_64) AppleWebKit/537.36 (KHTML, like Gecko) SocialManagerTools/"+version.version+" Safari/537.36");
+        bot.setUserAgent("Mozilla/5.0 (X11; SocialManagerToolsLinux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/69.0.3497.81 Safari/537.36");
 
         /**
          * Import libs
@@ -132,22 +132,20 @@ module.exports = function(config) {
 
         if (login.is_ok()) {
             await twofa.start_twofa_location_check();
+        }
+        if (twofa.is_ok_nextverify()) {
+            await twofa.start_twofa_location();
+        }
 
-            if (twofa.is_error()) {
-                await twofa.start_twofa_check();
-            }
+        if (twofa.is_ok()) {
+            await twofa.start_twofa_check();
+        }
+        if (twofa.is_ok_nextverify()) {
+            await twofa.start_twofa_location();
+        }
 
-            if (twofa.is_ok()) {
-                await twofa.start_twofa_location();
-            } else if (twofa.is_ok_nextverify()) {
-                await twofa.start();
-                if (twofa.is_ok()) {
-                    await switch_mode();
-                }
-            } else {
-                await switch_mode();
-            }
-
+        if (twofa.is_ok()) {
+            await switch_mode();
         }
 
     };

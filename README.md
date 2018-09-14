@@ -85,7 +85,7 @@ $ docker run \
     --restart=always \
     --name=instagram-bot \
     -d \
-    -v /path/to/config.js:/app/config.js \
+    -v /path/to/config.js:/app/configs/config.js \
     socialmanagertools/instagram-bot.js &>/dev/null
 ```
 

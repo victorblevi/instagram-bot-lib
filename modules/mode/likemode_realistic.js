@@ -33,18 +33,30 @@ class Likemode_realistic extends Manager_state {
      * Save users nickname and other information
      *
      */
-    init_db() {
+    async init_db() {
         let self = this;
-        if(this.utils.compare_version("0.9.0") === 1) {
-            this.db.serialize(function() {
-                self.db.run("ALTER TABLE users ADD COLUMN hashtag TEXT");
-                self.db.run("ALTER TABLE users ADD COLUMN inserted_at DATETIME DEFAULT CURRENT_TIMESTAMP");
+
+        await this.db.serialize(async function() {
+            self.db.run("CREATE TABLE IF NOT EXISTS users (id INTEGER PRIMARY KEY AUTOINCREMENT, account TEXT, mode TEXT, username TEXT, photo_url TEXT, hashtag TEXT, type_action TEXT, inserted_at DATETIME DEFAULT CURRENT_TIMESTAMP)", function(err) {
+                if (err) {
+                    self.log.error(`init_db: ${err}`);
+                }
             });
-        } else {
-            this.db.serialize(function() {
-                self.db.run("CREATE TABLE IF NOT EXISTS users (id INTEGER PRIMARY KEY AUTOINCREMENT, account TEXT, mode TEXT, username TEXT, photo_url TEXT, hashtag TEXT, type_action TEXT, inserted_at DATETIME DEFAULT CURRENT_TIMESTAMP)");
+
+
+            self.db.run("ALTER TABLE users ADD COLUMN hashtag TEXT", function(err) {
+                if (err) {
+                    self.log.warning(`init_db users ADD COLUMN hashtag: ${err}`);
+                }
             });
-        }
+
+            self.db.run("ALTER TABLE users ADD COLUMN inserted_at DATETIME DEFAULT NULL", function(err) {
+                if (err) {
+                    self.log.warning(`init_db users ADD COLUMN inserted_at: ${err}`);
+                }
+            });
+        });
+
     }
 
     /**
@@ -114,7 +126,7 @@ class Likemode_realistic extends Manager_state {
                 if (typeof photo_url === "undefined") {
                     this.log.warning("check if current hashtag have photos, you write it good in config.js? Bot go to next hashtag.");
                     photo_url = this.get_photo_url();
-                    if(photo_url == "" || typeof photo_url === "undefined"){
+                    if (photo_url == "" || typeof photo_url === "undefined") {
                         this.cache_hash_tags = [];
                     }
                 }
@@ -164,8 +176,13 @@ class Likemode_realistic extends Manager_state {
      */
     async like_click_heart() {
         this.log.info("try heart like");
-        await this.bot.waitForSelector("article div a:nth-child(1)");
-        let username = await this.bot.evaluate(el => el.innerHTML, await this.bot.$("article div a:nth-child(1)"));
+        let username = "";
+        try {
+            await this.bot.waitForSelector("article div a:nth-child(1)");
+            username = await this.bot.evaluate(el => el.innerHTML, await this.bot.$("article div a:nth-child(1)"));
+        } catch (err) {
+            this.log.warning("get username: " + err);
+        }
 
         try {
             await this.bot.waitForSelector("main article:nth-child(1) section:nth-child(1) button:nth-child(1)");
@@ -203,7 +220,7 @@ class Likemode_realistic extends Manager_state {
     async start() {
         this.log.info("realistic");
 
-        this.init_db();
+        await this.init_db();
 
         let today = "";
 
