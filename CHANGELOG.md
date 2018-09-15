@@ -1,3 +1,7 @@
+# v0.9.2 (15 September, 2018)
+* Downgrade: puppeteer v1.4.0 (#27)
+
+
 # v0.9.1 (15 September, 2018)
 * Fix: Node is either not visible or not an HTMLElement (#82 #86 #84)
 * Fix: Random crash of Follow/Defollow Mode Classic
