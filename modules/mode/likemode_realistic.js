@@ -180,6 +180,7 @@ class Likemode_realistic extends Manager_state {
         try {
             await this.bot.waitForSelector("article div a:nth-child(1)");
             username = await this.bot.evaluate(el => el.innerHTML, await this.bot.$("article div a:nth-child(1)"));
+            this.log.info("username " + username);
         } catch (err) {
             this.log.warning("get username: " + err);
         }

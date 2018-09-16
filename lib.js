@@ -82,14 +82,14 @@ module.exports = function(config) {
             this.browser = await puppeteer.launch({
                 headless: config.chrome_headless,
                 args: config.chrome_options,
-                defaultViewport : { 'width' : 1024, 'height' : 768 }
+                defaultViewport : { "width" : 1024, "height" : 768 }
             });
         } else {
             this.browser = await puppeteer.launch({
                 headless: config.chrome_headless,
                 args: config.chrome_options,
                 executablePath: config.executable_path,
-                defaultViewport : { 'width' : 1024, 'height' : 768 }
+                defaultViewport : { "width" : 1024, "height" : 768 }
             });
         }
         bot = await this.browser.newPage();
