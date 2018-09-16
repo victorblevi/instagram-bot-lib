@@ -196,6 +196,7 @@ class Fdfmode_classic extends Manager_state {
         try {
             await this.bot.waitForSelector("article div a:nth-child(1)");
             username = await this.bot.evaluate(el => el.innerHTML, await this.bot.$("article div a:nth-child(1)"));
+            this.log.info("username " + username);
         } catch (err) {
             this.log.warning("get username: " + err);
         }
@@ -272,6 +273,7 @@ class Fdfmode_classic extends Manager_state {
      */
     async goto_user_for_defollow(photo_url) {
         this.log.info("go to url for try defollow");
+        this.photo_current = photo_url;
         await this.bot.goto(photo_url);
     }
 
@@ -284,10 +286,14 @@ class Fdfmode_classic extends Manager_state {
      */
     async fdf_click_defollow() {
         this.log.info("try defollow");
-
-        await this.bot.waitForSelector("article div a:nth-child(1)");
-        let username = await this.bot.evaluate(el => el.innerHTML, await this.bot.$("article div a:nth-child(1)"));
-        this.log.info("username " + username);
+        let username = "";
+        try {
+            await this.bot.waitForSelector("article div a:nth-child(1)");
+            username = await this.bot.evaluate(el => el.innerHTML, await this.bot.$("article div a:nth-child(1)"));
+            this.log.info("username " + username);
+        } catch (err) {
+            this.log.warning("get username: " + err);
+        }
 
         try {
             await this.bot.waitForSelector("article header div div button");
@@ -319,7 +325,8 @@ class Fdfmode_classic extends Manager_state {
                     this.db.run("INSERT INTO users (account, mode, username, photo_url, hashtag, type_action) VALUES (?, ?, ?, ?, ?, ?)", this.config.instagram_username, this.LOG_NAME, username, this.photo_current, this.hashtag_tag, "defollow");
                     this.db_fdf.run("UPDATE fdf SET type_fdf = ? WHERE account = ? AND username = ?", "defollow", this.config.instagram_username, username);
                 } else {
-                    this.log.warning("not defollow, try at next rotation");
+                    this.log.warning("not defollow, removed from defollow list");
+                    this.db_fdf.run("UPDATE fdf SET type_fdf = ? WHERE account = ? AND photo_url = ?", "defollow error, photo removed", this.config.instagram_username, this.photo_current);
                 }
             }
             this.emit(this.STATE_EVENTS.CHANGE_STATUS, this.STATE.OK);
@@ -330,6 +337,7 @@ class Fdfmode_classic extends Manager_state {
 
             this.log.warning("defollow error");
             this.db.run("INSERT INTO users (account, mode, username, photo_url, hashtag, type_action) VALUES (?, ?, ?, ?, ?, ?)", this.config.instagram_username, this.LOG_NAME, username, this.photo_current, this.hashtag_tag, "defollow error");
+            this.db_fdf.run("UPDATE fdf SET type_fdf = ? WHERE account = ? AND photo_url = ?", "defollow error, photo removed", this.config.instagram_username, this.photo_current);
             this.emit(this.STATE_EVENTS.CHANGE_STATUS, this.STATE.ERROR);
         }
 

@@ -2,7 +2,7 @@
 
 # Instagram Bot (Library)
 
-[![](https://img.shields.io/badge/license-GLPv3-brightgreen.svg)](#) [![](https://img.shields.io/badge/powered%20by-puppeteer-46aef7.svg)](https://github.com/GoogleChrome/puppeteer) [![](https://img.shields.io/badge/version-v0.9.2-lightgrey.svg)](https://github.com/social-manager-tools/instagram-bot-lib/releases) [![](https://img.shields.io/badge/chat%20on-slack-orange.svg)](http://slack.ptkdev.io) [![](https://img.shields.io/badge/chat%20on-discord-7289da.svg)](http://discord.ptkdev.io) [![](https://img.shields.io/badge/blog-medium-2AE176.svg)](http://blog.ptkdev.io) [![](https://img.shields.io/badge/twitter-ptkdevio-2AA3EF.svg)](https://twitter.com/ptkdevio)
+[![](https://img.shields.io/badge/license-GLPv3-brightgreen.svg)](#) [![](https://img.shields.io/badge/powered%20by-puppeteer-46aef7.svg)](https://github.com/GoogleChrome/puppeteer) [![](https://img.shields.io/badge/version-v0.9.3-lightgrey.svg)](https://github.com/social-manager-tools/instagram-bot-lib/releases) [![](https://img.shields.io/badge/chat%20on-slack-orange.svg)](http://slack.ptkdev.io) [![](https://img.shields.io/badge/chat%20on-discord-7289da.svg)](http://discord.ptkdev.io) [![](https://img.shields.io/badge/blog-medium-2AE176.svg)](http://blog.ptkdev.io) [![](https://img.shields.io/badge/twitter-ptkdevio-2AA3EF.svg)](https://twitter.com/ptkdevio)
 
 [![](https://img.shields.io/badge/donate-patreon-F87668.svg)](http://patreon.ptkdev.io) [![](https://img.shields.io/badge/donate-paypal-46AFE0.svg)](http://paypal.ptkdev.io) [![](https://img.shields.io/badge/buy%20me-coffee-4B788C.svg)](http://coffee.ptkdev.io) [![](https://img.shields.io/badge/help-support@ptkdev.io-fbbc05.svg)](mailto:support@ptkdev.io)
 
@@ -29,7 +29,7 @@ This library (npm module) provides api for include [instagram-bot.js](https://gi
 
 ## Fast usage
 1. Run `npm install instagrambotlib`
-2. Get [config.js](https://raw.githubusercontent.com/social-manager-tools/instagram-bot-lib/0.9.2/config.js.tpl) file for step 3, fill it properly and remove `.tpl` suffix.
+2. Get [config.js](https://raw.githubusercontent.com/social-manager-tools/instagram-bot-lib/0.9.3/config.js.tpl) file for step 3, fill it properly and remove `.tpl` suffix.
 3. On your code require library and run bot, example:
 ```
     const config = require ("./config");
