@@ -109,7 +109,7 @@ class Login extends Manager_state {
             await this.utils.screenshot(this.LOG_NAME, "checkerrors");
         }
 
-        await this.utils.sleep(this.utils.random_interval(4, 8));
+        await this.utils.sleep(this.utils.random_interval(3, 6));
     }
 
     /**
@@ -122,24 +122,24 @@ class Login extends Manager_state {
 
         await this.open_loginpage();
 
-        await this.utils.sleep(this.utils.random_interval(4, 8));
+        await this.utils.sleep(this.utils.random_interval(3, 6));
 
         await this.set_username();
 
-        await this.utils.sleep(this.utils.random_interval(4, 8));
+        await this.utils.sleep(this.utils.random_interval(3, 6));
 
         await this.set_password();
 
-        await this.utils.sleep(this.utils.random_interval(4, 8));
+        await this.utils.sleep(this.utils.random_interval(3, 6));
 
         await this.submitform();
 
-        await this.utils.sleep(this.utils.random_interval(4, 8));
+        await this.utils.sleep(this.utils.random_interval(3, 6));
 
         await this.submitverify();
         this.log.info("login_status is " + this.get_status());
 
-        await this.utils.sleep(this.utils.random_interval(4, 8));
+        await this.utils.sleep(this.utils.random_interval(3, 6));
     }
 }
 

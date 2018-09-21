@@ -88,7 +88,7 @@ class Likemode_realistic extends Manager_state {
             this.log.error(`goto ${err}`);
         }
 
-        await this.utils.sleep(this.utils.random_interval(4, 8));
+        await this.utils.sleep(this.utils.random_interval(3, 6));
 
         await this.utils.screenshot(this.LOG_NAME, "last_hashtag");
     }
@@ -131,7 +131,7 @@ class Likemode_realistic extends Manager_state {
                     }
                 }
 
-                await this.utils.sleep(this.utils.random_interval(4, 8));
+                await this.utils.sleep(this.utils.random_interval(3, 6));
 
                 if (this.cache_hash_tags.length > 0) {
                     await this.bot.goto(photo_url);
@@ -145,7 +145,7 @@ class Likemode_realistic extends Manager_state {
             photo_url = this.get_photo_url();
 
             this.log.info(`current photo url from cache ${photo_url}`);
-            await this.utils.sleep(this.utils.random_interval(4, 8));
+            await this.utils.sleep(this.utils.random_interval(3, 6));
 
             try {
                 await this.bot.goto(photo_url);
@@ -164,7 +164,7 @@ class Likemode_realistic extends Manager_state {
                 }
 
             }
-            await this.utils.sleep(this.utils.random_interval(4, 8));
+            await this.utils.sleep(this.utils.random_interval(3, 6));
         }
     }
 
@@ -188,14 +188,27 @@ class Likemode_realistic extends Manager_state {
         try {
             await this.bot.waitForSelector("main article:nth-child(1) section:nth-child(1) button:nth-child(1)");
             let button = await this.bot.$("main article:nth-child(1) section:nth-child(1) button:nth-child(1)");
+            let button_before_click = await this.bot.evaluate(el => el.innerHTML, await this.bot.$("main article:nth-child(1) section:nth-child(1) button:nth-child(1)"));
+            this.log.info("button text before click: " + button_before_click);
 
             if (this.photo_liked[this.photo_current] > 1) {
                 this.log.warning("</3 Skipped, liked previously");
                 this.db.run("INSERT INTO users (account, mode, username, photo_url, hashtag, type_action) VALUES (?, ?, ?, ?, ?, ?)", this.config.instagram_username, this.LOG_NAME, username, this.photo_current, this.hashtag_tag, "skipped");
             } else {
                 await button.click();
-                this.log.info("<3 Liked");
-                this.db.run("INSERT INTO users (account, mode, username, photo_url, hashtag, type_action) VALUES (?, ?, ?, ?, ?, ?)", this.config.instagram_username, this.LOG_NAME, username, this.photo_current, this.hashtag_tag, "liked");
+                await this.utils.sleep(this.utils.random_interval(2, 3));
+
+                await this.bot.waitForSelector("main article:nth-child(1) section:nth-child(1) button:nth-child(1)");
+                let button_after_click = await this.bot.evaluate(el => el.innerHTML, await this.bot.$("main article:nth-child(1) section:nth-child(1) button:nth-child(1)"));
+                this.log.info("button text after click: " + button_after_click);
+
+                if (button_after_click.includes("filled") || button_after_click.includes("red")) {
+                    this.log.info("<3 Liked");
+                    this.db.run("INSERT INTO users (account, mode, username, photo_url, hashtag, type_action) VALUES (?, ?, ?, ?, ?, ?)", this.config.instagram_username, this.LOG_NAME, username, this.photo_current, this.hashtag_tag, "liked");
+                } else {
+                    this.log.warning("</3");
+                    this.db.run("INSERT INTO users (account, mode, username, photo_url, hashtag, type_action) VALUES (?, ?, ?, ?, ?, ?)", this.config.instagram_username, this.LOG_NAME, username, this.photo_current, this.hashtag_tag, "liked error");
+                }
             }
             this.emit(this.STATE_EVENTS.CHANGE_STATUS, this.STATE.OK);
         } catch (err) {
@@ -204,11 +217,11 @@ class Likemode_realistic extends Manager_state {
             }
 
             this.log.warning("</3");
-            this.db.run("INSERT INTO users (account, mode, username, photo_url, hashtag, type_action) VALUES (?, ?, ?, ?, ?, ?)", this.config.instagram_username, this.LOG_NAME, username, this.photo_current, this.hashtag_tag, "error");
+            this.db.run("INSERT INTO users (account, mode, username, photo_url, hashtag, type_action) VALUES (?, ?, ?, ?, ?, ?)", this.config.instagram_username, this.LOG_NAME, username, this.photo_current, this.hashtag_tag, "liked error");
             this.emit(this.STATE_EVENTS.CHANGE_STATUS, this.STATE.ERROR);
         }
 
-        await this.utils.sleep(this.utils.random_interval(4, 8));
+        await this.utils.sleep(this.utils.random_interval(3, 6));
 
         await this.utils.screenshot(this.LOG_NAME, "last_like_after");
     }
@@ -241,11 +254,11 @@ class Likemode_realistic extends Manager_state {
                     await this.like_open_hashtagpage();
                 }
 
-                await this.utils.sleep(this.utils.random_interval(4, 8));
+                await this.utils.sleep(this.utils.random_interval(3, 6));
 
                 await this.like_get_urlpic();
 
-                await this.utils.sleep(this.utils.random_interval(4, 8));
+                await this.utils.sleep(this.utils.random_interval(3, 6));
 
                 if (this.cache_hash_tags.length > 0) {
                     await this.like_click_heart();
