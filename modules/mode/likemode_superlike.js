@@ -59,7 +59,7 @@ class Likemode_superlike extends Manager_state {
             this.log.error(`goto ${err}`);
         }
 
-        await this.utils.sleep(this.utils.random_interval(4, 8));
+        await this.utils.sleep(this.utils.random_interval(3, 6));
 
         await this.utils.screenshot(this.LOG_NAME, "last_hashtag");
     }
@@ -96,7 +96,7 @@ class Likemode_superlike extends Manager_state {
                     this.cache_hash_tags_user = [];
                 }
 
-                await this.utils.sleep(this.utils.random_interval(4, 8));
+                await this.utils.sleep(this.utils.random_interval(3, 6));
 
                 await this.bot.goto(photo_url);
             } catch (err) {
@@ -109,7 +109,7 @@ class Likemode_superlike extends Manager_state {
             photo_url = this.get_photo_url("hashtag");
 
             this.log.info(`current photo url from cache ${photo_url}`);
-            await this.utils.sleep(this.utils.random_interval(4, 8));
+            await this.utils.sleep(this.utils.random_interval(3, 6));
 
             try {
                 await this.bot.goto(photo_url);
@@ -119,7 +119,7 @@ class Likemode_superlike extends Manager_state {
                 this.cache_hash_tags_user = [];
             }
         }
-        await this.utils.sleep(this.utils.random_interval(4, 8));
+        await this.utils.sleep(this.utils.random_interval(3, 6));
     }
 
 
@@ -145,7 +145,7 @@ class Likemode_superlike extends Manager_state {
             this.emit(this.STATE_EVENTS.CHANGE_STATUS, this.STATE.ERROR);
         }
 
-        await this.utils.sleep(this.utils.random_interval(4, 8));
+        await this.utils.sleep(this.utils.random_interval(3, 6));
 
         await this.utils.screenshot(this.LOG_NAME, "userpage");
     }
@@ -180,7 +180,7 @@ class Likemode_superlike extends Manager_state {
                     this.log.warning("check if current hashtag have photos, you write it good in config.js? Bot go to next hashtag.");
                 }
 
-                await this.utils.sleep(this.utils.random_interval(4, 8));
+                await this.utils.sleep(this.utils.random_interval(3, 6));
 
                 await this.bot.goto(photo_url);
             } catch (err) {
@@ -193,7 +193,7 @@ class Likemode_superlike extends Manager_state {
             photo_url = this.get_photo_url("user");
 
             this.log.info(`current photo url user from cache ${photo_url}`);
-            await this.utils.sleep(this.utils.random_interval(4, 8));
+            await this.utils.sleep(this.utils.random_interval(3, 6));
 
             try {
                 await this.bot.goto(photo_url);
@@ -213,7 +213,7 @@ class Likemode_superlike extends Manager_state {
             }
 
         }
-        await this.utils.sleep(this.utils.random_interval(4, 8));
+        await this.utils.sleep(this.utils.random_interval(3, 6));
     }
 
     /**
@@ -244,7 +244,7 @@ class Likemode_superlike extends Manager_state {
             this.emit(this.STATE_EVENTS.CHANGE_STATUS, this.STATE.ERROR);
         }
 
-        await this.utils.sleep(this.utils.random_interval(4, 8));
+        await this.utils.sleep(this.utils.random_interval(3, 6));
 
         await this.utils.screenshot(this.LOG_NAME, "last_like_after");
     }
@@ -275,11 +275,11 @@ class Likemode_superlike extends Manager_state {
                     await this.like_open_hashtagpage();
                 }
 
-                await this.utils.sleep(this.utils.random_interval(4, 8));
+                await this.utils.sleep(this.utils.random_interval(3, 6));
 
                 await this.like_get_urlpic();
 
-                await this.utils.sleep(this.utils.random_interval(4, 8));
+                await this.utils.sleep(this.utils.random_interval(3, 6));
 
                 for (let i = 0; i < this.config.bot_superlike_n; i++) {
                     this.log.info("try like photo " + (i + 1) + "/" + this.config.bot_superlike_n);
@@ -292,11 +292,11 @@ class Likemode_superlike extends Manager_state {
                         await this.like_open_userpage();
                     }
 
-                    await this.utils.sleep(this.utils.random_interval(4, 8));
+                    await this.utils.sleep(this.utils.random_interval(3, 6));
 
                     await this.like_get_urlpic_user();
 
-                    await this.utils.sleep(this.utils.random_interval(4, 8));
+                    await this.utils.sleep(this.utils.random_interval(3, 6));
 
                     await this.like_click_heart();
                 }

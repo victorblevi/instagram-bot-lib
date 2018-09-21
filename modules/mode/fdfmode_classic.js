@@ -21,6 +21,7 @@ class Fdfmode_classic extends Manager_state {
         this.cache_hash_tags = [];
         this.photo_liked = [];
         this.photo_current = "";
+        this.username_current = "";
         this.LOG_NAME = "fdf_classic";
         this.STATE = require("../common/state").STATE;
         this.STATE_EVENTS = require("../common/state").EVENTS;
@@ -108,7 +109,7 @@ class Fdfmode_classic extends Manager_state {
             this.log.error(`goto ${err}`);
         }
 
-        await this.utils.sleep(this.utils.random_interval(4, 8));
+        await this.utils.sleep(this.utils.random_interval(3, 6));
 
         await this.utils.screenshot(this.LOG_NAME, "last_hashtag");
     }
@@ -147,7 +148,7 @@ class Fdfmode_classic extends Manager_state {
                     }
                 }
 
-                await this.utils.sleep(this.utils.random_interval(4, 8));
+                await this.utils.sleep(this.utils.random_interval(3, 6));
 
                 if (this.cache_hash_tags.length > 0) {
                     await this.bot.goto(photo_url);
@@ -161,7 +162,7 @@ class Fdfmode_classic extends Manager_state {
             photo_url = this.get_photo_url();
 
             this.log.info(`current photo url from cache ${photo_url}`);
-            await this.utils.sleep(this.utils.random_interval(4, 8));
+            await this.utils.sleep(this.utils.random_interval(3, 6));
 
             try {
                 await this.bot.goto(photo_url);
@@ -180,7 +181,7 @@ class Fdfmode_classic extends Manager_state {
                 }
 
             }
-            await this.utils.sleep(this.utils.random_interval(4, 8));
+            await this.utils.sleep(this.utils.random_interval(3, 6));
         }
     }
 
@@ -241,7 +242,7 @@ class Fdfmode_classic extends Manager_state {
                 this.emit(this.STATE_EVENTS.CHANGE_STATUS, this.STATE.ERROR);
             }
 
-            await this.utils.sleep(this.utils.random_interval(4, 8));
+            await this.utils.sleep(this.utils.random_interval(3, 6));
 
             await this.utils.screenshot(this.LOG_NAME, "last_follow_after");
         }
@@ -256,7 +257,7 @@ class Fdfmode_classic extends Manager_state {
     async get_row_from_database() {
         let self = this;
         return new Promise(function(resolve) {
-            self.db_fdf.all("SELECT * FROM fdf WHERE type_fdf = 'follow' ORDER BY id ASC", function(err, row) {
+            self.db_fdf.all("SELECT * FROM fdf WHERE account = ? AND type_fdf = 'follow' ORDER BY id ASC", self.config.instagram_username, function(err, row) {
                 if (err) {
                     self.log.warning("get_row_from_database() error select " + err);
                 }
@@ -271,10 +272,11 @@ class Fdfmode_classic extends Manager_state {
      * SQL get all users with follow type_action, for defollow next time
      *
      */
-    async goto_user_for_defollow(photo_url) {
+    async goto_user_for_defollow(username) {
+        this.username_current = username;
+        this.photo_current = "https://www.instagram.com/" + username;
         this.log.info("go to url for try defollow");
-        this.photo_current = photo_url;
-        await this.bot.goto(photo_url);
+        await this.bot.goto(this.photo_current);
     }
 
 
@@ -288,17 +290,17 @@ class Fdfmode_classic extends Manager_state {
         this.log.info("try defollow");
         let username = "";
         try {
-            await this.bot.waitForSelector("article div a:nth-child(1)");
-            username = await this.bot.evaluate(el => el.innerHTML, await this.bot.$("article div a:nth-child(1)"));
+            await this.bot.waitForSelector("main header section h1");
+            username = await this.bot.evaluate(el => el.innerHTML, await this.bot.$("main header section h1"));
             this.log.info("username " + username);
         } catch (err) {
             this.log.warning("get username: " + err);
         }
 
         try {
-            await this.bot.waitForSelector("article header div div button");
-            let button = await this.bot.$("article header div div button");
-            let button_before_click = await this.bot.evaluate(el => el.innerHTML, await this.bot.$("article header div div button"));
+            await this.bot.waitForSelector("main header div span button");
+            let button = await this.bot.$("main header div span button");
+            let button_before_click = await this.bot.evaluate(el => el.innerHTML, await this.bot.$("main header div span button"));
             this.log.info("button text before click: " + button_before_click);
 
             if (this.photo_liked[this.photo_current] > 1) {
@@ -316,8 +318,8 @@ class Fdfmode_classic extends Manager_state {
 
                 await this.utils.sleep(this.utils.random_interval(1, 2));
 
-                await this.bot.waitForSelector("article header div div button");
-                let button_after_click = await this.bot.evaluate(el => el.innerHTML, await this.bot.$("article header div div button"));
+                await this.bot.waitForSelector("main header div span button");
+                let button_after_click = await this.bot.evaluate(el => el.innerHTML, await this.bot.$("main header div span button"));
                 this.log.info("button text after click: " + button_after_click);
 
                 if (button_after_click != button_before_click) {
@@ -326,7 +328,7 @@ class Fdfmode_classic extends Manager_state {
                     this.db_fdf.run("UPDATE fdf SET type_fdf = ? WHERE account = ? AND username = ?", "defollow", this.config.instagram_username, username);
                 } else {
                     this.log.warning("not defollow, removed from defollow list");
-                    this.db_fdf.run("UPDATE fdf SET type_fdf = ? WHERE account = ? AND photo_url = ?", "defollow error, photo removed", this.config.instagram_username, this.photo_current);
+                    this.db_fdf.run("UPDATE fdf SET type_fdf = ? WHERE account = ? AND username = ?", "defollow error, photo removed", this.config.instagram_username, this.username_current);
                 }
             }
             this.emit(this.STATE_EVENTS.CHANGE_STATUS, this.STATE.OK);
@@ -337,11 +339,11 @@ class Fdfmode_classic extends Manager_state {
 
             this.log.warning("defollow error");
             this.db.run("INSERT INTO users (account, mode, username, photo_url, hashtag, type_action) VALUES (?, ?, ?, ?, ?, ?)", this.config.instagram_username, this.LOG_NAME, username, this.photo_current, this.hashtag_tag, "defollow error");
-            this.db_fdf.run("UPDATE fdf SET type_fdf = ? WHERE account = ? AND photo_url = ?", "defollow error, photo removed", this.config.instagram_username, this.photo_current);
+            this.db_fdf.run("UPDATE fdf SET type_fdf = ? WHERE account = ? AND username = ?", "defollow error, photo removed", this.config.instagram_username, this.username_current);
             this.emit(this.STATE_EVENTS.CHANGE_STATUS, this.STATE.ERROR);
         }
 
-        await this.utils.sleep(this.utils.random_interval(4, 8));
+        await this.utils.sleep(this.utils.random_interval(3, 6));
 
         await this.utils.screenshot(this.LOG_NAME, "last_defollow_after");
     }
@@ -378,9 +380,9 @@ class Fdfmode_classic extends Manager_state {
                     this.log.info("defollow rotate tot: " + rotate);
                     for (let ir = 0; ir < rotate; ir++) {
                         this.log.info("defollow rotate n: " + rotate);
-                        this.log.info("defollow user from photo: " + users[ir].photo_url);
-                        await this.goto_user_for_defollow(users[ir].photo_url);
-                        await this.utils.sleep(this.utils.random_interval(4, 8));
+                        this.log.info("defollow user " + users[ir].username + " from photo: " + users[ir].photo_url);
+                        await this.goto_user_for_defollow(users[ir].username);
+                        await this.utils.sleep(this.utils.random_interval(3, 6));
                         await this.fdf_click_defollow();
                     }
                 }
@@ -395,17 +397,17 @@ class Fdfmode_classic extends Manager_state {
                     await this.fdf_open_hashtagpage();
                 }
 
-                await this.utils.sleep(this.utils.random_interval(4, 8));
+                await this.utils.sleep(this.utils.random_interval(3, 6));
 
                 await this.fdf_get_urlpic();
 
-                await this.utils.sleep(this.utils.random_interval(4, 8));
+                await this.utils.sleep(this.utils.random_interval(3, 6));
 
                 if (this.cache_hash_tags.length > 0) {
                     await this.fdf_click_follow();
                 }
 
-                await this.utils.sleep(this.utils.random_interval(4, 8));
+                await this.utils.sleep(this.utils.random_interval(3, 6));
 
 
                 if (this.cache_hash_tags.length < 9) { //remove popular photos

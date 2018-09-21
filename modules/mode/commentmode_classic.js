@@ -76,7 +76,7 @@ class commentmode_classic extends Manager_state {
             this.log.error(`goto ${err}`);
         }
 
-        await this.utils.sleep(this.utils.random_interval(4, 8));
+        await this.utils.sleep(this.utils.random_interval(3, 6));
 
         await this.utils.screenshot(this.LOG_NAME, "last_hashtag");
     }
@@ -110,7 +110,7 @@ class commentmode_classic extends Manager_state {
                     this.log.warning("check if current hashtag have photos, you write it good in config.js? Bot go to next hashtag.");
                 }
 
-                await this.utils.sleep(this.utils.random_interval(4, 8));
+                await this.utils.sleep(this.utils.random_interval(3, 6));
 
                 await this.bot.goto(photo_url);
             } catch (err) {
@@ -122,7 +122,7 @@ class commentmode_classic extends Manager_state {
             photo_url = this.get_photo_url();
 
             this.log.info(`current photo url from cache ${photo_url}`);
-            await this.utils.sleep(this.utils.random_interval(4, 8));
+            await this.utils.sleep(this.utils.random_interval(3, 6));
 
             try {
                 await this.bot.goto(photo_url);
@@ -140,7 +140,7 @@ class commentmode_classic extends Manager_state {
             }
             
         }
-        await this.utils.sleep(this.utils.random_interval(4, 8));
+        await this.utils.sleep(this.utils.random_interval(3, 6));
     }
 
     /**
@@ -220,15 +220,15 @@ class commentmode_classic extends Manager_state {
             this.emit(this.STATE_EVENTS.CHANGE_STATUS, this.STATE.ERROR);
         }
 
-        await this.utils.sleep(this.utils.random_interval(4, 8));
+        await this.utils.sleep(this.utils.random_interval(3, 6));
 
         this.bot.reload();
 
-        await this.utils.sleep(this.utils.random_interval(4, 8));
+        await this.utils.sleep(this.utils.random_interval(3, 6));
 
         await this.utils.screenshot(this.LOG_NAME, "last_comment");
 
-        await this.utils.sleep(this.utils.random_interval(4, 8));
+        await this.utils.sleep(this.utils.random_interval(3, 6));
         await this.check_leave_comment();
 
         await this.utils.sleep(this.utils.random_interval(2, 5));
@@ -258,11 +258,11 @@ class commentmode_classic extends Manager_state {
                     await this.open_page();
                 }
 
-                await this.utils.sleep(this.utils.random_interval(4, 8));
+                await this.utils.sleep(this.utils.random_interval(3, 6));
 
                 await this.like_get_urlpic();
 
-                await this.utils.sleep(this.utils.random_interval(4, 8));
+                await this.utils.sleep(this.utils.random_interval(3, 6));
 
                 await this.comment();
 

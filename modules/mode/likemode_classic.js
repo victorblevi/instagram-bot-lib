@@ -58,7 +58,7 @@ class Likemode_classic extends Manager_state {
             this.log.error(`goto ${err}`);
         }
 
-        await this.utils.sleep(this.utils.random_interval(4, 8));
+        await this.utils.sleep(this.utils.random_interval(3, 6));
 
         await this.utils.screenshot(this.LOG_NAME, "last_hashtag");
     }
@@ -97,7 +97,7 @@ class Likemode_classic extends Manager_state {
                     }
                 }
 
-                await this.utils.sleep(this.utils.random_interval(4, 8));
+                await this.utils.sleep(this.utils.random_interval(3, 6));
 
                 if (this.cache_hash_tags.length > 0) {
                     await this.bot.goto(photo_url);
@@ -111,7 +111,7 @@ class Likemode_classic extends Manager_state {
             photo_url = this.get_photo_url();
 
             this.log.info(`current photo url from cache ${photo_url}`);
-            await this.utils.sleep(this.utils.random_interval(4, 8));
+            await this.utils.sleep(this.utils.random_interval(3, 6));
 
             try {
                 await this.bot.goto(photo_url);
@@ -130,7 +130,7 @@ class Likemode_classic extends Manager_state {
                 }
 
             }
-            await this.utils.sleep(this.utils.random_interval(4, 8));
+            await this.utils.sleep(this.utils.random_interval(3, 6));
         }
     }
 
@@ -162,7 +162,7 @@ class Likemode_classic extends Manager_state {
             this.emit(this.STATE_EVENTS.CHANGE_STATUS, this.STATE.ERROR);
         }
 
-        await this.utils.sleep(this.utils.random_interval(4, 8));
+        await this.utils.sleep(this.utils.random_interval(3, 6));
         await this.utils.screenshot(this.LOG_NAME, "last_like_after");
     }
 
@@ -189,12 +189,12 @@ class Likemode_classic extends Manager_state {
                 await this.like_open_hashtagpage();
             }
 
-            await this.utils.sleep(this.utils.random_interval(4, 8));
+            await this.utils.sleep(this.utils.random_interval(3, 6));
             if (this.cache_hash_tags.length > 0) {
                 await this.like_get_urlpic();
             }
 
-            await this.utils.sleep(this.utils.random_interval(4, 8));
+            await this.utils.sleep(this.utils.random_interval(3, 6));
             if (this.cache_hash_tags.length > 0) {
                 await this.like_click_heart();
             }

@@ -40,7 +40,7 @@ class Likemode_competitor_users extends Manager_state {
             this.log.error(`goto ${err}`);
         }
 
-        await this.utils.sleep(this.utils.random_interval(4, 8));
+        await this.utils.sleep(this.utils.random_interval(3, 6));
 
         await this.utils.screenshot(this.LOG_NAME, "account_page");
     }
@@ -102,12 +102,12 @@ class Likemode_competitor_users extends Manager_state {
                 this.log.warning("error follower url.");
             }
 
-            await this.utils.sleep(this.utils.random_interval(4, 8));
+            await this.utils.sleep(this.utils.random_interval(3, 6));
             await this.bot.goto(follower_url);
         } else {
             follower_url = this.get_follower_url();
             this.log.info(`current url from cache ${follower_url}`);
-            await this.utils.sleep(this.utils.random_interval(4, 8));
+            await this.utils.sleep(this.utils.random_interval(3, 6));
 
             try {
                 await this.bot.goto(follower_url);
@@ -115,7 +115,7 @@ class Likemode_competitor_users extends Manager_state {
                 this.log.error(`goto ${err}`);
             }
         }
-        await this.utils.sleep(this.utils.random_interval(4, 8));
+        await this.utils.sleep(this.utils.random_interval(3, 6));
     }
 
     /**
@@ -191,7 +191,7 @@ class Likemode_competitor_users extends Manager_state {
             this.emit(this.STATE_EVENTS.CHANGE_STATUS, this.STATE.ERROR);
         }
 
-        await this.utils.sleep(this.utils.random_interval(4, 8));
+        await this.utils.sleep(this.utils.random_interval(3, 6));
 
         await this.utils.screenshot(this.LOG_NAME, "last_like_after");
     }
@@ -222,12 +222,12 @@ class Likemode_competitor_users extends Manager_state {
                     await this.open_account_page();
                 }
 
-                await this.utils.sleep(this.utils.random_interval(4, 8));
+                await this.utils.sleep(this.utils.random_interval(3, 6));
 
                 await this.get_followers();
                 await this.open_follower_account();
 
-                await this.utils.sleep(this.utils.random_interval(4, 8));
+                await this.utils.sleep(this.utils.random_interval(3, 6));
 
                 await this.like_click_heart();
 
