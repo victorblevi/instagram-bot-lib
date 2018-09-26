@@ -289,13 +289,20 @@ class Fdfmode_classic extends Manager_state {
     async fdf_click_defollow() {
         this.log.info("try defollow");
         let username = "";
-        try {
-            await this.bot.waitForSelector("main header section h1");
-            username = await this.bot.evaluate(el => el.innerHTML, await this.bot.$("main header section h1"));
-            this.log.info("username " + username);
-        } catch (err) {
-            this.log.warning("get username: " + err);
-        }
+        let retry = 0;
+        do {
+            try {
+                await this.bot.waitForSelector("main header section h1");
+                username = await this.bot.evaluate(el => el.innerHTML, await this.bot.$("main header section h1"));
+                this.log.info("username " + username);
+                retry = 0;
+            } catch (err) {
+                this.log.warning("get username: " + err);
+                await this.bot.reload();
+                await this.utils.sleep(this.utils.random_interval(3, 6));
+                retry++;
+            }
+        } while (retry == 1);
 
         try {
             await this.bot.waitForSelector("main header div span button");

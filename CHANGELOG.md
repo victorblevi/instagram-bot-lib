@@ -1,5 +1,11 @@
+# v0.9.4 (26 September, 2018)
+* Fix: API::stop() now work correctly
+* Fix: Follow/Defollow Mode Realistic random userpage is 404
+* Upgrade: puppeteer v1.6.2
+
+
 # v0.9.3 (22 September, 2018)
-* Fix: Follow/Defollow Mode Classic stop working if photo or account are removed
+* Fix: Follow/Defollow Mode Realistic stop working if photo or account are removed
 * Fix: Like Mode Realistic correct like/don't like message
 * Performance: all actions are now fastest than 1-2 seconds
 
@@ -10,7 +16,7 @@
 
 # v0.9.1 (15 September, 2018)
 * Fix: Node is either not visible or not an HTMLElement (#82 #86 #84)
-* Fix: Random crash of Follow/Defollow Mode Classic
+* Fix: Random crash of Follow/Defollow Mode Realistic
 * Refactor: 2FA flow
 * Update: New user-agent
 * Upgrade: puppeteer v1.8.0
