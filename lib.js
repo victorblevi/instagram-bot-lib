@@ -162,7 +162,7 @@ module.exports = function(config) {
     };
 
     this.start = async function() {
-        Promise.race(await this.run(), this.exit_promise);
+        Promise.race([this.run(), this.exit_promise]);
     };
 
 };

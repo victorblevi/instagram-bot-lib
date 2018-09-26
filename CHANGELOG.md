@@ -1,6 +1,7 @@
 # v0.9.4 (26 September, 2018)
 * Fix: API::stop() now work correctly
 * Fix: Follow/Defollow Mode Realistic random userpage is 404
+* Fix: docker container (by [Julian Xhokaxhiu](https://github.com/julianxhokaxhiu)) #95
 * Upgrade: puppeteer v1.6.2
 
 
