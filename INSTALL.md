@@ -14,7 +14,7 @@ wget https://launchpad.net/~chromium-team/+archive/ubuntu/stable/+build/15466406
 wget https://launchpad.net/~chromium-team/+archive/ubuntu/stable/+build/15466406/+files/chromium-browser_69.0.3497.100-0ubuntu0.16.04.1_armhf.deb
 
 sudo dpkg -i chromium-codecs-ffmpeg_69.0.3497.100-0ubuntu0.16.04.1_armhf.deb
-sudp dpkg -i chromium-browser_69.0.3497.100-0ubuntu0.16.04.1_armhf.deb
+sudo dpkg -i chromium-browser_69.0.3497.100-0ubuntu0.16.04.1_armhf.deb
 sudo apt-get install -f
 ```
 
@@ -53,7 +53,7 @@ wget https://launchpad.net/~chromium-team/+archive/ubuntu/stable/+build/15466406
 wget https://launchpad.net/~chromium-team/+archive/ubuntu/stable/+build/15466406/+files/chromium-browser_69.0.3497.100-0ubuntu0.16.04.1_armhf.deb
 
 sudo dpkg -i chromium-codecs-ffmpeg_69.0.3497.100-0ubuntu0.16.04.1_armhf.deb
-sudp dpkg -i chromium-browser_69.0.3497.100-0ubuntu0.16.04.1_armhf.deb
+sudo dpkg -i chromium-browser_69.0.3497.100-0ubuntu0.16.04.1_armhf.deb
 sudo apt-get install -f
 ```
 
