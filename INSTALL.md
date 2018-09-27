@@ -1,14 +1,25 @@
 # Setup - Raspbian 9
-#### 1. Install chromium >= v65
+#### 1. Install chromium v65
 - `apt-get install chromium-browser`
 
-#### 2. Install Node v8.X
+#### 2. Install Node v8
 1. `curl -sL https://deb.nodesource.com/setup_8.x -o nodesource_setup.sh `
 2. `sudo bash nodesource_setup.sh`
 3. `rm nodesource_setup.sh`
 4. `sudo apt-get install nodejs`
 
-#### 3. Run
+#### 3. Update chromium v65 to v69
+```
+wget http://launchpadlibrarian.net/252010249/libfontconfig1_2.11.94-0ubuntu1_armhf.deb
+wget https://launchpad.net/~chromium-team/+archive/ubuntu/stable/+build/15466406/+files/chromium-codecs-ffmpeg_69.0.3497.100-0ubuntu0.16.04.1_armhf.deb
+wget https://launchpad.net/~chromium-team/+archive/ubuntu/stable/+build/15466406/+files/chromium-browser_69.0.3497.100-0ubuntu0.16.04.1_armhf.deb
+
+sudo dpkg -i libfontconfig1_2.11.94-0ubuntu1_armhf.deb
+sudo dpkg -i chromium-codecs-ffmpeg_64.0.3282.167-0ubuntu0.17.10.1_armhf.deb
+sudp dpkg -i chromium-browser_64.0.3282.167-0ubuntu0.17.10.1_armhf.deb
+```
+
+#### 4. Run
 1. Download [stable bot version](https://github.com/social-manager-tools/instagram-bot.js/releases) and extract it.
 2. Run `npm install` in `instagram-bot.js` folder.
 3. Rename `config.js.tpl` to `config.js`, fill it properly.
@@ -16,10 +27,10 @@
 5. If work add star :star: at this project :heart:
 6. If you want help me: <b><a href="http://paypal.ptkdev.io">donate on paypal</a></b> or become a <b><a href="http://patreon.ptkdev.io">backer on patreon</a></b>.
 
-#### 4. Use raspbian chromium, not the node_modules version
+#### 5. Use raspbian chromium, not the node_modules version
 - Edit `config.js` and set `executable_path` to `/usr/bin/chromium-browser` in puppeteer section.
 
-#### 5. You don't have monitor?
+#### 6. You don't have monitor?
 - Edit `config.js` and set `chrome_headless` to `true`, is mandatory.
 
 # Setup - Raspbian 8
