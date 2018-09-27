@@ -20,12 +20,17 @@ sudp dpkg -i chromium-browser_69.0.3497.100-0ubuntu0.16.04.1_armhf.deb
 ```
 
 #### 4. Run
-1. Download [stable bot version](https://github.com/social-manager-tools/instagram-bot.js/releases) and extract it.
-2. Run `npm install` in `instagram-bot.js` folder.
-3. Rename `config.js.tpl` to `config.js`, fill it properly.
-4. Start the bot via `node bot.js`
-5. If work add star :star: at this project :heart:
-6. If you want help me: <b><a href="http://paypal.ptkdev.io">donate on paypal</a></b> or become a <b><a href="http://patreon.ptkdev.io">backer on patreon</a></b>.
+1. Run `npm install instagrambotlib`
+2. Get [config.js](https://raw.githubusercontent.com/social-manager-tools/instagram-bot-lib/0.9.4/config.js.tpl) file for step 3, fill it properly and remove `.tpl` suffix.
+3. On your code require library and run bot, example:
+```
+    const config = require ("./config");
+    const Bot = require("instagrambotlib");
+    let bot = new Bot(config);
+    bot.start();
+```
+4. If work add star :star: at this project :heart:
+5. If you want help me: **[donate on paypal](http://paypal.ptkdev.io)** or become a **[backer on patreon](http://patreon.ptkdev.io)**.
 
 #### 5. Use raspbian chromium, not the node_modules version
 - Edit `config.js` and set `executable_path` to `/usr/bin/chromium-browser` in puppeteer section.
@@ -59,12 +64,17 @@ sudp dpkg -i chromium-browser_64.0.3282.167-0ubuntu0.17.10.1_armhf.deb
 - Run `sudo apt-get update && sudo apt-get dist-upgrade`
 
 #### 5. Run
-1. Download [stable bot version](https://github.com/social-manager-tools/instagram-bot.js/releases) and extract it.
-2. Run `npm install` in `instagram-bot.js` folder.
-3. Rename `config.js.tpl` to `config.js`, fill it properly.
-4. Start the bot via `node bot.js`
-5. If work add star :star: at this project :heart:
-6. If you want help me: <b><a href="http://paypal.ptkdev.io">donate on paypal</a></b> or become a <b><a href="http://patreon.ptkdev.io">backer on patreon</a></b>.
+1. Run `npm install instagrambotlib`
+2. Get [config.js](https://raw.githubusercontent.com/social-manager-tools/instagram-bot-lib/0.9.4/config.js.tpl) file for step 3, fill it properly and remove `.tpl` suffix.
+3. On your code require library and run bot, example:
+```
+    const config = require ("./config");
+    const Bot = require("instagrambotlib");
+    let bot = new Bot(config);
+    bot.start();
+```
+4. If work add star :star: at this project :heart:
+5. If you want help me: **[donate on paypal](http://paypal.ptkdev.io)** or become a **[backer on patreon](http://patreon.ptkdev.io)**.
 
 #### 6. Use raspbian chromium, not the node_modules version
 - Edit `config.js` and set `executable_path` to `/usr/bin/chromium-browser` in puppeteer section:
