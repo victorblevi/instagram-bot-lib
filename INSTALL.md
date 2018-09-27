@@ -10,12 +10,10 @@
 
 #### 3. Update chromium v65 to v69
 ```
-wget http://launchpadlibrarian.net/252010249/libfontconfig1_2.11.94-0ubuntu1_armhf.deb
 wget https://launchpad.net/~chromium-team/+archive/ubuntu/stable/+build/15466406/+files/chromium-codecs-ffmpeg_69.0.3497.100-0ubuntu0.16.04.1_armhf.deb
 wget https://launchpad.net/~chromium-team/+archive/ubuntu/stable/+build/15466406/+files/chromium-browser_69.0.3497.100-0ubuntu0.16.04.1_armhf.deb
 
-sudo dpkg -i libfontconfig1_2.11.94-0ubuntu1_armhf.deb
-sudo dpkg -i chromium-codecs-ffmpeg_69.0.3497.100-0ubuntu0.16.04.1_armhf.debb
+sudo dpkg -i chromium-codecs-ffmpeg_69.0.3497.100-0ubuntu0.16.04.1_armhf.deb
 sudp dpkg -i chromium-browser_69.0.3497.100-0ubuntu0.16.04.1_armhf.deb
 ```
 
@@ -50,11 +48,9 @@ sudp dpkg -i chromium-browser_69.0.3497.100-0ubuntu0.16.04.1_armhf.deb
 
 #### 3. Update chromium v60 to v64
 ```
-wget http://launchpadlibrarian.net/252010249/libfontconfig1_2.11.94-0ubuntu1_armhf.deb
 wget https://launchpad.net/~chromium-team/+archive/ubuntu/stable/+build/14349678/+files/chromium-codecs-ffmpeg_64.0.3282.167-0ubuntu0.17.10.1_armhf.deb
 wget https://launchpad.net/~chromium-team/+archive/ubuntu/stable/+build/14349678/+files/chromium-browser_64.0.3282.167-0ubuntu0.17.10.1_armhf.deb
 
-sudo dpkg -i libfontconfig1_2.11.94-0ubuntu1_armhf.deb
 sudo dpkg -i chromium-codecs-ffmpeg_64.0.3282.167-0ubuntu0.17.10.1_armhf.deb
 sudp dpkg -i chromium-browser_64.0.3282.167-0ubuntu0.17.10.1_armhf.deb
 ```
