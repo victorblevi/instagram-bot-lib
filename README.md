@@ -85,9 +85,13 @@ $ docker run \
     --restart=always \
     --name=instagram-bot \
     -d \
-    -v /path/to/config.js:/app/configs/config.js \
-    socialmanagertools/instagram-bot.js &>/dev/null
+    -v /path/to/config.js:/app/config.js \
+    socialmanagertools/instagram-bot.js:amd64 &>/dev/null
 ```
+
+**AVAILABLE TAGS:** `amd64` (64bit), `i386` (32bit),`armv7` (Raspberry PI 2), `armv8` (Raspberry PI 3)
+
+**WARNING:** with docker is mandatory edit `config.js` and set `chrome_headless` on `true` and set `executable_path` to `/usr/bin/chromium-browser`. Without this fix docker don't work.
 
 ## Roadmap
 See full roadmap (open task, todo and bugs) in [project page](https://github.com/social-manager-tools/instagram-bot.js/projects?query=is%3Aopen+sort%3Aname-asc).

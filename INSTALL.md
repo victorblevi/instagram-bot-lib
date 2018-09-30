@@ -1,3 +1,18 @@
+# Setup - Docker (Raccomanded)
+#### 1. Install docker 
+- `sudo apt-get install docker` on your Raspbian 9
+
+#### 2. Run docker
+Edit `/path/to/config.js` with your config for push to docker. Bot start automatically.
+```sh
+$ docker run \
+    --restart=always \
+    --name=instagram-bot \
+    -d \
+    -v /path/to/config.js:/app/config.js \
+    socialmanagertools/instagram-bot.js:armv8 &>/dev/null
+```
+
 # Setup - Raspbian 9
 #### 1. Install chromium v65
 - `apt-get install chromium-browser`
