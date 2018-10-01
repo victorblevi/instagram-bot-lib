@@ -132,13 +132,13 @@ class commentmode_classic extends Manager_state {
         }
 
         this.photo_current = photo_url.split("?tagged")[0];
-        if (typeof photo_url !== "undefined"){
-            if(typeof this.photo_commented[this.photo_current] === "undefined"){
+        if (typeof photo_url !== "undefined") {
+            if (typeof this.photo_commented[this.photo_current] === "undefined") {
                 this.photo_commented[this.photo_current] = 1;
-            }else{
+            } else {
                 this.photo_commented[this.photo_current]++;
             }
-            
+
         }
         await this.utils.sleep(this.utils.random_interval(3, 6));
     }
@@ -188,7 +188,7 @@ class commentmode_classic extends Manager_state {
      */
     async comment() {
         this.log.info("try leave comment");
-        let comment_area_elem = "main article:nth-child(1) section:nth-child(5) form textarea";
+        let comment_area_elem = "article:nth-child(1) section:nth-child(5) form textarea";
 
         try {
             let textarea = await this.bot.$(comment_area_elem);
@@ -201,9 +201,9 @@ class commentmode_classic extends Manager_state {
             if (this.is_ok()) {
                 await this.bot.waitForSelector(comment_area_elem);
                 let button = await this.bot.$(comment_area_elem);
-                if(this.photo_commented[this.photo_current] > 1){
+                if (this.photo_commented[this.photo_current] > 1) {
                     this.log.warning("</3 commented previously");
-                }else{
+                } else {
                     await button.click();
                     await this.bot.type(comment_area_elem, this.get_comment(), { delay: 100 });
                     await button.press("Enter");
@@ -243,11 +243,17 @@ class commentmode_classic extends Manager_state {
     async start() {
         this.log.info("classic");
 
+        let alive = true;
         do {
+            alive = await this.utils.keep_alive();
+            if (alive == false) {
+                break;
+            }
+
             let today = new Date();
             this.log.info("time night: " + (parseInt(today.getHours() + "" + (today.getMinutes() < 10 ? "0" : "") + today.getMinutes())));
-            
-            if(this.config.bot_sleep_night === false){
+
+            if (this.config.bot_sleep_night === false) {
                 this.config.bot_start_sleep = "00:00";
             }
             if ((parseInt(today.getHours() + "" + (today.getMinutes() < 10 ? "0" : "") + today.getMinutes()) >= (this.config.bot_start_sleep).replace(":", ""))) {
@@ -270,6 +276,11 @@ class commentmode_classic extends Manager_state {
                     this.cache_hash_tags = [];
                 }
 
+                alive = await this.utils.keep_alive();
+                if (alive == false) {
+                    break;
+                }
+
                 if (this.cache_hash_tags.length <= 0 && this.is_not_ready()) {
                     this.log.info(`finish fast comment, bot sleep ${this.config.bot_fastlike_min} - ${this.config.bot_fastlike_max} minutes`);
                     this.cache_hash_tags = [];
@@ -284,5 +295,5 @@ class commentmode_classic extends Manager_state {
 }
 
 module.exports = (bot, config, utils, db) => {
-    return new commentmode_classic(bot, config, utils, db); 
+    return new commentmode_classic(bot, config, utils, db);
 };

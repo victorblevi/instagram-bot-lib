@@ -25,12 +25,6 @@
 module.exports = function(config) {
     this.config = config;
     this.browser = null;
-    this.exit = null;
-    this.exit_promise = new Promise((resolve) => {
-        this.exit = () => {
-            resolve();
-        };
-    });
 
     /**
      * API: stop()
@@ -40,8 +34,6 @@ module.exports = function(config) {
      */
     this.stop = async function() {
         await this.browser.close();
-
-        this.exit();
     };
 
     /**
@@ -50,7 +42,7 @@ module.exports = function(config) {
      * if you want start bot, remeber set config.js
      *
      */
-    this.run = async function() {
+    this.start = async function() {
         var bot = null;
         const fs = require("fs");
         let config = this.config;
@@ -66,7 +58,7 @@ module.exports = function(config) {
          * Set config options, check updates and integrity of bot
          *
          */
-        let check = require("./modules/common/utils")(bot, config);
+        let check = require("./modules/common/utils")(bot, null, config);
         if (config.ui !== true) {
             if (!fs.existsSync("./databases")) {
                 fs.mkdirSync("./databases");
@@ -112,7 +104,7 @@ module.exports = function(config) {
          *
          */
         let routes = require("./routes/strategies");
-        let utils = require("./modules/common/utils")(bot, config);
+        let utils = require("./modules/common/utils")(bot, this.browser, config);
         let Log = require("./modules/logger/Log");
         let log = new Log("switch_mode", config);
         let login = require("./modules/mode/login.js")(bot, config, utils);
@@ -159,10 +151,6 @@ module.exports = function(config) {
             await switch_mode();
         }
 
-    };
-
-    this.start = async function() {
-        Promise.race([this.run(), this.exit_promise]);
     };
 
 };

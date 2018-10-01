@@ -186,9 +186,9 @@ class Likemode_realistic extends Manager_state {
         }
 
         try {
-            await this.bot.waitForSelector("main article:nth-child(1) section:nth-child(1) button:nth-child(1)");
-            let button = await this.bot.$("main article:nth-child(1) section:nth-child(1) button:nth-child(1)");
-            let button_before_click = await this.bot.evaluate(el => el.innerHTML, await this.bot.$("main article:nth-child(1) section:nth-child(1) button:nth-child(1)"));
+            await this.bot.waitForSelector("article:nth-child(1) section:nth-child(1) button:nth-child(1)");
+            let button = await this.bot.$("article:nth-child(1) section:nth-child(1) button:nth-child(1)");
+            let button_before_click = await this.bot.evaluate(el => el.innerHTML, await this.bot.$("article:nth-child(1) section:nth-child(1) button:nth-child(1)"));
             this.log.info("button text before click: " + button_before_click);
 
             if (this.photo_liked[this.photo_current] > 1) {
@@ -198,8 +198,8 @@ class Likemode_realistic extends Manager_state {
                 await button.click();
                 await this.utils.sleep(this.utils.random_interval(2, 3));
 
-                await this.bot.waitForSelector("main article:nth-child(1) section:nth-child(1) button:nth-child(1)");
-                let button_after_click = await this.bot.evaluate(el => el.innerHTML, await this.bot.$("main article:nth-child(1) section:nth-child(1) button:nth-child(1)"));
+                await this.bot.waitForSelector("article:nth-child(1) section:nth-child(1) button:nth-child(1)");
+                let button_after_click = await this.bot.evaluate(el => el.innerHTML, await this.bot.$("article:nth-child(1) section:nth-child(1) button:nth-child(1)"));
                 this.log.info("button text after click: " + button_after_click);
 
                 if (button_after_click.includes("filled") || button_after_click.includes("red")) {
@@ -227,7 +227,7 @@ class Likemode_realistic extends Manager_state {
     }
 
     /**
-     * LikemodeClassic Flow
+     * Likemode Realistic Flow
      * =====================
      *
      */
@@ -237,8 +237,13 @@ class Likemode_realistic extends Manager_state {
         await this.init_db();
 
         let today = "";
-
+        let alive = true;
         do {
+            alive = await this.utils.keep_alive();
+            if (alive == false) {
+                break;
+            }
+
             today = new Date();
             this.log.info("time night: " + (parseInt(today.getHours() + "" + (today.getMinutes() < 10 ? "0" : "") + today.getMinutes())));
 
@@ -268,6 +273,11 @@ class Likemode_realistic extends Manager_state {
                     this.cache_hash_tags = [];
                 }
 
+                alive = await this.utils.keep_alive();
+                if (alive == false) {
+                    break;
+                }
+
                 if (this.cache_hash_tags.length <= 0) {
                     this.log.info("finish fast like, bot sleep " + this.config.bot_fastlike_min + "-" + this.config.bot_fastlike_max + " minutes");
                     this.cache_hash_tags = [];
@@ -277,6 +287,7 @@ class Likemode_realistic extends Manager_state {
                 this.log.info("is night, bot sleep");
                 await this.utils.sleep(this.utils.random_interval(60 * 4, 60 * 5));
             }
+
         } while (true);
     }
 

@@ -46,6 +46,7 @@
         {
             "allowSingleLine": false
         }],
-        "snakecasejs/snakecasejs": "warn"
+        "snakecasejs/snakecasejs": "warn",
+        "snakecasejs/whitelist": ["defaultViewport","executablePath"]
     }
 }
