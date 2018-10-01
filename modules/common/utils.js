@@ -13,8 +13,9 @@
  */
 require("colors");
 class Utils {
-    constructor(bot, config) {
+    constructor(bot, browser, config) {
         this.bot = bot;
+        this.browser = browser;
         this.config = config;
         this.fs = require("fs");
         this.LOG_NAME = "utils";
@@ -35,7 +36,7 @@ class Utils {
         this.log.warning("Donate with patreon: http://patreon.ptkdev.io");
         this.log.warning("Donate with paypal: http://paypal.ptkdev.io");
     }
-    
+
     /**
      * Compare package version
      * =====================
@@ -279,7 +280,7 @@ class Utils {
                 await this.bot.screenshot({ path: this.config.screenshot_path + this.config.instagram_username + "_" + func + "_" + name + ".jpg" });
                 this.log.info("Cheese! Screenshot!");
             } catch (err) {
-                this.log.error(this.LOG.WARNING, "screenshot", "error " + err);
+                this.log.error("screenshot: error " + err);
             }
         }
     }
@@ -292,6 +293,23 @@ class Utils {
      */
     random_interval(min, max) {
         return (Math.floor(Math.random() * (max - min + 1)) + min) * 1000;
+    }
+
+    /**
+     * Kill Process if browser page is closed
+     * =====================
+     * Exit from node
+     *
+     */
+    async keep_alive() {
+        let pages = await this.browser.pages();
+        if (pages.length >= 2) {
+            return true;
+        } else {
+            this.log.info("Bye bye! Shutdown... wait ~30sec for the bot stopping...");
+        }
+
+        return false;
     }
 
     /**
@@ -342,6 +360,6 @@ class Utils {
     }
 }
 
-module.exports = (bot, config, utils) => {
-    return new Utils(bot, config, utils);
+module.exports = (bot, browser, config) => {
+    return new Utils(bot, browser, config);
 };

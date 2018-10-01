@@ -1,7 +1,7 @@
 {
   "name": "instagrambotlib",
   "description": "Instagram Bot API",
-  "version": "0.9.4",
+  "version": "0.9.5",
   "main": "lib.js",
   "author": "Patryk Rzucidlo [@ptkdev] <support@ptkdev.io> (https://ptkdev.it)",
   "license": "GPL-3.0",
@@ -57,7 +57,7 @@
     "eslint-plugin-import": "^2.11.0",
     "eslint-plugin-node": "^6.0.1",
     "eslint-plugin-promise": "^3.7.0",
-    "eslint-plugin-snakecasejs": "^1.0.0",
+    "eslint-plugin-snakecasejs": "^1.1.0-5",
     "eslint-plugin-standard": "^3.1.0",
     "pre-commit": "^1.2.2"
   }

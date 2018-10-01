@@ -133,8 +133,8 @@ class Likemode_superlike extends Manager_state {
         this.log.info("try open userpage");
 
         try {
-            await this.bot.waitForSelector("main article:nth-child(1) header:nth-child(1) div:nth-child(2) a:nth-child(1)");
-            let button = await this.bot.$("main article:nth-child(1) header:nth-child(1) div:nth-child(2) a:nth-child(1)");
+            await this.bot.waitForSelector("article:nth-child(1) header:nth-child(1) div:nth-child(2) a:nth-child(1)");
+            let button = await this.bot.$("article:nth-child(1) header:nth-child(1) div:nth-child(2) a:nth-child(1)");
             await button.click();
             this.emit(this.STATE_EVENTS.CHANGE_STATUS, this.STATE.OK);
         } catch (err) {
@@ -226,8 +226,8 @@ class Likemode_superlike extends Manager_state {
         this.log.info("try heart like");
 
         try {
-            await this.bot.waitForSelector("main article:nth-child(1) section:nth-child(1) button:nth-child(1)");
-            let button = await this.bot.$("main article:nth-child(1) section:nth-child(1) button:nth-child(1)");
+            await this.bot.waitForSelector("article:nth-child(1) section:nth-child(1) button:nth-child(1)");
+            let button = await this.bot.$("article:nth-child(1) section:nth-child(1) button:nth-child(1)");
             if (this.photo_liked[this.photo_current] > 1) {
                 this.log.warning("</3 liked previously");
             } else {
@@ -258,8 +258,13 @@ class Likemode_superlike extends Manager_state {
         this.log.info("superlike");
 
         let today = "";
-
+        let alive = true;
         do {
+            alive = await this.utils.keep_alive();
+            if (alive == false) {
+                break;
+            }
+
             today = new Date();
             this.log.info("time night: " + (parseInt(today.getHours() + "" + (today.getMinutes() < 10 ? "0" : "") + today.getMinutes())));
 
@@ -299,6 +304,11 @@ class Likemode_superlike extends Manager_state {
                     await this.utils.sleep(this.utils.random_interval(3, 6));
 
                     await this.like_click_heart();
+
+                    alive = await this.utils.keep_alive();
+                    if (alive == false) {
+                        break;
+                    }
                 }
                 this.cache_hash_tags_user = [];
 
@@ -306,11 +316,17 @@ class Likemode_superlike extends Manager_state {
                     this.cache_hash_tags = [];
                 }
 
+                alive = await this.utils.keep_alive();
+                if (alive == false) {
+                    break;
+                }
+
                 if (this.cache_hash_tags.length <= 0 && this.is_not_ready()) {
                     this.log.info("finish fast like, bot sleep " + this.config.bot_fastlike_min + "-" + this.config.bot_fastlike_max + " minutes");
                     this.cache_hash_tags = [];
                     await this.utils.sleep(this.utils.random_interval(60 * this.config.bot_fastlike_min, 60 * this.config.bot_fastlike_max));
                 }
+
             } else {
                 this.log.info("is night, bot sleep");
                 await this.utils.sleep(this.utils.random_interval(60 * 4, 60 * 5));
@@ -321,5 +337,5 @@ class Likemode_superlike extends Manager_state {
 }
 
 module.exports = (bot, config, utils) => {
-    return new Likemode_superlike(bot, config, utils); 
+    return new Likemode_superlike(bot, config, utils);
 };

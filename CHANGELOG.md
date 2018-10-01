@@ -1,3 +1,13 @@
+# v0.9.5 (02 October, 2018)
+* Fix: likemode_classic new instagram selectors
+* Fix: likemode_realistic new instagram selectors
+* Fix: likemode_superlike new instagram selectors
+* Fix: likemode_competitor_users new instagram selectors
+* Fix: comment_mode new instagram selectors
+* Fix: fdfmode_classic new instagram selectors
+* API: Fix stop() again, now really work.
+
+
 # v0.9.4 (26 September, 2018)
 * Fix: API::stop() now work correctly
 * Fix: Follow/Defollow Mode Realistic random userpage is 404

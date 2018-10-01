@@ -367,7 +367,13 @@ class Fdfmode_classic extends Manager_state {
 
         await this.init_db();
 
+        let alive = true;
         do {
+            alive = await this.utils.keep_alive();
+            if (alive == false) {
+                break;
+            }
+
             today = new Date();
             this.log.info("time night: " + (parseInt(today.getHours() + "" + (today.getMinutes() < 10 ? "0" : "") + today.getMinutes())));
 
@@ -421,6 +427,11 @@ class Fdfmode_classic extends Manager_state {
                     this.cache_hash_tags = [];
                 }
 
+                alive = await this.utils.keep_alive();
+                if (alive == false) {
+                    break;
+                }
+
                 if (this.cache_hash_tags.length <= 0) {
                     this.log.info("finish follow, bot sleep " + this.config.bot_fastlikefdf_min + "-" + this.config.bot_fastlikefdf_max + " minutes");
                     this.cache_hash_tags = [];
@@ -430,6 +441,7 @@ class Fdfmode_classic extends Manager_state {
                 this.log.info("is night, bot sleep");
                 await this.utils.sleep(this.utils.random_interval(60 * 4, 60 * 5));
             }
+
         } while (true);
     }
 
