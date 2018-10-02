@@ -302,8 +302,17 @@ class Utils {
      *
      */
     async keep_alive() {
-        let pages = await this.browser.pages();
-        if (pages.length >= 2) {
+        let pages = null;
+
+        try {
+            await this.bot.waitForSelector("title");
+            pages = await this.browser.pages();
+        } catch (err) {
+            this.log.info("Bye bye! Shutdown... wait ~30sec for the bot stopping...");
+            return false;
+        }
+
+        if (pages.length == 2) {
             return true;
         } else {
             this.log.info("Bye bye! Shutdown... wait ~30sec for the bot stopping...");
