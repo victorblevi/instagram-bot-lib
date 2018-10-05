@@ -69,9 +69,15 @@ class Login extends Manager_state {
      */
     async submitform() {
         this.log.info("submit");
-        await this.bot.waitForSelector("form button");
-        let button = await this.bot.$("form button");
-        await button.click();
+        try {
+            await this.bot.waitForSelector("form > div:nth-child(3) > button");
+            let button = await this.bot.$("form > div:nth-child(3) > button");
+            await button.click();
+        } catch (err) {
+            await this.bot.waitForSelector("form button");
+            let button = await this.bot.$("form button");
+            await button.click();
+        }
 
         await this.utils.screenshot(this.LOG_NAME, "submit");
     }
@@ -144,5 +150,5 @@ class Login extends Manager_state {
 }
 
 module.exports = (bot, config, utils) => {
-    return new Login(bot, config, utils); 
+    return new Login(bot, config, utils);
 };
