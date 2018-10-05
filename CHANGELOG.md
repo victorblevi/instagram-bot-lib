@@ -1,3 +1,7 @@
+# v0.9.6 (05 October, 2018)
+* Fix: login random don't work
+
+
 # v0.9.5 (02 October, 2018)
 * Fix: likemode_classic new instagram selectors
 * Fix: likemode_realistic new instagram selectors
