@@ -1,3 +1,7 @@
+# v0.9.7 (08 October, 2018)
+* Fix: fdfmode_classic #42
+
+
 # v0.9.6 (05 October, 2018)
 * Fix: login random don't work
 
