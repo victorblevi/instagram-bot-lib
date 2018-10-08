@@ -206,9 +206,9 @@ class Fdfmode_classic extends Manager_state {
             this.log.warning(username + ": is in whitelits, ignored by follow.");
         } else {
             try {
-                await this.bot.waitForSelector("article header div div button");
-                let button = await this.bot.$("article header div div button");
-                let button_before_click = await this.bot.evaluate(el => el.innerHTML, await this.bot.$("article header div div button"));
+                await this.bot.waitForSelector("article header div button");
+                let button = await this.bot.$("article header div button");
+                let button_before_click = await this.bot.evaluate(el => el.innerHTML, await this.bot.$("article header div button"));
                 this.log.info("button text before click: " + button_before_click);
                 if (this.photo_liked[this.photo_current] > 1) {
                     this.log.warning("followed previously");
@@ -218,8 +218,8 @@ class Fdfmode_classic extends Manager_state {
 
                     await this.utils.sleep(this.utils.random_interval(2, 3));
 
-                    await this.bot.waitForSelector("article header div div button");
-                    let button_after_click = await this.bot.evaluate(el => el.innerHTML, await this.bot.$("article header div div button"));
+                    await this.bot.waitForSelector("article header div button");
+                    let button_after_click = await this.bot.evaluate(el => el.innerHTML, await this.bot.$("article header div button"));
                     this.log.info("button text after click: " + button_after_click);
 
                     if (button_after_click != button_before_click) {
@@ -292,8 +292,8 @@ class Fdfmode_classic extends Manager_state {
         let retry = 0;
         do {
             try {
-                await this.bot.waitForSelector("main header section h1");
-                username = await this.bot.evaluate(el => el.innerHTML, await this.bot.$("main header section h1"));
+                await this.bot.waitForSelector("header section h1");
+                username = await this.bot.evaluate(el => el.innerHTML, await this.bot.$("header section h1"));
                 this.log.info("username " + username);
                 retry = 0;
             } catch (err) {
@@ -305,9 +305,9 @@ class Fdfmode_classic extends Manager_state {
         } while (retry == 1);
 
         try {
-            await this.bot.waitForSelector("main header div span button");
-            let button = await this.bot.$("main header div span button");
-            let button_before_click = await this.bot.evaluate(el => el.innerHTML, await this.bot.$("main header div span button"));
+            await this.bot.waitForSelector("header section > div:nth-child(2) button");
+            let button = await this.bot.$("header section > div:nth-child(2) button");
+            let button_before_click = await this.bot.evaluate(el => el.innerHTML, await this.bot.$("header section > div:nth-child(2) button"));
             this.log.info("button text before click: " + button_before_click);
 
             if (this.photo_liked[this.photo_current] > 1) {
@@ -325,8 +325,8 @@ class Fdfmode_classic extends Manager_state {
 
                 await this.utils.sleep(this.utils.random_interval(1, 2));
 
-                await this.bot.waitForSelector("main header div span button");
-                let button_after_click = await this.bot.evaluate(el => el.innerHTML, await this.bot.$("main header div span button"));
+                await this.bot.waitForSelector("header section > div:nth-child(2) button");
+                let button_after_click = await this.bot.evaluate(el => el.innerHTML, await this.bot.$("header section > div:nth-child(2) button"));
                 this.log.info("button text after click: " + button_after_click);
 
                 if (button_after_click != button_before_click) {
