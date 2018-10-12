@@ -305,9 +305,9 @@ class Fdfmode_classic extends Manager_state {
         } while (retry == 1);
 
         try {
-            await this.bot.waitForSelector("header section > div:nth-child(2) button");
-            let button = await this.bot.$("header section > div:nth-child(2) button");
-            let button_before_click = await this.bot.evaluate(el => el.innerHTML, await this.bot.$("header section > div:nth-child(2) button"));
+            await this.bot.waitForSelector("header section div:nth-child(1) button");
+            let button = await this.bot.$("header section div:nth-child(1) button");
+            let button_before_click = await this.bot.evaluate(el => el.innerHTML, await this.bot.$("header section div:nth-child(1) button"));
             this.log.info("button text before click: " + button_before_click);
 
             if (this.photo_liked[this.photo_current] > 1) {
@@ -325,8 +325,8 @@ class Fdfmode_classic extends Manager_state {
 
                 await this.utils.sleep(this.utils.random_interval(1, 2));
 
-                await this.bot.waitForSelector("header section > div:nth-child(2) button");
-                let button_after_click = await this.bot.evaluate(el => el.innerHTML, await this.bot.$("header section > div:nth-child(2) button"));
+                await this.bot.waitForSelector("header section div:nth-child(1) button");
+                let button_after_click = await this.bot.evaluate(el => el.innerHTML, await this.bot.$("header section div:nth-child(1) button"));
                 this.log.info("button text after click: " + button_after_click);
 
                 if (button_after_click != button_before_click) {
