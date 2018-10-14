@@ -5,13 +5,11 @@
  *
  * @author:     Ilya Chubarov [@agoalofalife] <agoalofalife@gmail.com>
  * @license:    This code and contributions have 'GNU General Public License v3'
- * @version:    0.1
- * @changelog:  0.1 initial release
  *
  */
 const Manager_state = require("../common/state").Manager_state;
 class Likemode_competitor_users extends Manager_state {
-    constructor(bot, config, utils) {
+    constructor (bot, config, utils) {
         super();
         this.bot = bot;
         this.config = config;
@@ -31,7 +29,7 @@ class Likemode_competitor_users extends Manager_state {
      * Open account page
      * @return {Promise<void>}
      */
-    async open_account_page() {
+    async open_account_page () {
         this.log.info(`current account ${this.account}`);
 
         try {
@@ -49,7 +47,7 @@ class Likemode_competitor_users extends Manager_state {
      * Get photo url from cache
      * @return {string} url
      */
-    get_follower_url() {
+    get_follower_url () {
         let follower_url = "";
         do {
             follower_url = this.cache_hash_tags.pop();
@@ -61,7 +59,7 @@ class Likemode_competitor_users extends Manager_state {
      * Scroll followers
      * @return {Promise<Promise<*>|Promise<Object>|*|XPathResult>}
      */
-    async scroll_followers() {
+    async scroll_followers () {
         this.log.info("scroll action");
 
         return this.bot.evaluate(() => {
@@ -83,7 +81,7 @@ class Likemode_competitor_users extends Manager_state {
     /**
      * Mix array url followers and get 20 url
      */
-    get_random_follower_url() {
+    get_random_follower_url () {
         this.cache_hash_tags = this.utils.mix_array(this.cache_hash_tags).splice(0, 20);
     }
 
@@ -91,7 +89,7 @@ class Likemode_competitor_users extends Manager_state {
      * Open page follower
      * @return {Promise<void>}
      */
-    async open_follower_account() {
+    async open_follower_account () {
         let follower_url = "";
         if (this.cache_hash_tags.length <= 0) {
             follower_url = this.get_follower_url();
@@ -121,7 +119,7 @@ class Likemode_competitor_users extends Manager_state {
      *
      * @return {Promise<void>}
      */
-    async get_followers() {
+    async get_followers () {
         this.log.info("get followers");
 
         if (this.cache_hash_tags.length <= 0) {
@@ -160,7 +158,7 @@ class Likemode_competitor_users extends Manager_state {
      * Click on heart and verify if instagram not (soft) ban you
      *
      */
-    async like_click_heart() {
+    async like_click_heart () {
         this.log.info("try heart like random photo from account");
 
         let photos = await this.bot.$$eval("article>div div div div a", hrefs => hrefs.map((a) => {
@@ -200,7 +198,7 @@ class Likemode_competitor_users extends Manager_state {
      * =====================
      *
      */
-    async start() {
+    async start () {
         this.log.info("competitor_users");
 
         let today = "";
@@ -212,15 +210,15 @@ class Likemode_competitor_users extends Manager_state {
             }
 
             today = new Date();
-            this.log.info("time night: " + (parseInt(today.getHours() + "" + (today.getMinutes() < 10 ? "0" : "") + today.getMinutes())));
+            this.log.info(`time night: ${parseInt(`${today.getHours()}${today.getMinutes() < 10 ? "0" : ""}${today.getMinutes()}`)}`);
 
             if (this.config.bot_sleep_night === false) {
                 this.config.bot_start_sleep = "00:00";
             }
-            if ((parseInt(today.getHours() + "" + (today.getMinutes() < 10 ? "0" : "") + today.getMinutes()) >= (this.config.bot_start_sleep).replace(":", ""))) {
+            if ((parseInt(`${today.getHours()}${today.getMinutes() < 10 ? "0" : ""}${today.getMinutes()}`) >= (this.config.bot_start_sleep).replace(":", ""))) {
 
-                this.log.info("loading... " + new Date(today.getFullYear(), today.getMonth(), today.getDate(), today.getHours(), today.getMinutes(), today.getSeconds()));
-                this.log.info("cache array size " + this.cache_hash_tags.length);
+                this.log.info(`loading... ${new Date(today.getFullYear(), today.getMonth(), today.getDate(), today.getHours(), today.getMinutes(), today.getSeconds())}`);
+                this.log.info(`cache array size ${this.cache_hash_tags.length}`);
 
                 if (this.cache_hash_tags.length <= 0) {
                     await this.open_account_page();
@@ -235,7 +233,7 @@ class Likemode_competitor_users extends Manager_state {
 
                 await this.like_click_heart();
 
-                if (this.cache_hash_tags.length < 9 || this.is_ready()) { //remove popular photos
+                if (this.cache_hash_tags.length < 9 || this.is_ready()) { // remove popular photos
                     this.cache_hash_tags = [];
                 }
 
@@ -245,7 +243,7 @@ class Likemode_competitor_users extends Manager_state {
                 }
 
                 if (this.cache_hash_tags.length <= 0 && this.is_not_ready()) {
-                    this.log.info("finish fast like, bot sleep " + this.config.bot_fastlike_min + "-" + this.config.bot_fastlike_max + " minutes");
+                    this.log.info(`finish fast like, bot sleep ${this.config.bot_fastlike_min}-${this.config.bot_fastlike_max} minutes`);
                     this.cache_hash_tags = [];
                     await this.utils.sleep(this.utils.random_interval(60 * this.config.bot_fastlike_min, 60 * this.config.bot_fastlike_max));
                 }

@@ -5,15 +5,11 @@
  *
  * @author:     Patryk Rzucidlo [@ptkdev] <support@ptkdev.io> (https://ptkdev.it)
  * @license:    This code and contributions have 'GNU General Public License v3'
- * @version:    0.6.2
- * @changelog:  0.1 initial release
- *              0.2 new pattern
- *              0.3 new sleep system
  *
  */
 require("colors");
 class Utils {
-    constructor(bot, browser, config) {
+    constructor (bot, browser, config) {
         this.bot = bot;
         this.browser = browser;
         this.config = config;
@@ -31,7 +27,7 @@ class Utils {
      * Patreon link
      *
      */
-    donate() {
+    donate () {
         this.log.warning("Bot work? Please donate for support this project!");
         this.log.warning("Donate with patreon: http://patreon.ptkdev.io");
         this.log.warning("Donate with paypal: http://paypal.ptkdev.io");
@@ -45,7 +41,7 @@ class Utils {
      * @return {string} 0 if same version, 1 if older, -1 if newer
      *
      */
-    compare_version(version) {
+    compare_version (version) {
         const current_version = require("../../version").version;
         const compare_versions = require("compare-versions");
         return compare_versions(current_version, version);
@@ -57,15 +53,15 @@ class Utils {
      * Bot is updated? Yes/no
      *
      */
-    check_updates(version) {
+    check_updates (version) {
         let request = require("request");
         let log = this.log;
-        request.get("https://api.ptkdev.io/v1/bot/instagram/version/", function(err, res, last_release) {
+        request.get("https://api.ptkdev.io/v1/bot/instagram/version/", function (err, res, last_release) {
             if (err) {
                 log.error("Is impossible contact api.ptkdev.io server, wifi is on?");
             } else {
                 if (version !== last_release) {
-                    log.warning("Bot release v" + last_release + " available! Current version: v" + version);
+                    log.warning(`Bot release v${last_release} available! Current version: v${version}`);
                 } else {
                     log.info("Bot is updated! :D");
                 }
@@ -79,7 +75,7 @@ class Utils {
      * String aparms to booleans from social-manager-tools
      *
      */
-    fixui(config) {
+    fixui (config) {
         config.bot_likeday_min = parseInt(config.bot_likeday_min);
         config.bot_likeday_max = parseInt(config.bot_likeday_max);
         config.bot_superlike_n = parseInt(config.bot_superlike_n);
@@ -98,27 +94,27 @@ class Utils {
      * This fix errors at boot
      *
      */
-    async create_write_file(name, path, content) {
+    async create_write_file (name, path, content) {
         let self = this;
-        return new Promise(function(resolve_write, reject_write) {
-            self.fs.writeFile(path, content, function(err) {
+        return new Promise(function (resolve_write, reject_write) {
+            self.fs.writeFile(path, content, function (err) {
                 if (err) {
-                    self.log.error(name + " don't created: " + err);
+                    self.log.error(`${name} don't created: ${err}`);
                     reject_write(err);
                 } else {
-                    self.log.info(name + " created");
+                    self.log.info(`${name} created`);
                 }
                 resolve_write(true);
             });
         });
     }
 
-    async create_is_exist(name, path) {
+    async create_is_exist (name, path) {
         let self = this;
-        return new Promise(function(resolve_exists) {
-            self.fs.open(path, "wx", function(exists) {
+        return new Promise(function (resolve_exists) {
+            self.fs.open(path, "wx", function (exists) {
                 if (exists && exists.code === "EEXIST") {
-                    self.log.info(name + " exist");
+                    self.log.info(`${name} exist`);
                     resolve_exists("exist");
                 } else {
                     resolve_exists("create");
@@ -127,7 +123,7 @@ class Utils {
         });
     }
 
-    async create_empty(name, path, content) {
+    async create_empty (name, path, content) {
         if (await this.create_is_exist(name, path) == "create") {
             await this.create_write_file(name, path, content);
         }
@@ -139,7 +135,7 @@ class Utils {
      * This fix errors at boot
      *
      */
-    async init_empty() {
+    async init_empty () {
         await this.create_empty("loginpin.txt", this.config.pin_path, "123456");
 
         await this.create_empty("logs/debug.log", this.config.log_path, "");
@@ -155,7 +151,7 @@ class Utils {
      * Get default value if config.js is not updated from config.js.tpl
      *
      */
-    default_config(config) {
+    default_config (config) {
         if (typeof config.debug === "undefined") {
             config.debug = true;
             this.log.error("config.debug use the default value, update your config.js from config.js.tpl");
@@ -274,13 +270,13 @@ class Utils {
      * Save screenshot from chrome
      *
      */
-    async screenshot(func, name) {
+    async screenshot (func, name) {
         if (this.config.log.screenshot) {
             try {
-                await this.bot.screenshot({ path: this.config.screenshot_path + this.config.instagram_username + "_" + func + "_" + name + ".jpg" });
+                await this.bot.screenshot({path: `${this.config.screenshot_path + this.config.instagram_username}_${func}_${name}.jpg`});
                 this.log.info("Cheese! Screenshot!");
             } catch (err) {
-                this.log.error("screenshot: error " + err);
+                this.log.error(`screenshot: error ${err}`);
             }
         }
     }
@@ -291,7 +287,7 @@ class Utils {
      * Random number between two numbers
      *
      */
-    random_interval(min, max) {
+    random_interval (min, max) {
         return (Math.floor(Math.random() * (max - min + 1)) + min) * 1000;
     }
 
@@ -301,7 +297,7 @@ class Utils {
      * Exit from node
      *
      */
-    async keep_alive() {
+    async keep_alive () {
         let pages = null;
 
         try {
@@ -327,7 +323,7 @@ class Utils {
      * @param max
      * @return {number}
      */
-    random_number() {
+    random_number () {
         return (Math.floor(Math.random() * (20 - 10 + 1)) + 10);
     }
 
@@ -336,8 +332,8 @@ class Utils {
      * @param arr
      * @return array
      */
-    mix_array(arr) {
-        return arr.sort(function() {
+    mix_array (arr) {
+        return arr.sort(function () {
             return 0.5 - Math.random();
         });
     }
@@ -348,7 +344,7 @@ class Utils {
      * Zzz
      *
      */
-    sleep(sec) {
+    sleep (sec) {
         return new Promise(resolve => setTimeout(resolve, sec));
     }
 
@@ -356,7 +352,7 @@ class Utils {
      * Check is debug
      * @return {boolean}
      */
-    is_debug() {
+    is_debug () {
         return this.config.debug === true;
     }
 
@@ -364,7 +360,7 @@ class Utils {
      * Get random hash tag from config file
      * @return {string}
      */
-    get_random_hash_tag() {
+    get_random_hash_tag () {
         return this.config.instagram_hashtag[Math.floor(Math.random() * this.config.instagram_hashtag.length)];
     }
 }

@@ -5,15 +5,11 @@
  *
  * @author:     Patryk Rzucidlo [@ptkdev] <support@ptkdev.io> (https://ptkdev.it)
  * @license:    This code and contributions have 'GNU General Public License v3'
- * @version:    0.5
- * @changelog:  0.1 initial release
- *              0.2 new pattern with webdriverio
- *              0.5 new pattern with puppeteer
  *
  */
 const Manager_state = require("../common/state").Manager_state;
 class Twofa extends Manager_state {
-    constructor(bot, config, utils) {
+    constructor (bot, config, utils) {
         super();
         this.bot = bot;
         this.config = config;
@@ -33,13 +29,13 @@ class Twofa extends Manager_state {
      * Press submit button
      *
      */
-    async requestpin() {
+    async requestpin () {
         this.log.warning("please insert pin in loginpin.txt, you have 50-60 seconds for that.. (tic... tac... tic... tac... tic...)");
         try {
             let button = await this.bot.$("form button");
             await button.click();
         } catch (err) {
-            this.log.error("requestpin: " + err);
+            this.log.error(`requestpin: ${err}`);
         }
     }
 
@@ -49,14 +45,14 @@ class Twofa extends Manager_state {
      * Press on email choice
      *
      */
-    async choice_email() {
+    async choice_email () {
         this.log.info("try switch to phone email");
 
         try {
             let radio = await this.bot.$("section form label[for=\"choice_1\"]");
             await radio.click();
         } catch (err) {
-            this.log.error("choice_email: " + err);
+            this.log.error(`choice_email: ${err}`);
         }
     }
 
@@ -66,14 +62,14 @@ class Twofa extends Manager_state {
      * Press on email sms
      *
      */
-    async choice_sms() {
+    async choice_sms () {
         this.log.info("try switch to phone sms (if possible)");
 
         try {
             let radio = await this.bot.$("section form label[for=\"choice_0\"]");
             await radio.click();
         } catch (err) {
-            this.log.error("choice_sms: " + err);
+            this.log.error(`choice_sms: ${err}`);
         }
     }
 
@@ -83,7 +79,7 @@ class Twofa extends Manager_state {
      * Set default pin receiver method
      *
      */
-    async sendpin() {
+    async sendpin () {
         if (this.config.instagram_pin === "sms") {
             await this.choice_sms();
         }
@@ -101,15 +97,15 @@ class Twofa extends Manager_state {
      * Open loginpin.txt and insert in security-code input
      *
      */
-    async readpin(input) {
+    async readpin (input) {
         this.log.info("readpin");
 
         const fs = require("fs");
         let data = fs.readFileSync(this.config.pin_path, "utf8");
         let pin = data.toString();
 
-        await this.bot.waitForSelector("input[name=\"" + input + "\"]");
-        await this.bot.type("input[name=\"" + input + "\"]", pin, { delay: 100 });
+        await this.bot.waitForSelector(`input[name="${input}"]`);
+        await this.bot.type(`input[name="${input}"]`, pin, {delay: 100});
         await this.utils.screenshot(this.LOG_NAME, "readpin");
     }
 
@@ -119,7 +115,7 @@ class Twofa extends Manager_state {
      * Open loginpin.txt and insert in security-code input
      *
      */
-    async submitform() {
+    async submitform () {
         this.log.info("submit");
         try {
             await this.bot.waitForSelector("form button");
@@ -138,11 +134,11 @@ class Twofa extends Manager_state {
      * Check if submit not have errors
      *
      */
-    async submitverify(selector) {
+    async submitverify (selector) {
         let attr = "";
 
         try {
-            attr = await this.bot.$("input[name=\"" + selector + "\"]");
+            attr = await this.bot.$(`input[name="${selector}"]`);
             if (attr === null) {
                 this.emit(this.STATE_EVENTS.CHANGE_STATUS, this.STATE.OK);
             } else {
@@ -196,7 +192,7 @@ class Twofa extends Manager_state {
      * =====================
      *
      */
-    async start_twofa_location_check() {
+    async start_twofa_location_check () {
         this.log.info("instagram request pin (bad location)?");
 
         try {
@@ -221,7 +217,7 @@ class Twofa extends Manager_state {
 
         await this.utils.sleep(this.utils.random_interval(3, 6));
 
-        this.log.info("status location: " + this.get_status());
+        this.log.info(`status location: ${this.get_status()}`);
     }
 
     /**
@@ -229,7 +225,7 @@ class Twofa extends Manager_state {
      * =====================
      *
      */
-    async start_twofa_check() {
+    async start_twofa_check () {
         this.log.info("instagram request pin (2fa enabled)?");
 
         try {
@@ -255,7 +251,7 @@ class Twofa extends Manager_state {
         }
 
         await this.utils.sleep(this.utils.random_interval(3, 6));
-        this.log.info("status: " + this.get_status());
+        this.log.info(`status: ${this.get_status()}`);
     }
 
     /**
@@ -263,7 +259,7 @@ class Twofa extends Manager_state {
      * =====================
      *
      */
-    async start_twofa_location() {
+    async start_twofa_location () {
         this.log.info("twofa (location)", "loading...");
 
         // After October 2018 don't work switch sms/email
@@ -288,7 +284,7 @@ class Twofa extends Manager_state {
      * =====================
      *
      */
-    async start() {
+    async start () {
         this.log.info("twofa (enabled)", "loading...");
 
         this.log.warning("please insert pin in loginpin.txt or 2FA input box and wait, you have 50-60 seconds for that.. (tic... tac... tic... tac... tic...)");

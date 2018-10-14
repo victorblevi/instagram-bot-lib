@@ -5,15 +5,11 @@
  *
  * @author:     Patryk Rzucidlo [@ptkdev] <support@ptkdev.io> (https://ptkdev.it)
  * @license:    This code and contributions have 'GNU General Public License v3'
- * @version:    0.5
- * @changelog:  0.1 initial release
- *              0.2 new pattern with webdriverio
- *              0.5 new pattern with puppeteer
  *
  */
 const Manager_state = require("../common/state").Manager_state;
 class Likemode_classic extends Manager_state {
-    constructor(bot, config, utils, db) {
+    constructor (bot, config, utils, db) {
         super();
         this.bot = bot;
         this.config = config;
@@ -35,24 +31,24 @@ class Likemode_classic extends Manager_state {
      * Save users nickname and other information
      *
      */
-    async init_db() {
+    async init_db () {
         let self = this;
 
-        await this.db.serialize(async function() {
-            self.db.run("CREATE TABLE IF NOT EXISTS users (id INTEGER PRIMARY KEY AUTOINCREMENT, account TEXT, mode TEXT, username TEXT, photo_url TEXT, hashtag TEXT, type_action TEXT, inserted_at DATETIME DEFAULT CURRENT_TIMESTAMP)", function(err) {
+        await this.db.serialize(async function () {
+            self.db.run("CREATE TABLE IF NOT EXISTS users (id INTEGER PRIMARY KEY AUTOINCREMENT, account TEXT, mode TEXT, username TEXT, photo_url TEXT, hashtag TEXT, type_action TEXT, inserted_at DATETIME DEFAULT CURRENT_TIMESTAMP)", function (err) {
                 if (err) {
                     self.log.error(`init_db: ${err}`);
                 }
             });
 
 
-            self.db.run("ALTER TABLE users ADD COLUMN hashtag TEXT", function(err) {
+            self.db.run("ALTER TABLE users ADD COLUMN hashtag TEXT", function (err) {
                 if (err) {
                     self.log.info(`init_db users ADD COLUMN hashtag: ${err}`);
                 }
             });
 
-            self.db.run("ALTER TABLE users ADD COLUMN inserted_at DATETIME DEFAULT NULL", function(err) {
+            self.db.run("ALTER TABLE users ADD COLUMN inserted_at DATETIME DEFAULT NULL", function (err) {
                 if (err) {
                     self.log.info(`init_db users ADD COLUMN inserted_at: ${err}`);
                 }
@@ -67,7 +63,7 @@ class Likemode_classic extends Manager_state {
      * @return {string} url
      *
      */
-    get_photo_url() {
+    get_photo_url () {
         let photo_url = "";
         do {
             photo_url = this.cache_hash_tags.pop();
@@ -81,11 +77,11 @@ class Likemode_classic extends Manager_state {
      * Get random hashtag from array and open page
      *
      */
-    async like_open_hashtagpage() {
+    async like_open_hashtagpage () {
         this.hashtag_tag = this.utils.get_random_hash_tag();
         this.log.info(`current hashtag ${this.hashtag_tag}`);
         try {
-            await this.bot.goto("https://www.instagram.com/explore/tags/" + this.hashtag_tag + "/");
+            await this.bot.goto(`https://www.instagram.com/explore/tags/${this.hashtag_tag}/`);
         } catch (err) {
             this.log.error(`goto ${err}`);
         }
@@ -101,7 +97,7 @@ class Likemode_classic extends Manager_state {
      * Open url of photo and cache urls from hashtag page in array
      *
      */
-    async like_get_urlpic() {
+    async like_get_urlpic () {
         this.log.info("like_get_urlpic");
 
         let photo_url = "";
@@ -176,22 +172,22 @@ class Likemode_classic extends Manager_state {
      * Click on heart and verify if instagram not (soft) ban you
      *
      */
-    async like_click_heart() {
+    async like_click_heart () {
         this.log.info("try heart like");
         let username = "";
         try {
             await this.bot.waitForSelector("article div a:nth-child(1)");
             username = await this.bot.evaluate(el => el.innerHTML, await this.bot.$("article div a:nth-child(1)"));
-            this.log.info("username " + username);
+            this.log.info(`username ${username}`);
         } catch (err) {
-            this.log.warning("get username: " + err);
+            this.log.warning(`get username: ${err}`);
         }
 
         try {
             await this.bot.waitForSelector("article:nth-child(1) section:nth-child(1) button:nth-child(1)");
             let button = await this.bot.$("article:nth-child(1) section:nth-child(1) button:nth-child(1)");
             let button_before_click = await this.bot.evaluate(el => el.innerHTML, await this.bot.$("article:nth-child(1) section:nth-child(1) button:nth-child(1)"));
-            this.log.info("button text before click: " + button_before_click);
+            this.log.info(`button text before click: ${button_before_click}`);
 
             if (this.photo_liked[this.photo_current] > 1) {
                 this.log.warning("</3 Skipped, liked previously");
@@ -202,7 +198,7 @@ class Likemode_classic extends Manager_state {
 
                 await this.bot.waitForSelector("article:nth-child(1) section:nth-child(1) button:nth-child(1)");
                 let button_after_click = await this.bot.evaluate(el => el.innerHTML, await this.bot.$("article:nth-child(1) section:nth-child(1) button:nth-child(1)"));
-                this.log.info("button text after click: " + button_after_click);
+                this.log.info(`button text after click: ${button_after_click}`);
 
                 if (button_after_click.includes("filled") || button_after_click.includes("red")) {
                     this.log.info("<3 Liked");
@@ -233,7 +229,7 @@ class Likemode_classic extends Manager_state {
      * =====================
      *
      */
-    async start() {
+    async start () {
         this.log.info("classic");
 
         await this.init_db();
@@ -252,15 +248,15 @@ class Likemode_classic extends Manager_state {
 
             today = new Date();
             t1 = new Date(today.getFullYear(), today.getMonth(), today.getDate(), today.getHours(), today.getMinutes(), today.getSeconds());
-            this.log.info("time night: " + (parseInt(today.getHours() + "" + (today.getMinutes() < 10 ? "0" : "") + today.getMinutes())));
+            this.log.info(`time night: ${parseInt(`${today.getHours()}${today.getMinutes() < 10 ? "0" : ""}${today.getMinutes()}`)}`);
 
             if (this.config.bot_sleep_night === false) {
                 this.config.bot_start_sleep = "00:00";
             }
-            if ((parseInt(today.getHours() + "" + (today.getMinutes() < 10 ? "0" : "") + today.getMinutes()) >= (this.config.bot_start_sleep).replace(":", ""))) {
+            if ((parseInt(`${today.getHours()}${today.getMinutes() < 10 ? "0" : ""}${today.getMinutes()}`) >= (this.config.bot_start_sleep).replace(":", ""))) {
 
-                this.log.info("loading... " + new Date(today.getFullYear(), today.getMonth(), today.getDate(), today.getHours(), today.getMinutes(), today.getSeconds()));
-                this.log.info("cache array size " + this.cache_hash_tags.length);
+                this.log.info(`loading... ${new Date(today.getFullYear(), today.getMonth(), today.getDate(), today.getHours(), today.getMinutes(), today.getSeconds())}`);
+                this.log.info(`cache array size ${this.cache_hash_tags.length}`);
 
                 if (this.cache_hash_tags.length <= 0) {
                     await this.like_open_hashtagpage();
@@ -276,7 +272,7 @@ class Likemode_classic extends Manager_state {
                     await this.like_click_heart();
                 }
 
-                if (this.cache_hash_tags.length < 9) { //remove popular photos
+                if (this.cache_hash_tags.length < 9) { // remove popular photos
                     this.cache_hash_tags = [];
                 }
 
@@ -289,7 +285,7 @@ class Likemode_classic extends Manager_state {
                 sec = Math.abs((t1.getTime() - t2.getTime()) / 1000);
 
                 if (sec < sec_min) {
-                    this.log.info("seconds of loop " + sec + "... now bot sleep " + (sec_min - sec) + "-" + (sec_max - sec) + "sec");
+                    this.log.info(`seconds of loop ${sec}... now bot sleep ${sec_min - sec}-${sec_max - sec}sec`);
                     await this.utils.sleep(this.utils.random_interval(sec_min - sec, sec_max - sec));
                     this.cache_hash_tags = [];
                 }
