@@ -5,15 +5,11 @@
  *
  * @author:     Patryk Rzucidlo [@ptkdev] <support@ptkdev.io> (https://ptkdev.it)
  * @license:    This code and contributions have 'GNU General Public License v3'
- * @version:    0.5
- * @changelog:  0.1 initial release
- *              0.2 new pattern with webdriverio
- *              0.5 new pattern with puppeteer
  *
  */
 const Manager_state = require("../common/state").Manager_state;
 class Login extends Manager_state {
-    constructor(bot, config, utils) {
+    constructor (bot, config, utils) {
         super();
         this.bot = bot;
         this.config = config;
@@ -31,7 +27,7 @@ class Login extends Manager_state {
      * Browser start
      *
      */
-    async open_loginpage() {
+    async open_loginpage () {
         this.log.info("open_loginpage");
 
         await this.bot.goto("https://www.instagram.com/accounts/login/");
@@ -43,10 +39,10 @@ class Login extends Manager_state {
      * Set username
      *
      */
-    async set_username() {
+    async set_username () {
         this.log.info("set_username");
         await this.bot.waitForSelector("input[name=\"username\"]");
-        await this.bot.type("input[name=\"username\"]", this.config.instagram_username, { delay: 100 });
+        await this.bot.type("input[name=\"username\"]", this.config.instagram_username, {delay: 100});
     }
 
     /**
@@ -55,10 +51,10 @@ class Login extends Manager_state {
      * Set password
      *
      */
-    async set_password() {
+    async set_password () {
         this.log.info("set_password");
         await this.bot.waitForSelector("input[name=\"password\"]");
-        await this.bot.type("input[name=\"password\"]", this.config.instagram_password, { delay: 100 });
+        await this.bot.type("input[name=\"password\"]", this.config.instagram_password, {delay: 100});
     }
 
     /**
@@ -67,7 +63,7 @@ class Login extends Manager_state {
      * Press submit button
      *
      */
-    async submitform() {
+    async submitform () {
         this.log.info("submit");
         try {
             await this.bot.waitForSelector("form > div:nth-child(3) > button");
@@ -88,7 +84,7 @@ class Login extends Manager_state {
      * Bad password or similar
      *
      */
-    async submitverify() {
+    async submitverify () {
         this.log.info("checkerrors");
 
         let text = "";
@@ -108,7 +104,7 @@ class Login extends Manager_state {
             let html_response = await this.bot.evaluate(body => body.innerHTML, text);
             await text.dispose();
 
-            this.log.error("Error: " + html_response + " (restart bot and retry...)");
+            this.log.error(`Error: ${html_response} (restart bot and retry...)`);
             await this.utils.screenshot(this.LOG_NAME, "checkerrors_error");
         } else {
             this.log.info("password is correct");
@@ -123,7 +119,7 @@ class Login extends Manager_state {
      * =====================
      *
      */
-    async start() {
+    async start () {
         this.log.info("loading...");
 
         await this.open_loginpage();
@@ -143,7 +139,7 @@ class Login extends Manager_state {
         await this.utils.sleep(this.utils.random_interval(3, 6));
 
         await this.submitverify();
-        this.log.info("login_status is " + this.get_status());
+        this.log.info(`login_status is ${this.get_status()}`);
 
         await this.utils.sleep(this.utils.random_interval(3, 6));
     }

@@ -4,9 +4,6 @@
  * Instagram Bot made with love and nodejs
  *
  * @author:     Patryk Rzucidlo [@ptkdev] <support@ptkdev.io> (https://ptkdev.it)
- * @file:       bot.js
- * @version:    0.9.4
- *
  * @license:    Code and contributions have 'GNU General Public License v3'
  *              This program is free software: you can redistribute it and/or modify
  *              it under the terms of the GNU General Public License as published by
@@ -22,7 +19,7 @@
  * @link        Homepage:     https://instagram.bot.ptkdev.io
  *              GitHub Repo:  https://github.com/social-manager-tools/instagram-bot.js
  */
-module.exports = function(config) {
+module.exports = function (config) {
     this.config = config;
     this.browser = null;
 
@@ -32,7 +29,7 @@ module.exports = function(config) {
      * if you want stop bot
      *
      */
-    this.stop = async function() {
+    this.stop = async function () {
         await this.browser.close();
     };
 
@@ -42,7 +39,7 @@ module.exports = function(config) {
      * if you want start bot, remeber set config.js
      *
      */
-    this.start = async function() {
+    this.start = async function () {
         var bot = null;
         const fs = require("fs");
         let config = this.config;
@@ -82,18 +79,18 @@ module.exports = function(config) {
             this.browser = await puppeteer.launch({
                 headless: config.chrome_headless,
                 args: config.chrome_options,
-                defaultViewport: { "width": 1024, "height": 768 }
+                defaultViewport: {"width": 1024, "height": 768}
             });
         } else {
             this.browser = await puppeteer.launch({
                 headless: config.chrome_headless,
                 args: config.chrome_options,
                 executablePath: config.executable_path,
-                defaultViewport: { "width": 1024, "height": 768 }
+                defaultViewport: {"width": 1024, "height": 768}
             });
         }
         bot = await this.browser.newPage();
-        bot.setViewport({ "width": 1024, "height": 768 });
+        bot.setViewport({"width": 1024, "height": 768});
         let user_agent = await this.browser.userAgent();
         bot.setUserAgent(user_agent.replace("Headless", ""));
 
@@ -116,7 +113,7 @@ module.exports = function(config) {
          * Switch social algorithms, change algorithm from config.js
          *
          */
-        async function switch_mode() {
+        async function switch_mode () {
             let strategy = routes[config.bot_mode];
             if (strategy !== undefined) {
                 await strategy(bot, config, utils, db).start();

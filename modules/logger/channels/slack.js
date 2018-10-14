@@ -5,12 +5,10 @@
  *
  * @author:     Ilya Chubarov [@agoalofalife] <agoalofalife@gmail.com>
  * @license:    This code and contributions have 'GNU General Public License v3'
- * @version:    0.1
- * @changelog:  0.1 initial release
  * 
  */
 class Slack {
-    constructor(config) {
+    constructor (config) {
         this.TYPE = require("./../types");
         this.config = config;
         this.request = require("request");
@@ -23,7 +21,7 @@ class Slack {
      * @param func
      * @param message
      */
-    log(type, func, message) {
+    log (type, func, message) {
         let body = "";
         switch (type) {
             case this.TYPE.INFO:
@@ -45,11 +43,11 @@ class Slack {
         this.post_log(body);
     }
 
-    post_log(body) {
+    post_log (body) {
         this.request.post(
             this.webhook,
             body,
-            function(error) {
+            function (error) {
                 if (error) {
                     console.error(error);
                 }
@@ -57,7 +55,7 @@ class Slack {
         );
     }
 
-    info(type, func, message) {
+    info (type, func, message) {
         return {
             json: {
                 "attachments": [{
@@ -68,7 +66,7 @@ class Slack {
         };
     }
 
-    warning(type, func, message) {
+    warning (type, func, message) {
         return {
             json: {
                 "attachments": [{
@@ -79,7 +77,7 @@ class Slack {
         };
     }
 
-    error(type, func, message) {
+    error (type, func, message) {
         return {
             json: {
                 "attachments": [{
@@ -90,7 +88,7 @@ class Slack {
         };
     }
 
-    debug(type, func, message) {
+    debug (type, func, message) {
         return {
             json: {
                 "attachments": [{

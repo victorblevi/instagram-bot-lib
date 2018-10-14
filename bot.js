@@ -4,9 +4,6 @@
  * Instagram Bot made with love and nodejs
  *
  * @author:     Patryk Rzucidlo [@ptkdev] <support@ptkdev.io> (https://ptkdev.it)
- * @file:       bot.js
- * @version:    0.9.0
- *
  * @link: https://github.com/GoogleChrome/puppeteer
  * @link: https://www.npmjs.com/package/instagrambotlib
  * 
@@ -36,6 +33,6 @@ bot.start();
  * if you want stop bot after 3 seconds (uncomment code)
  *
  */
-//setTimeout(function() { 
+// setTimeout(function() { 
 //	bot.stop(); 
-//}, 3000);
+// }, 3000);

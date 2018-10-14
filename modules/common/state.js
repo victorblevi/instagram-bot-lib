@@ -5,8 +5,6 @@
  *
  * @author:     Ilya Chubarov [@agoalofalife] <agoalofalife@gmail.com>
  * @license:    This code and contributions have 'GNU General Public License v3'
- * @version:    0.1
- * @changelog:  0.1 initial release
  *
  * @type {{OK: number, ERROR: number, READY: number, START: null}}
  * 
@@ -31,13 +29,11 @@ const EVENTS = {
  *
  * @author:     Ilya Chubarov [@agoalofalife] <agoalofalife@gmail.com>
  * @license:    This code and contributions have 'GNU General Public License v3'
- * @version:    0.1
- * @changelog:  0.1 initial release
  * 
  */
 const event_emitter = require("events").EventEmitter;
 class Manager_state extends event_emitter {
-    constructor(params) {
+    constructor (params) {
         super(params);
         this._status = STATE.START;
         this.register_handler();
@@ -46,7 +42,7 @@ class Manager_state extends event_emitter {
     /**
      * register handle events in EE
      */
-    register_handler() {
+    register_handler () {
         this.on(EVENTS.CHANGE_STATUS, (status) => {
             this._status = status;
         });
@@ -56,7 +52,7 @@ class Manager_state extends event_emitter {
      * Get current status
      * @return STATE
      */
-    get_status() {
+    get_status () {
         return this._status;
     }
 
@@ -64,7 +60,7 @@ class Manager_state extends event_emitter {
      * Check is ready status
      * @return {boolean}
      */
-    is_ready() {
+    is_ready () {
         return this._status === STATE.READY;
     }
 
@@ -72,7 +68,7 @@ class Manager_state extends event_emitter {
      * Check is not ready status
      * @return {boolean}
      */
-    is_not_ready() {
+    is_not_ready () {
         return this._status !== STATE.READY;
     }
 
@@ -80,7 +76,7 @@ class Manager_state extends event_emitter {
      * Check is 'ok' status
      * @return {boolean}
      */
-    is_ok() {
+    is_ok () {
         return this._status === STATE.OK;
     }
     
@@ -88,7 +84,7 @@ class Manager_state extends event_emitter {
      * Check is 'error' status
      * @return {boolean}
      */
-    is_error() {
+    is_error () {
         return this._status === STATE.ERROR;
     }
 
@@ -96,7 +92,7 @@ class Manager_state extends event_emitter {
      * Check is 'stop bot' status
      * @return {boolean}
      */
-    is_stop_bot() {
+    is_stop_bot () {
         return this._status === STATE.STOP_BOT;
     }
 
@@ -104,7 +100,7 @@ class Manager_state extends event_emitter {
      * Check is 'ok next verify' status
      * @return {boolean}
      */
-    is_ok_nextverify() {
+    is_ok_nextverify () {
         return this._status === STATE.OK_NEXT_VERIFY;
     }
 
@@ -112,7 +108,7 @@ class Manager_state extends event_emitter {
      * Check is 'start' status
      * @return {boolean}
      */
-    is_start() {
+    is_start () {
         return this._status === STATE.START;
     }
 }

@@ -5,13 +5,11 @@
  *
  * @author:     Patryk Rzucidlo [@ptkdev] <support@ptkdev.io> (https://ptkdev.it)
  * @license:    This code and contributions have 'GNU General Public License v3'
- * @version:    0.1
- * @changelog:  0.1 initial release
  * 
  */
 const Manager_state = require("../common/state").Manager_state;
 class Likemode_superlike extends Manager_state {
-    constructor(bot, config, utils) {
+    constructor (bot, config, utils) {
         super();
         this.bot = bot;
         this.config = config;
@@ -31,7 +29,7 @@ class Likemode_superlike extends Manager_state {
      * Get photo url from cache
      * @return {string} url
      */
-    get_photo_url(type) {
+    get_photo_url (type) {
         let photo_url = "";
         do {
             if (type === "hashtag") {
@@ -50,11 +48,11 @@ class Likemode_superlike extends Manager_state {
      * Get random hashtag from array and open page
      *
      */
-    async like_open_hashtagpage() {
+    async like_open_hashtagpage () {
         let hashtag_tag = this.utils.get_random_hash_tag();
         this.log.info(`current hashtag ${hashtag_tag}`);
         try {
-            await this.bot.goto("https://www.instagram.com/explore/tags/" + hashtag_tag + "/");
+            await this.bot.goto(`https://www.instagram.com/explore/tags/${hashtag_tag}/`);
         } catch (err) {
             this.log.error(`goto ${err}`);
         }
@@ -70,7 +68,7 @@ class Likemode_superlike extends Manager_state {
      * Open url of photo and cache urls from hashtag page in array
      *
      */
-    async like_get_urlpic() {
+    async like_get_urlpic () {
         this.log.info("like_get_urlpic");
 
         let photo_url = "";
@@ -129,7 +127,7 @@ class Likemode_superlike extends Manager_state {
      * Open user page for 3 likes
      *
      */
-    async like_open_userpage() {
+    async like_open_userpage () {
         this.log.info("try open userpage");
 
         try {
@@ -156,7 +154,7 @@ class Likemode_superlike extends Manager_state {
      * Open url of photo and cache urls from hashtag page in array
      *
      */
-    async like_get_urlpic_user() {
+    async like_get_urlpic_user () {
         this.log.info("like_get_urlpic_fromuser");
 
         let photo_url = "";
@@ -222,7 +220,7 @@ class Likemode_superlike extends Manager_state {
      * Click on heart and verify if instagram not (soft) ban you
      *
      */
-    async like_click_heart() {
+    async like_click_heart () {
         this.log.info("try heart like");
 
         try {
@@ -254,7 +252,7 @@ class Likemode_superlike extends Manager_state {
      * =====================
      *
      */
-    async start() {
+    async start () {
         this.log.info("superlike");
 
         let today = "";
@@ -266,15 +264,15 @@ class Likemode_superlike extends Manager_state {
             }
 
             today = new Date();
-            this.log.info("time night: " + (parseInt(today.getHours() + "" + (today.getMinutes() < 10 ? "0" : "") + today.getMinutes())));
+            this.log.info(`time night: ${parseInt(`${today.getHours()}${today.getMinutes() < 10 ? "0" : ""}${today.getMinutes()}`)}`);
 
             if (this.config.bot_sleep_night === false) {
                 this.config.bot_start_sleep = "00:00";
             }
-            if ((parseInt(today.getHours() + "" + (today.getMinutes() < 10 ? "0" : "") + today.getMinutes()) >= (this.config.bot_start_sleep).replace(":", ""))) {
+            if ((parseInt(`${today.getHours()}${today.getMinutes() < 10 ? "0" : ""}${today.getMinutes()}`) >= (this.config.bot_start_sleep).replace(":", ""))) {
 
-                this.log.info("loading... " + new Date(today.getFullYear(), today.getMonth(), today.getDate(), today.getHours(), today.getMinutes(), today.getSeconds()));
-                this.log.info("cache array size " + this.cache_hash_tags.length);
+                this.log.info(`loading... ${new Date(today.getFullYear(), today.getMonth(), today.getDate(), today.getHours(), today.getMinutes(), today.getSeconds())}`);
+                this.log.info(`cache array size ${this.cache_hash_tags.length}`);
 
                 if (this.cache_hash_tags.length <= 0) {
                     await this.like_open_hashtagpage();
@@ -287,7 +285,7 @@ class Likemode_superlike extends Manager_state {
                 await this.utils.sleep(this.utils.random_interval(3, 6));
 
                 for (let i = 0; i < this.config.bot_superlike_n; i++) {
-                    this.log.info("try like photo " + (i + 1) + "/" + this.config.bot_superlike_n);
+                    this.log.info(`try like photo ${i + 1}/${this.config.bot_superlike_n}`);
 
                     await this.like_open_userpage();
 
@@ -312,7 +310,7 @@ class Likemode_superlike extends Manager_state {
                 }
                 this.cache_hash_tags_user = [];
 
-                if (this.cache_hash_tags.length < 9 || this.is_ready()) { //remove popular photos
+                if (this.cache_hash_tags.length < 9 || this.is_ready()) { // remove popular photos
                     this.cache_hash_tags = [];
                 }
 
@@ -322,7 +320,7 @@ class Likemode_superlike extends Manager_state {
                 }
 
                 if (this.cache_hash_tags.length <= 0 && this.is_not_ready()) {
-                    this.log.info("finish fast like, bot sleep " + this.config.bot_fastlike_min + "-" + this.config.bot_fastlike_max + " minutes");
+                    this.log.info(`finish fast like, bot sleep ${this.config.bot_fastlike_min}-${this.config.bot_fastlike_max} minutes`);
                     this.cache_hash_tags = [];
                     await this.utils.sleep(this.utils.random_interval(60 * this.config.bot_fastlike_min, 60 * this.config.bot_fastlike_max));
                 }

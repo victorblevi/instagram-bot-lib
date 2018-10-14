@@ -4,13 +4,11 @@
  *
  * @author:     Ilua Chubarov [@agoalofalife] <agoalofalife@gmail.com>
  * @license:    This code and contributions have 'GNU General Public License v3'
- * @version:    0.1
- * @changelog:  0.1 initial release
  *
  */
 const Manager_state = require("../common/state").Manager_state;
 class commentmode_classic extends Manager_state {
-    constructor(bot, config, utils) {
+    constructor (bot, config, utils) {
         super();
         this.bot = bot;
         this.config = config;
@@ -26,18 +24,19 @@ class commentmode_classic extends Manager_state {
         this.source = this.config.comment_mode.comments.source;
     }
 
-    get_random_comment() {
+    get_random_comment () {
         // if array is empty
         if (this.source.length === 0) {
             return "";
         }
         return this.source[Math.floor(Math.random() * this.source.length)];
     }
+
     /**
      * Get random comment from config file
      * @return string
      */
-    get_comment() {
+    get_comment () {
         this.log.info(`type source comments is ${this.config.comment_mode.comments.type}`);
         switch (this.config.comment_mode.comments.type) {
             case "array":
@@ -52,7 +51,7 @@ class commentmode_classic extends Manager_state {
      * Get photo url from cache
      * @return {string} url
      */
-    get_photo_url() {
+    get_photo_url () {
         let photo_url = "";
         do {
             photo_url = this.cache_hash_tags.pop();
@@ -66,12 +65,12 @@ class commentmode_classic extends Manager_state {
      * Get random hashtag from array and open page
      *
      */
-    async open_page() {
+    async open_page () {
         let hashtag = this.utils.get_random_hash_tag();
         this.log.info(`current hashtag ${hashtag}`);
 
         try {
-            await this.bot.goto("https://www.instagram.com/explore/tags/" + hashtag + "/");
+            await this.bot.goto(`https://www.instagram.com/explore/tags/${hashtag}/`);
         } catch (err) {
             this.log.error(`goto ${err}`);
         }
@@ -87,7 +86,7 @@ class commentmode_classic extends Manager_state {
      * Open url of photo and cache urls from hashtag page in array
      *
      */
-    async like_get_urlpic() {
+    async like_get_urlpic () {
         this.log.info("like_get_urlpic");
 
         let photo_url = "";
@@ -147,7 +146,7 @@ class commentmode_classic extends Manager_state {
      * Check exist element under photo
      * @return {Promise<void>}
      */
-    async check_leave_comment() {
+    async check_leave_comment () {
         let nick_under_photo = `article div div a[title="${this.config.instagram_username}"]`;
         if (this.is_ok()) {
             try {
@@ -186,7 +185,7 @@ class commentmode_classic extends Manager_state {
      * leave a comment under the photo
      *
      */
-    async comment() {
+    async comment () {
         this.log.info("try leave comment");
         let comment_area_elem = "article:nth-child(1) section:nth-child(5) form textarea";
 
@@ -205,7 +204,7 @@ class commentmode_classic extends Manager_state {
                     this.log.warning("</3 commented previously");
                 } else {
                     await button.click();
-                    await this.bot.type(comment_area_elem, this.get_comment(), { delay: 100 });
+                    await this.bot.type(comment_area_elem, this.get_comment(), {delay: 100});
                     await button.press("Enter");
                 }
             } else {
@@ -240,7 +239,7 @@ class commentmode_classic extends Manager_state {
      * =====================
      *
      */
-    async start() {
+    async start () {
         this.log.info("classic");
 
         let alive = true;
@@ -251,13 +250,13 @@ class commentmode_classic extends Manager_state {
             }
 
             let today = new Date();
-            this.log.info("time night: " + (parseInt(today.getHours() + "" + (today.getMinutes() < 10 ? "0" : "") + today.getMinutes())));
+            this.log.info(`time night: ${parseInt(`${today.getHours()}${today.getMinutes() < 10 ? "0" : ""}${today.getMinutes()}`)}`);
 
             if (this.config.bot_sleep_night === false) {
                 this.config.bot_start_sleep = "00:00";
             }
-            if ((parseInt(today.getHours() + "" + (today.getMinutes() < 10 ? "0" : "") + today.getMinutes()) >= (this.config.bot_start_sleep).replace(":", ""))) {
-                this.log.info("loading... " + new Date(today.getFullYear(), today.getMonth(), today.getDate(), today.getHours(), today.getMinutes(), today.getSeconds()));
+            if ((parseInt(`${today.getHours()}${today.getMinutes() < 10 ? "0" : ""}${today.getMinutes()}`) >= (this.config.bot_start_sleep).replace(":", ""))) {
+                this.log.info(`loading... ${new Date(today.getFullYear(), today.getMonth(), today.getDate(), today.getHours(), today.getMinutes(), today.getSeconds())}`);
                 this.log.info(`cache array size ${this.cache_hash_tags.length}`);
 
                 if (this.cache_hash_tags.length <= 0) {
@@ -272,7 +271,7 @@ class commentmode_classic extends Manager_state {
 
                 await this.comment();
 
-                if (this.cache_hash_tags.length < 9 || this.is_ready()) { //remove popular photos
+                if (this.cache_hash_tags.length < 9 || this.is_ready()) { // remove popular photos
                     this.cache_hash_tags = [];
                 }
 
