@@ -1,4 +1,4 @@
-# Setup - Docker Raspbian 9 (Raccomanded)
+# Setup - Docker Raspbian 9 (Recommended)
 #### 1. Install docker 
 1. `curl -sSL https://get.docker.com | sh`
 2. `sudo usermod -aG docker pi`
@@ -37,7 +37,7 @@ sudo apt-get install -f
 
 #### 4. Run
 1. Run `npm install instagrambotlib`
-2. Get [config.js](https://raw.githubusercontent.com/social-manager-tools/instagram-bot-lib/0.9.4/config.js.tpl) file for step 3, fill it properly and remove `.tpl` suffix.
+2. Get [config.js](https://raw.githubusercontent.com/social-manager-tools/instagram-bot-lib/master/config.js.tpl) file for step 3, fill it properly and remove `.tpl` suffix.
 3. On your code require library and run bot, example:
 ```
     const config = require ("./config");
@@ -82,7 +82,7 @@ sudo apt-get install -f
 
 #### 5. Run
 1. Run `npm install instagrambotlib`
-2. Get [config.js](https://raw.githubusercontent.com/social-manager-tools/instagram-bot-lib/0.9.4/config.js.tpl) file for step 3, fill it properly and remove `.tpl` suffix.
+2. Get [config.js](https://raw.githubusercontent.com/social-manager-tools/instagram-bot-lib/master/config.js.tpl) file for step 3, fill it properly and remove `.tpl` suffix.
 3. On your code require library and run bot, example:
 ```
     const config = require ("./config");
@@ -112,7 +112,7 @@ sudo apt-get install -f
 #### 3. Run
 1. Download [stable bot version](https://github.com/social-manager-tools/instagram-bot.js/releases) and extract it.
 2. Run `npm install` in `instagram-bot.js` folder.
-3. Rename `config.js.tpl` to `config.js`, fill it properly.
+3. Get [config.js](https://raw.githubusercontent.com/social-manager-tools/instagram-bot-lib/master/config.js.tpl), rename `config.js.tpl` to `config.js`, fill it properly.
 4. Start the bot via `node bot.js`
 5. If work add star :star: at this project :heart:
 6. If you want help me: <b><a href="http://paypal.ptkdev.io">donate on paypal</a></b> or become a <b><a href="http://patreon.ptkdev.io">backer on patreon</a></b>.

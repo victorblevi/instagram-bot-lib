@@ -7,7 +7,7 @@ module.exports = {
     // Instagram Account
     "instagram_username": "ptkdev", // without @
     "instagram_password": "password",
-    "instagram_hashtag": ["instagram", "muraleshunter", "hashtag"], //without #, raccomanded more than 20
+    "instagram_hashtag": ["rome", "italy", "muraleshunter"], //without #, recommended more than 20
     "instagram_pin": "sms", //method to receive pin (email or sms)
 
     // BOT Configs
@@ -18,8 +18,8 @@ module.exports = {
     // [WORK] comment_mode              - leave a comment under the photo via hashtag.
     // [WORK] fdfmode_classic           - follow 30 users, and defollow the first followed at 31 follow (in loop). This method is not detected from socialblade. ~1h | 300/300 follow-defollow/day.
     "bot_mode": "likemode_realistic",
-    "bot_likeday_min": 800,      // work only in likemode_classic
-    "bot_likeday_max": 900,      // work only in likemode_classic. In 2018 limit instagram is 1000/day
+    "bot_likeday_min": 800,      // work in all likemode_*
+    "bot_likeday_max": 900,      // work in all likemode_*. In 2018 limit instagram is 1000/day
     "bot_sleep_night": false,    // if you need stop bot in night 
     "bot_start_sleep": "7:00",   // sleep from 00:00 to 7:00 am, work in likemode_realistic, comment_mode, likemode_superlike and likemode_competitor_users
     "bot_superlike_n": 3,        // superlike number of likes for user
@@ -37,7 +37,7 @@ module.exports = {
     },
 
     // Puppeteer Configs
-    "chrome_headless": false,
+    "chrome_headless": true,
     "chrome_options": ["--disable-gpu", "--no-sandbox", "--window-size=1024x768"],
     "executable_path": "", // example for Mac OS: /Applications/Google\ Chrome.app/Contents/MacOS/Google\ Chrome
 

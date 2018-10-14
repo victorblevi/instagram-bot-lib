@@ -266,8 +266,8 @@ class Twofa extends Manager_state {
     async start_twofa_location() {
         this.log.info("twofa (location)", "loading...");
 
-        await this.sendpin();
-
+        // After October 2018 don't work switch sms/email
+        // await this.sendpin();
         await this.utils.sleep(this.utils.random_interval(60, 80));
 
         await this.readpin("security_code");
@@ -291,8 +291,7 @@ class Twofa extends Manager_state {
     async start() {
         this.log.info("twofa (enabled)", "loading...");
 
-        this.log.error("After 9 June 2018 instagram website have a bug with sms-pin (2FA work randomly): if don't work see https://github.com/social-manager-tools/instagram-bot.js/issues/48 for temporary solution");
-        this.log.warning("please insert pin in loginpin.txt, you have 50-60 seconds for that.. (tic... tac... tic... tac... tic...)");
+        this.log.warning("please insert pin in loginpin.txt or 2FA input box and wait, you have 50-60 seconds for that.. (tic... tac... tic... tac... tic...)");
 
         await this.utils.sleep(this.utils.random_interval(60, 80));
 

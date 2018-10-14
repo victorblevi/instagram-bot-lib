@@ -1,9 +1,9 @@
 {
   "name": "instagrambotlib",
   "description": "Instagram Bot API",
-  "version": "0.9.7",
+  "version": "0.9.8",
   "main": "lib.js",
-  "author": "Patryk Rzucidlo [@ptkdev] <support@ptkdev.io> (https://ptkdev.it)",
+  "author": "Patryk Rzucidło [@ptkdev] <support@ptkdev.io> (https://ptkdev.it)",
   "license": "GPL-3.0",
   "homepage": "https://instagram.bot.ptkdev.io",
   "repository": {
@@ -41,24 +41,24 @@
     "webdriverio"
   ],
   "dependencies": {
-    "compare-versions": "^3.4.0",
-    "colors": "^1.2.1",
-    "eslint": "^4.19.1",
-    "path": "^0.12.7",
     "puppeteer": "1.6.2",
-    "request": "^2.85.0",
-    "sqlite3": "^4.0.2"
+    "compare-versions": "latest",
+    "colors": "latest",
+    "path": "latest",
+    "request": "latest",
+    "sqlite3": "latest"
   },
   "engines": {
     "node": ">=7.6.0"
   },
   "devDependencies": {
-    "eslint-config-standard": "^11.0.0",
-    "eslint-plugin-import": "^2.11.0",
-    "eslint-plugin-node": "^6.0.1",
-    "eslint-plugin-promise": "^3.7.0",
-    "eslint-plugin-snakecasejs": "^1.1.0-5",
-    "eslint-plugin-standard": "^3.1.0",
-    "pre-commit": "^1.2.2"
+    "eslint": "latest",
+    "eslint-config-standard": "latest",
+    "eslint-plugin-import": "latest",
+    "eslint-plugin-node": "latest",
+    "eslint-plugin-promise": "latest",
+    "eslint-plugin-snakecasejs": "latest",
+    "eslint-plugin-standard": "latest",
+    "pre-commit": "latest"
   }
 }

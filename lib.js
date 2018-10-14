@@ -144,7 +144,7 @@ module.exports = function(config) {
             await twofa.start_twofa_check();
         }
         if (twofa.is_ok_nextverify()) {
-            await twofa.start_twofa_location();
+            await twofa.start();
         }
 
         if (twofa.is_ok()) {
