@@ -48,13 +48,13 @@ class Likemode_classic extends Manager_state {
 
             self.db.run("ALTER TABLE users ADD COLUMN hashtag TEXT", function(err) {
                 if (err) {
-                    self.log.warning(`init_db users ADD COLUMN hashtag: ${err}`);
+                    self.log.info(`init_db users ADD COLUMN hashtag: ${err}`);
                 }
             });
 
             self.db.run("ALTER TABLE users ADD COLUMN inserted_at DATETIME DEFAULT NULL", function(err) {
                 if (err) {
-                    self.log.warning(`init_db users ADD COLUMN inserted_at: ${err}`);
+                    self.log.info(`init_db users ADD COLUMN inserted_at: ${err}`);
                 }
             });
         });

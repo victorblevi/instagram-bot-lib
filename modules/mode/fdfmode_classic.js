@@ -47,13 +47,13 @@ class Fdfmode_classic extends Manager_state {
 
             self.db.run("ALTER TABLE users ADD COLUMN hashtag TEXT", function(err) {
                 if (err) {
-                    self.log.warning(`init_db users ADD COLUMN hashtag: ${err}`);
+                    self.log.info(`init_db users ADD COLUMN hashtag: ${err}`);
                 }
             });
 
             self.db.run("ALTER TABLE users ADD COLUMN inserted_at DATETIME DEFAULT NULL", function(err) {
                 if (err) {
-                    self.log.warning(`init_db users ADD COLUMN inserted_at: ${err}`);
+                    self.log.info(`init_db users ADD COLUMN inserted_at: ${err}`);
                 }
             });
         });
@@ -67,13 +67,13 @@ class Fdfmode_classic extends Manager_state {
 
             self.db_fdf.run("ALTER TABLE fdf ADD COLUMN hashtag TEXT", function(err) {
                 if (err) {
-                    self.log.warning(`init_db_fdf fdf ADD COLUMN hashtag: ${err}`);
+                    self.log.info(`init_db_fdf fdf ADD COLUMN hashtag: ${err}`);
                 }
             });
 
             self.db_fdf.run("ALTER TABLE fdf ADD COLUMN inserted_at DATETIME DEFAULT NULL", function(err) {
                 if (err) {
-                    self.log.warning(`init_db_fdf fdf ADD COLUMN inserted_at: ${err}`);
+                    self.log.info(`init_db_fdf fdf ADD COLUMN inserted_at: ${err}`);
                 }
             });
         });

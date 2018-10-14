@@ -1,3 +1,10 @@
+# v0.9.8 (14 October, 2018)
+* Fix: fdfmode_classic #42 (again)
+* Fix: 2FA doesn't work #48 (after 3 months... thanks instagram!)
+* Update: default value of `chrome_headless` is `true`
+* Update: all library of package.json
+
+
 # v0.9.7 (08 October, 2018)
 * Fix: fdfmode_classic #42
 
