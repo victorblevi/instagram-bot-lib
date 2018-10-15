@@ -48,7 +48,7 @@ module.exports = class Log {
                 console.log(err);
             }
         });
-        if(type === "ERROR") {
+        if (type === "ERROR") {
             fs.appendFile(this.config.logerr_path, log, function (err) {
                 if (err) {
                     console.log(err);

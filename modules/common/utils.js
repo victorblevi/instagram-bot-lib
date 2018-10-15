@@ -301,8 +301,7 @@ class Utils {
         let pages = null;
 
         try {
-            await this.bot.waitForSelector("title");
-            pages = await this.browser.pages();
+            pages = (await this.browser.pages()).map(t => t.url());
         } catch (err) {
             this.log.info("Bye bye! Shutdown... wait ~30sec for the bot stopping...");
             return false;
@@ -311,6 +310,7 @@ class Utils {
         if (pages.length == 2) {
             return true;
         } else {
+            
             this.log.info("Bye bye! Shutdown... wait ~30sec for the bot stopping...");
         }
 

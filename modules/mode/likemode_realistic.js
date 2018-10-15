@@ -41,7 +41,6 @@ class Likemode_realistic extends Manager_state {
                 }
             });
 
-
             self.db.run("ALTER TABLE users ADD COLUMN hashtag TEXT", function (err) {
                 if (err) {
                     self.log.info(`init_db users ADD COLUMN hashtag: ${err}`);

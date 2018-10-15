@@ -120,7 +120,6 @@ class Likemode_superlike extends Manager_state {
         await this.utils.sleep(this.utils.random_interval(3, 6));
     }
 
-
     /**
      * likemode_superlike: open user page
      * =====================

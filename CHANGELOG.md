@@ -1,3 +1,10 @@
+# v0.9.9 (16 October, 2018)
+* Fix: fdfmode_classic #42 (again again...)
+* Fix: 2FA (Location)
+* Fix: Close button (ui)
+* Fix: lose connection bot stop, now retry work.
+
+
 # v0.9.8 (14 October, 2018)
 * Fix: fdfmode_classic #42 (again)
 * Fix: 2FA doesn't work #48 (after 3 months... thanks instagram!)
