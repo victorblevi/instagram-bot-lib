@@ -1,7 +1,7 @@
 {
   "name": "instagrambotlib",
   "description": "Instagram Bot API",
-  "version": "0.9.8",
+  "version": "0.9.9",
   "main": "lib.js",
   "author": "Patryk Rzucidło [@ptkdev] <support@ptkdev.io> (https://ptkdev.it)",
   "license": "GPL-3.0",

@@ -46,12 +46,14 @@
         {
             "allowSingleLine": false
         }],
+        "keyword-spacing": ["error", { "before": true, "after": true }],
         "object-curly-spacing": ["error", "never"],
         "spaced-comment": [2, "always"],
         "space-before-function-paren": ["error", "always"],
         "prefer-template": "error",
         "no-useless-concat": "error",
         "template-curly-spacing": ["error", "never"],
+        "no-multiple-empty-lines": ["error", { "max": 1, "maxEOF": 0 }],
         "snakecasejs/snakecasejs": "warn",
         "snakecasejs/whitelist": ["defaultViewport","executablePath"]
     }

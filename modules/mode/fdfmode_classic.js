@@ -277,7 +277,6 @@ class Fdfmode_classic extends Manager_state {
         await this.bot.goto(this.photo_current);
     }
 
-
     /**
      * Fdfmode_classic: Defollow me
      * =====================
@@ -316,8 +315,8 @@ class Fdfmode_classic extends Manager_state {
 
                 await this.utils.sleep(this.utils.random_interval(2, 3));
 
-                await this.bot.waitForSelector("div[role=\"dialog\"] div button:nth-child(1)");
-                let button_confirm = await this.bot.$("div[role=\"dialog\"] div button:nth-child(1)");
+                await this.bot.waitForSelector("div[role=\"dialog\"] div > div:nth-child(3) button:nth-child(1)");
+                let button_confirm = await this.bot.$("div[role=\"dialog\"] div > div:nth-child(3) button:nth-child(1)");
 
                 await button_confirm.click();
 
@@ -419,7 +418,6 @@ class Fdfmode_classic extends Manager_state {
                 }
 
                 await this.utils.sleep(this.utils.random_interval(3, 6));
-
 
                 if (this.cache_hash_tags.length < 9) { // remove popular photos
                     this.cache_hash_tags = [];

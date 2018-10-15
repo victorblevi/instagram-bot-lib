@@ -264,6 +264,11 @@ class Twofa extends Manager_state {
 
         // After October 2018 don't work switch sms/email
         // await this.sendpin();
+        let button = await this.bot.$("form button");
+        await button.click();
+
+        this.log.warning("please insert pin in loginpin.txt or 2FA input box and wait, you have 50-60 seconds for that.. (tic... tac... tic... tac... tic...)");
+
         await this.utils.sleep(this.utils.random_interval(60, 80));
 
         await this.readpin("security_code");
@@ -303,7 +308,6 @@ class Twofa extends Manager_state {
     }
 
 }
-
 
 module.exports = (bot, config, utils) => {
     return new Twofa(bot, config, utils);

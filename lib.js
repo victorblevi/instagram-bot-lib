@@ -30,6 +30,7 @@ module.exports = function (config) {
      *
      */
     this.stop = async function () {
+        await this.browser.newPage();
         await this.browser.close();
     };
 
