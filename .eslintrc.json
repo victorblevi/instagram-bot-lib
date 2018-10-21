@@ -3,7 +3,8 @@
     {
         "browser": true,
         "es6": true,
-        "node": true
+        "node": true,
+        "mocha": true
     },
     "extends": "eslint:recommended",
     "parserOptions":
@@ -12,7 +13,8 @@
         "ecmaVersion": 2017
     },
     "plugins": [
-        "snakecasejs"
+        "snakecasejs",
+        "mocha"
     ],
     "rules":
     {
@@ -55,6 +57,7 @@
         "template-curly-spacing": ["error", "never"],
         "no-multiple-empty-lines": ["error", { "max": 1, "maxEOF": 0 }],
         "snakecasejs/snakecasejs": "warn",
-        "snakecasejs/whitelist": ["defaultViewport","executablePath"]
+        "snakecasejs/whitelist": ["defaultViewport","executablePath"],
+        "mocha/no-exclusive-tests": "error"
     }
 }

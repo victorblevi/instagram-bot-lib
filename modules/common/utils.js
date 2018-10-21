@@ -237,31 +237,24 @@ class Utils {
             this.log.error("config.pin_path use the default value, update your config.js from config.js.tpl");
         }
 
+        config.bot_fastlike_max = this.compute_interval_between_run_in_seconds(config.bot_likeday_min);
+        config.bot_fastlike_min = this.compute_interval_between_run_in_seconds(config.bot_likeday_max);
+
+        config.bot_fastlikefdf_max = this.compute_interval_between_run_in_seconds(config.bot_followday - 30);
+        config.bot_fastlikefdf_min = this.compute_interval_between_run_in_seconds(config.bot_followday);
+
+        return config;
+    }
+
+    compute_interval_between_run_in_seconds (target_count_per_day) {
+        if (target_count_per_day <= 0) {
+            throw new Error("target_count_per_day must be positive");
+        }
         let min = 0;
         do {
             min++;
-        } while ((60 / min * 24 * 11) > config.bot_likeday_min);
-        config.bot_fastlike_max = min--;
-
-        min = 0;
-        do {
-            min++;
-        } while ((60 / min * 24 * 11) > config.bot_likeday_max);
-        config.bot_fastlike_min = min--;
-
-        min = 0;
-        do {
-            min++;
-        } while ((60 / min * 24 * 11) > (config.bot_followday - 30));
-        config.bot_fastlikefdf_max = min--;
-
-        min = 0;
-        do {
-            min++;
-        } while ((60 / min * 24 * 11) > config.bot_followday);
-        config.bot_fastlikefdf_min = min--;
-
-        return config;
+        } while ((60 / min * 24 * 11) > target_count_per_day);
+        return min;
     }
 
     /**
