@@ -250,11 +250,7 @@ class Utils {
         if (target_count_per_day <= 0) {
             throw new Error("target_count_per_day must be positive");
         }
-        let min = 0;
-        do {
-            min++;
-        } while ((60 / min * 24 * 11) > target_count_per_day);
-        return min;
+        return Math.ceil((24 / target_count_per_day) * 11 *60);
     }
 
     /**
