@@ -199,9 +199,16 @@ class Fdfmode_classic extends Manager_state {
         } catch (err) {
             this.log.warning(`get username: ${err}`);
         }
+        const db_users_followed = await this.get_all_usernames_from_database();
+        this.log.info(`users already followed count ${db_users_followed.length}`);
+        const whitelist = [...this.config.bot_userwhitelist, db_users_followed.map(u => u.username)];
 
-        if (username != "" && this.config.bot_userwhitelist.includes(username)) {
-            this.log.warning(`${username}: is in whitelits, ignored by follow.`);
+        if (this.utils.is_debug()) {
+            this.log.debug(`whitelist ${whitelist}`);
+        }
+
+        if (username != "" && whitelist.includes(username)) {
+            this.log.warning(`${username}: is in whitelist, ignored by follow.`);
         } else {
             try {
                 await this.bot.waitForSelector("article header div button");
@@ -247,19 +254,37 @@ class Fdfmode_classic extends Manager_state {
     }
 
     /**
+     * Get all already followed usernames
+     * =====================
+     * SQL get all usernames
+     *
+     */
+    async get_all_usernames_from_database () {
+        let self = this;
+        return new Promise(function (resolve) {
+            self.db_fdf.all("SELECT username FROM fdf WHERE account = ? ORDER BY id ASC", self.config.instagram_username, function (err, row) {
+                if (err) {
+                    self.log.warning(`get_all_users_from_database() error select ${err}`);
+                }
+                resolve(row || []);
+            });
+        });
+    }
+
+    /**
      * Get all follow user
      * =====================
      * SQL get all users with follow type_action, for defollow next time
      *
      */
-    async get_row_from_database () {
+    async get_users_with_type_follow_from_database () {
         let self = this;
         return new Promise(function (resolve) {
             self.db_fdf.all("SELECT * FROM fdf WHERE account = ? AND type_fdf = 'follow' ORDER BY id ASC", self.config.instagram_username, function (err, row) {
                 if (err) {
-                    self.log.warning(`get_row_from_database() error select ${err}`);
+                    self.log.warning(`get_users_with_type_follow_from_database() error select ${err}`);
                 }
-                resolve(row);
+                resolve(row || []);
             });
         });
     }
@@ -387,7 +412,7 @@ class Fdfmode_classic extends Manager_state {
                 this.log.info(`loading... ${new Date(today.getFullYear(), today.getMonth(), today.getDate(), today.getHours(), today.getMinutes(), today.getSeconds())}`);
 
                 // defollow flow
-                let users = await this.get_row_from_database();
+                let users = await this.get_users_with_type_follow_from_database();
 
                 if (typeof users !== "undefined" && users.length > this.config.bot_followrotate) {
                     this.log.info("defollow flow start");
