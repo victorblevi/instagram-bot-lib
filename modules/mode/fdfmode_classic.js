@@ -274,7 +274,12 @@ class Fdfmode_classic extends Manager_state {
         this.username_current = username;
         this.photo_current = `https://www.instagram.com/${username}`;
         this.log.info("go to url for try defollow");
-        await this.bot.goto(this.photo_current);
+
+        try {
+            await this.bot.goto(this.photo_current);
+        } catch (err) {
+            this.log.error(`goto ${err}`);
+        }
     }
 
     /**
