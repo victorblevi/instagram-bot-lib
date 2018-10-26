@@ -22,6 +22,22 @@ If you fork repo for contributing before send pull request you need align your s
 
 This folder is mirror of all files/class/modules of project. IMHO is good convention.
 
+## Commit message
+Is recommended for consistency use similar commit message. I love `[Tag] Message` syntax. Example:
+
+| Message                               | Status  | Description                   |
+| ---                                   | ---     | ---                           |
+| `[Feature] Available likemode_name`   | Good    | Tag Feature is ok             |
+| `[Fix] Bad selector likemode_name`    | Good    | Tag Fix is ok                 |
+| `[Test] New test for likemode_name`   | Good    | Tag Test is ok                |
+| `[Update/Test] Test likemode_name`    | Good    | Multiple tags is ok           |
+| `[Refactor] Utils constructor`        | Good    | Tag Refactor is ok            |
+| `[Update] package.js`                 | Good    | Tag Update is ok              |
+| `Update AUTHORS.md`                   | Bad     | Missing [ ]                   |
+| `Fix`                                 | Bad     | Useless comment, missing [ ]  |
+| `[Fix]text text text`                 | Bad     | Need space after ]            |
+| `[Fixs] Bad selector likemode_name`   | Bad     | Don't use plural tag name     |
+
 ## Linter and snake_case
 **Important:** Is recommended use eslint globally (`npm install eslint -g`) and use vs-code or sublime-text with eslint plugin.
 
