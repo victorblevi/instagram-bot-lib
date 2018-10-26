@@ -12,8 +12,13 @@ This document provides specifications to contribute to the project.
 
 All developer work in nightly or in sub-branch of nightly. [Git flow](https://www.google.com/search?q=git+flow&oq=git+flow) is recommended. Only owner (example: @ptkdev) merge in beta and merge in master if code work correctly after tests.
 
+## Update your fork (sync your code of branch)
+If you fork repo for contributing before send pull request you need align your source code to latest code. This is simple, run:
+1. `npm run git-set-upstream` (only one time)
+2. `npm run git-pull-upstream` (sync your code before send pull request)
+
 ## Unit testing
-`/tests/` folder contains all unit test with `mocha` and `chai`. `npm run test` provides show status of tests.
+`/tests/` folder contains all unit test with `mocha` and `chai`. `npm run tests` provides show status of tests.
 
 This folder is mirror of all files/class/modules of project. IMHO is good convention.
 
