@@ -1,5 +1,5 @@
 /**
- * MODE: commentmode_classic
+ * MODE: Commentmode_classic
  * =====================
  *
  * @author:     Ilua Chubarov [@agoalofalife] <agoalofalife@gmail.com>
@@ -7,7 +7,7 @@
  *
  */
 const Manager_state = require("../common/state").Manager_state;
-class commentmode_classic extends Manager_state {
+class Commentmode_classic extends Manager_state {
     constructor (bot, config, utils) {
         super();
         this.bot = bot;
@@ -18,7 +18,7 @@ class commentmode_classic extends Manager_state {
         this.photo_current = "";
         this.STATE = require("../common/state").STATE;
         this.STATE_EVENTS = require("../common/state").EVENTS;
-        this.Log = require("../logger/Log");
+        this.Log = require("../logger/log");
         this.log = new this.Log(this.LOG_NAME, this.config);
         this.cache_hash_tags = [];
         this.source = this.config.comment_mode.comments.source;
@@ -60,7 +60,7 @@ class commentmode_classic extends Manager_state {
     }
 
     /**
-     * commentmode_classic: Open Hashtag
+     * Commentmode_classic: Open Hashtag
      * =====================
      * Get random hashtag from array and open page
      *
@@ -81,7 +81,7 @@ class commentmode_classic extends Manager_state {
     }
 
     /**
-     * commentmode_classic: Open Photo
+     * Commentmode_classic: Open Photo
      * =====================
      * Open url of photo and cache urls from hashtag page in array
      *
@@ -180,7 +180,7 @@ class commentmode_classic extends Manager_state {
     }
 
     /**
-     * commentmode_classic: Love me
+     * Commentmode_classic: Love me
      * =====================
      * leave a comment under the photo
      *
@@ -294,5 +294,5 @@ class commentmode_classic extends Manager_state {
 }
 
 module.exports = (bot, config, utils, db) => {
-    return new commentmode_classic(bot, config, utils, db);
+    return new Commentmode_classic(bot, config, utils, db);
 };

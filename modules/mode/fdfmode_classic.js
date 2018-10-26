@@ -23,7 +23,7 @@ class Fdfmode_classic extends Manager_state {
         this.LOG_NAME = "fdf_classic";
         this.STATE = require("../common/state").STATE;
         this.STATE_EVENTS = require("../common/state").EVENTS;
-        this.Log = require("../logger/Log");
+        this.Log = require("../logger/log");
         this.log = new this.Log(this.LOG_NAME, this.config);
     }
 

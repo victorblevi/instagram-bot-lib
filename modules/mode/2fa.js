@@ -15,7 +15,7 @@ class Twofa extends Manager_state {
         this.config = config;
         this.utils = utils;
         this.LOG_NAME = "twofa";
-        this.Log = require("../logger/Log");
+        this.Log = require("../logger/log");
         this.log = new this.Log(this.LOG_NAME, this.config);
         this.LOG = require("../logger/types");
         this.STATE = require("../common/state").STATE;

@@ -16,7 +16,7 @@ class Likemode_competitor_users extends Manager_state {
         this.utils = utils;
         this.STATE = require("../common/state").STATE;
         this.STATE_EVENTS = require("../common/state").EVENTS;
-        this.Log = require("../logger/Log");
+        this.Log = require("../logger/log");
         this.LOG_NAME = "like";
         this.account = this.config.likemode_competitor_users.account;
         this.url_instagram = "https://www.instagram.com/";
