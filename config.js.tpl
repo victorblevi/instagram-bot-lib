@@ -7,8 +7,8 @@ module.exports = {
     // Instagram Account
     "instagram_username": "ptkdev", // without @
     "instagram_password": "password",
-    "instagram_hashtag": ["rome", "italy", "muraleshunter"], //without #, recommended more than 20
-    "instagram_pin": "sms", //method to receive pin (email or sms)
+    "instagram_hashtag": ["rome", "italy", "muraleshunter"], // without #, recommended more than 20
+    "instagram_pin": "sms", // method to receive pin (email or sms)
 
     // BOT Configs
     // [WORK] likemode_classic          - select random hashtag from config list and like 1 random photo (of last 20) | 400-600 like/day.
