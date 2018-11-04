@@ -74,3 +74,7 @@ Update the suffix value (in nightly branch) to current day. See [semver](https:/
 
 Dependences are all set on @latest, IMHO is good support latest version of libraries (why? in primis: security!)
 
+### Repository: difference `XXX-bot.js` vs `XXX-bot-lib`
+Repository with suffix `-lib` is official library. Contains all code of bot, developer work in this repo and is possible use this library in your nodejs app. Is available on npm.
+
+Repository with suffix `-.js` use library and contains Docker files. I use this repository for provide docker container and simply version of bot in rolling release. 

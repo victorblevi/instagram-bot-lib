@@ -58,17 +58,7 @@ start() | run instagram-bot.js
 stop()  | stop instagram-bot.js
 
 ## Bugs
-1. `[ERROR] login: The username you entered doesn't belong to an account. Please check your username and try again. (restart bot and retry...)`
-* Why happen? Instagram desktop is in overcapacity. Happen at 12-14 and 19-21 all days. 
-* Solution: Login in other time or Logout from your instagram app, and login again. Reboot bot and retry... Try and retry, and retry, and retry... Or stop bot and wait 2-3h...
-
-2. `Error: Protocol error (Page.captureScreenshot): Target closed.`
-* Why happen? macOS don't support correctly screenshot from puppeteer
-* Solution: set `screenshot` on `false` in `config.js`
-
-3. `This code is no longer valid. Please request a new one. (400) (/accounts/login/ajax/two_factor/)` 
-* Why happen? Instagram bug at login
-* Solution: disable at moment 2FA or try old version of chrome (edit `config.js` set `executable_path`)
+See issues github tab or [bugs file](https://github.com/social-manager-tools/instagram-bot-lib/blob/master/BUGS.md)
 
 ## Desktop setup (GUI Version)
 1. [Social Manager Tools GUI](https://socialmanagertools.ptkdev.io/).
@@ -89,9 +79,7 @@ docker run --restart=always --name=instagram-bot -d -v /path/to/config.js:/app/c
 **WARNING:** with docker is mandatory edit `config.js` and set `chrome_headless` on `true` and set `executable_path` to `/usr/bin/chromium-browser`. Without this fix docker don't work.
 
 ## Roadmap
-See full roadmap (open task, todo and bugs) in [project page](https://github.com/social-manager-tools/instagram-bot.js/projects?query=is%3Aopen+sort%3Aname-asc).
-* [v0.9.X](https://github.com/social-manager-tools/instagram-bot.js/projects/3)
-* [v1.0.X](https://github.com/social-manager-tools/instagram-bot.js/projects/3)
+See full roadmap (open task, todo and bugs) in [project page](https://github.com/social-manager-tools/instagram-bot-lib/projects?query=is%3Aopen+sort%3Aname-asc).
 
 ## Sorry for snake_case
 I love :snake: snake_case syntax sorry for this :sob: don't hate me.

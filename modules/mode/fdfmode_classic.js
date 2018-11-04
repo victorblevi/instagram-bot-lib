@@ -3,7 +3,7 @@
  * =====================
  * Follow 30 users, and defollow the first followed at 31 follow (in loop). This method is not detected from socialblade or similar software.
  *
- * @author:     Patryk Rzucidlo [@ptkdev] <support@ptkdev.io> (https://ptkdev.it)
+ * @author:     Patryk Rzucidło [@ptkdev] <support@ptkdev.io> (https://ptkdev.it)
  * @license:    This code and contributions have 'GNU General Public License v3'
  *
  */
@@ -87,7 +87,7 @@ class Fdfmode_classic extends Manager_state {
         let photo_url = "";
         do {
             photo_url = this.cache_hash_tags.pop();
-        } while ((typeof photo_url === "undefined" || photo_url.indexOf("tagged") === -1) && this.cache_hash_tags.length > 0);
+        } while (typeof photo_url === "undefined" && this.cache_hash_tags.length > 0);
 
         return photo_url;
     }
