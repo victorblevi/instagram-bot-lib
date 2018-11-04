@@ -1,6 +1,7 @@
-# v0.9.10 (TBD, 2018)
+# v0.9.10 (04 November, 2018)
 * Developers: [Guidelines](https://github.com/social-manager-tools/instagram-bot-lib/blob/nightly/DEV_GUIDELINES.md) for contributing at project.
 * Test: add mocha and chai
+* Fix: fdfmode_classic loop bug
 * Upgrade: puppeteer v1.7.0
 
 
