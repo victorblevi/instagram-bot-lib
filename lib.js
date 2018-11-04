@@ -3,7 +3,7 @@
  * =====================
  * Instagram Bot made with love and nodejs
  *
- * @author:     Patryk Rzucidlo [@ptkdev] <support@ptkdev.io> (https://ptkdev.it)
+ * @author:     Patryk Rzucidło [@ptkdev] <support@ptkdev.io> (https://ptkdev.it)
  * @license:    Code and contributions have 'GNU General Public License v3'
  *              This program is free software: you can redistribute it and/or modify
  *              it under the terms of the GNU General Public License as published by
@@ -73,7 +73,7 @@ module.exports = function (config) {
         } else if (config.ui === true) {
             config = check.fixui(config);
         }
-        config = check.default_config(config);
+        config = check.fixconfig(config);
         check.donate();
         check.check_updates(version.version);
         if (config.executable_path === "" || config.executable_path === false) {
@@ -103,7 +103,7 @@ module.exports = function (config) {
          */
         let routes = require("./routes/strategies");
         let utils = require("./modules/common/utils")(bot, this.browser, config);
-        let Log = require("./modules/logger/Log");
+        let Log = require("./modules/logger/log");
         let log = new Log("switch_mode", config);
         let login = require("./modules/mode/login.js")(bot, config, utils);
         let twofa = require("./modules/mode/2fa.js")(bot, config, utils);

@@ -3,7 +3,7 @@
  * =====================
  * Instagram Bot made with love and nodejs
  *
- * @author:     Patryk Rzucidlo [@ptkdev] <support@ptkdev.io> (https://ptkdev.it)
+ * @author:     Patryk Rzucidło [@ptkdev] <support@ptkdev.io> (https://ptkdev.it)
  * @link: https://github.com/GoogleChrome/puppeteer
  * @link: https://www.npmjs.com/package/instagrambotlib
  * 

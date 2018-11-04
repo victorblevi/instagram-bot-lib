@@ -1,3 +1,9 @@
+# v0.9.10 (TBD, 2018)
+* Developers: [Guidelines](https://github.com/social-manager-tools/instagram-bot-lib/blob/nightly/DEV_GUIDELINES.md) for contributing at project.
+* Test: add mocha and chai
+* Upgrade: puppeteer v1.7.0
+
+
 # v0.9.9 (16 October, 2018)
 * Fix: fdfmode_classic #42 (again again...)
 * Fix: 2FA (Location)
