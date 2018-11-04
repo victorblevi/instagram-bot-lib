@@ -3,7 +3,7 @@
  * =====================
  * Flow for pin request after login
  *
- * @author:     Patryk Rzucidlo [@ptkdev] <support@ptkdev.io> (https://ptkdev.it)
+ * @author:     Patryk Rzucidło [@ptkdev] <support@ptkdev.io> (https://ptkdev.it)
  * @license:    This code and contributions have 'GNU General Public License v3'
  *
  */
@@ -15,7 +15,7 @@ class Twofa extends Manager_state {
         this.config = config;
         this.utils = utils;
         this.LOG_NAME = "twofa";
-        this.Log = require("../logger/Log");
+        this.Log = require("../logger/log");
         this.log = new this.Log(this.LOG_NAME, this.config);
         this.LOG = require("../logger/types");
         this.STATE = require("../common/state").STATE;

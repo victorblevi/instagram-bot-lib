@@ -2,7 +2,7 @@
 
 # Instagram Bot (Library)
 
-[![](https://img.shields.io/badge/license-GLPv3-brightgreen.svg)](#) [![](https://img.shields.io/badge/powered%20by-puppeteer-46aef7.svg)](https://github.com/GoogleChrome/puppeteer) [![](https://img.shields.io/badge/version-v0.9.9-lightgrey.svg)](https://github.com/social-manager-tools/instagram-bot-lib/releases) [![](https://img.shields.io/badge/chat%20on-slack-orange.svg)](http://slack.ptkdev.io) [![](https://img.shields.io/badge/chat%20on-discord-7289da.svg)](http://discord.ptkdev.io) [![](https://img.shields.io/badge/blog-medium-2AE176.svg)](http://blog.ptkdev.io) [![](https://img.shields.io/badge/twitter-ptkdevio-2AA3EF.svg)](https://twitter.com/ptkdevio)
+[![](https://img.shields.io/badge/license-GLPv3-brightgreen.svg)](#) [![](https://img.shields.io/badge/powered%20by-puppeteer-46aef7.svg)](https://github.com/GoogleChrome/puppeteer) [![](https://img.shields.io/badge/version-v0.9.10-lightgrey.svg)](https://github.com/social-manager-tools/instagram-bot-lib/releases) [![](https://img.shields.io/badge/chat%20on-slack-orange.svg)](http://slack.ptkdev.io) [![](https://img.shields.io/badge/chat%20on-discord-7289da.svg)](http://discord.ptkdev.io) [![](https://img.shields.io/badge/blog-medium-2AE176.svg)](http://blog.ptkdev.io) [![](https://img.shields.io/badge/twitter-ptkdevio-2AA3EF.svg)](https://twitter.com/ptkdevio)
 
 [![](https://img.shields.io/badge/donate-patreon-F87668.svg)](http://patreon.ptkdev.io) [![](https://img.shields.io/badge/donate-paypal-46AFE0.svg)](http://paypal.ptkdev.io) [![](https://img.shields.io/badge/buy%20me-coffee-4B788C.svg)](http://coffee.ptkdev.io) [![](https://img.shields.io/badge/help-support@ptkdev.io-fbbc05.svg)](mailto:support@ptkdev.io)
 
@@ -58,17 +58,7 @@ start() | run instagram-bot.js
 stop()  | stop instagram-bot.js
 
 ## Bugs
-1. `[ERROR] login: The username you entered doesn't belong to an account. Please check your username and try again. (restart bot and retry...)`
-* Why happen? Instagram desktop is in overcapacity. Happen at 12-14 and 19-21 all days. 
-* Solution: Login in other time or Logout from your instagram app, and login again. Reboot bot and retry... Try and retry, and retry, and retry... Or stop bot and wait 2-3h...
-
-2. `Error: Protocol error (Page.captureScreenshot): Target closed.`
-* Why happen? macOS don't support correctly screenshot from puppeteer
-* Solution: set `screenshot` on `false` in `config.js`
-
-3. `This code is no longer valid. Please request a new one. (400) (/accounts/login/ajax/two_factor/)` 
-* Why happen? Instagram bug at login
-* Solution: disable at moment 2FA or try old version of chrome (edit `config.js` set `executable_path`)
+See issues github tab or [bugs file](https://github.com/social-manager-tools/instagram-bot-lib/blob/master/BUGS.md)
 
 ## Desktop setup (GUI Version)
 1. [Social Manager Tools GUI](https://socialmanagertools.ptkdev.io/).
@@ -89,9 +79,7 @@ docker run --restart=always --name=instagram-bot -d -v /path/to/config.js:/app/c
 **WARNING:** with docker is mandatory edit `config.js` and set `chrome_headless` on `true` and set `executable_path` to `/usr/bin/chromium-browser`. Without this fix docker don't work.
 
 ## Roadmap
-See full roadmap (open task, todo and bugs) in [project page](https://github.com/social-manager-tools/instagram-bot.js/projects?query=is%3Aopen+sort%3Aname-asc).
-* [v0.9.X](https://github.com/social-manager-tools/instagram-bot.js/projects/3)
-* [v1.0.X](https://github.com/social-manager-tools/instagram-bot.js/projects/3)
+See full roadmap (open task, todo and bugs) in [project page](https://github.com/social-manager-tools/instagram-bot-lib/projects?query=is%3Aopen+sort%3Aname-asc).
 
 ## Sorry for snake_case
 I love :snake: snake_case syntax sorry for this :sob: don't hate me.

@@ -3,7 +3,7 @@
  * =====================
  * Open browser, set user/pass and try login
  *
- * @author:     Patryk Rzucidlo [@ptkdev] <support@ptkdev.io> (https://ptkdev.it)
+ * @author:     Patryk Rzucidło [@ptkdev] <support@ptkdev.io> (https://ptkdev.it)
  * @license:    This code and contributions have 'GNU General Public License v3'
  *
  */
@@ -17,7 +17,7 @@ class Login extends Manager_state {
         this.LOG_NAME = "login";
         this.STATE = require("../common/state").STATE;
         this.STATE_EVENTS = require("../common/state").EVENTS;
-        this.Log = require("../logger/Log");
+        this.Log = require("../logger/log");
         this.log = new this.Log(this.LOG_NAME, this.config);
     }
 

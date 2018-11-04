@@ -3,7 +3,7 @@
  * =====================
  * Select random hashtag from config list and like 1 random photo (of last 20) | 400-600 like/day.
  *
- * @author:     Patryk Rzucidlo [@ptkdev] <support@ptkdev.io> (https://ptkdev.it)
+ * @author:     Patryk Rzucidło [@ptkdev] <support@ptkdev.io> (https://ptkdev.it)
  * @license:    This code and contributions have 'GNU General Public License v3'
  *
  */
@@ -21,7 +21,7 @@ class Likemode_classic extends Manager_state {
         this.LOG_NAME = "like_classic";
         this.STATE = require("../common/state").STATE;
         this.STATE_EVENTS = require("../common/state").EVENTS;
-        this.Log = require("../logger/Log");
+        this.Log = require("../logger/log");
         this.log = new this.Log(this.LOG_NAME, this.config);
     }
 

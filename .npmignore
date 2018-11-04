@@ -109,6 +109,10 @@ npm-debug.log
 /bower_components
 package-lock.json
 
-# NodePress.js #
+# Tests        #
+################
+/tests
+
+# BOT          #
 ################
 config.js
