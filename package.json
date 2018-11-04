@@ -31,7 +31,7 @@
     "git-ignore-reset": "git rm -r --cached . && git add . && git commit -m \"[Fix] Removing all files in .gitignore\"",
     "npm-publish-master": "git checkout master && npm publish",
     "npm-publish-beta": "git checkout beta && npm publish --tag beta",
-    "npm-publish-nightly": "git checkout nightly && git checkout nightly",
+    "npm-publish-nightly": "git checkout nightly && npm publish --tag nightly",
     "tests": "mocha tests --recursive"
   },
   "pre-commit": [
