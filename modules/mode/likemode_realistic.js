@@ -188,7 +188,7 @@ class Likemode_realistic extends Manager_state {
             let button_before_click = await this.bot.evaluate(el => el.innerHTML, await this.bot.$("article:nth-child(1) section:nth-child(1) button:nth-child(1)"));
             this.log.info(`button text before click: ${button_before_click}`);
 
-            if (this.photo_liked[this.photo_current] > 1) {
+            if (this.photo_liked[this.photo_current] > 1 || button_before_click.includes("aria-label=\"Unlike\"")) {
                 this.log.warning("</3 Skipped, liked previously");
                 this.db.run("INSERT INTO users (account, mode, username, photo_url, hashtag, type_action) VALUES (?, ?, ?, ?, ?, ?)", this.config.instagram_username, this.LOG_NAME, username, this.photo_current, this.hashtag_tag, "skipped");
             } else {
