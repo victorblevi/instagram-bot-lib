@@ -182,6 +182,11 @@ class Likemode_realistic extends Manager_state {
             this.log.warning(`get username: ${err}`);
         }
 
+        if(username === this.config.instagram_username) {
+            this.log.warning(`found own image of ${this.config.instagram_username}, aborting`);
+            return;
+        }
+
         try {
             await this.bot.waitForSelector("article:nth-child(1) section:nth-child(1) button:nth-child(1)");
             let button = await this.bot.$("article:nth-child(1) section:nth-child(1) button:nth-child(1)");
